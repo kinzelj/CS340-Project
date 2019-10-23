@@ -1,38 +1,39 @@
 import React from 'react'
 import { Table } from 'semantic-ui-react'
 
-const DataTable = () => (
-  <Table singleLine>
-    <Table.Header>
-      <Table.Row>
-        <Table.HeaderCell>Name</Table.HeaderCell>
-        <Table.HeaderCell>Registration Date</Table.HeaderCell>
-        <Table.HeaderCell>E-mail address</Table.HeaderCell>
-        <Table.HeaderCell>Premium Plan</Table.HeaderCell>
-      </Table.Row>
-    </Table.Header>
+const buildRow = (value, index, header) => (
+  <Table.Row key={`tr-${index}`}>
+    {
+      header.map((v, i) =>
+        <Table.Cell key={`trc-${i}`}>
+          {value[v]}
+        </Table.Cell>
+      )
+    }
+  </Table.Row>
+);
 
-    <Table.Body>
-      <Table.Row>
-        <Table.Cell>John Lilki</Table.Cell>
-        <Table.Cell>September 14, 2013</Table.Cell>
-        <Table.Cell>jhlilk22@yahoo.com</Table.Cell>
-        <Table.Cell>No</Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>Jamie Harington</Table.Cell>
-        <Table.Cell>January 11, 2014</Table.Cell>
-        <Table.Cell>jamieharingonton@yahoo.com</Table.Cell>
-        <Table.Cell>Yes</Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>Jill Lewis</Table.Cell>
-        <Table.Cell>May 11, 2014</Table.Cell>
-        <Table.Cell>jilsewris22@yahoo.com</Table.Cell>
-        <Table.Cell>Yes</Table.Cell>
-      </Table.Row>
-    </Table.Body>
-  </Table>
-)
+const populateTable = (props) => {
+  if (props.data) {
+    return (props.data.map((value, index) => buildRow(value, index, props.header)));
+  }
+}
 
+
+const DataTable = (props) => {
+  return (
+    <div className='table-div'>
+      <Table singleLine>
+        <Table.Header>
+          <Table.Row key={`header-row`}>
+            {props.header.map((value, index) => <Table.Cell key={`thc-${index}`}>{value}</Table.Cell>)}
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {populateTable(props)}
+        </Table.Body>
+      </Table>
+    </div>
+  );
+}
 export default DataTable

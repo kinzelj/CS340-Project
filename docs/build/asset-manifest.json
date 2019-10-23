@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/C:/Users/josh.kinzel/Desktop/build/static/css/main.3523898f.chunk.css",
+    "main.js": "/C:/Users/josh.kinzel/Desktop/build/static/js/main.f52d57bc.chunk.js",
+    "main.js.map": "/C:/Users/josh.kinzel/Desktop/build/static/js/main.f52d57bc.chunk.js.map",
+    "runtime-main.js": "/C:/Users/josh.kinzel/Desktop/build/static/js/runtime-main.022b88c8.js",
+    "runtime-main.js.map": "/C:/Users/josh.kinzel/Desktop/build/static/js/runtime-main.022b88c8.js.map",
+    "static/css/2.f50bf86d.chunk.css": "/C:/Users/josh.kinzel/Desktop/build/static/css/2.f50bf86d.chunk.css",
+    "static/js/2.8ff718be.chunk.js": "/C:/Users/josh.kinzel/Desktop/build/static/js/2.8ff718be.chunk.js",
+    "static/js/2.8ff718be.chunk.js.map": "/C:/Users/josh.kinzel/Desktop/build/static/js/2.8ff718be.chunk.js.map",
+    "index.html": "/C:/Users/josh.kinzel/Desktop/build/index.html",
+    "precache-manifest.e85aaa0e6df16eadfd75498842418835.js": "/C:/Users/josh.kinzel/Desktop/build/precache-manifest.e85aaa0e6df16eadfd75498842418835.js",
+    "service-worker.js": "/C:/Users/josh.kinzel/Desktop/build/service-worker.js",
+    "static/css/2.f50bf86d.chunk.css.map": "/C:/Users/josh.kinzel/Desktop/build/static/css/2.f50bf86d.chunk.css.map",
+    "static/css/main.3523898f.chunk.css.map": "/C:/Users/josh.kinzel/Desktop/build/static/css/main.3523898f.chunk.css.map",
+    "static/media/semantic.min.css": "/C:/Users/josh.kinzel/Desktop/build/static/media/outline-icons.ef60a4f6.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.022b88c8.js",
+    "static/css/2.f50bf86d.chunk.css",
+    "static/js/2.8ff718be.chunk.js",
+    "static/css/main.3523898f.chunk.css",
+    "static/js/main.f52d57bc.chunk.js"
+  ]
+}
