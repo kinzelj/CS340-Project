@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ColumnContent from './ColumnContent.js'
+import MainContent from './MainContent.js'
 import { Grid, Menu, Segment } from 'semantic-ui-react'
 
 
@@ -54,7 +54,7 @@ export default class SideMenu extends Component {
 
         <Grid.Column stretched width={12}>
           <Segment>
-            <ColumnContent content={this.state.activeContent} />
+            <MainContent content={this.state.activeContent} />
           </Segment>
         </Grid.Column>
       </Grid>

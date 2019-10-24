@@ -72,7 +72,7 @@ const optionProps = {
 /*******************************************************************
  Main body component that will contain all data rendered to browser 
 ********************************************************************/
-class ColumnContent extends React.Component {
+class MainContent extends React.Component {
     state = {
         tableNames: [{ key: "Loading..." }],
         headerNames:
@@ -174,4 +174,4 @@ class ColumnContent extends React.Component {
 }
 
 
-export default ColumnContent
+export default MainContent
