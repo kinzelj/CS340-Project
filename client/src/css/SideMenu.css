@@ -1,4 +1,5 @@
 .dataColumn {
     overflow-x: scroll;
     white-space: nowrap;
+    min-height: 230px;
 }
