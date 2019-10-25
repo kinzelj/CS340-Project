@@ -27,6 +27,7 @@ class SelectDropdown extends React.Component {
           selection
           options={this.state.options}
           onChange={this.handleChange}
+          updateTable={this.props.changeDataTable}
         />
       </div>
     );

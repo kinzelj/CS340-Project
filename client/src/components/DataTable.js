@@ -1,4 +1,5 @@
 import React from 'react'
+import '../css/DataTable.css'
 import { Table } from 'semantic-ui-react'
 
 const buildRow = (value, index, header) => (

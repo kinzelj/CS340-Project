@@ -30,3 +30,7 @@
   background: #00356b;
   color: white;
 }
+
+.main-div {
+  min-width: 775px;
+}

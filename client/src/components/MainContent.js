@@ -1,73 +1,6 @@
 import React from 'react'
 import DataTable from './DataTable.js'
-import SelectDropdown from './SelectDropdown.js'
-
-/*******************************************************************
- Dropdown Constants
-********************************************************************/
-const optionProps = {
-    view: {
-        key: "dk-view",
-        dropdown1: [{
-            text: "Animals",
-            value: "Animals"
-        },
-        {
-            text: "Workers",
-            value: "Workers"
-        },
-        {
-            text: "Cages",
-            value: "Cages"
-        },
-        {
-            text: "All Animal Foods",
-            value: "All Animal Foods"
-        },
-        {
-            text: "Animal - Approved Foods",
-            value: "Animal - Approved Foods"
-        },
-        {
-            text: "Worker - Animal Assignments",
-            value: "Worker - Animal Assignments"
-        },
-        {
-            text: "Worker - Cage Assignments",
-            value: "Worker - Cage Assignments"
-        },
-            // {
-            //     text: "",
-            //     value: ""
-            // }
-        ],
-
-    },
-    add: {
-        key: "dk-add",
-        dropdown1: [{
-            text: "add1",
-            value: "add1"
-        },],
-
-    },
-    update: {
-        key: "dk-update",
-        dropdown1: [{
-            text: "update1",
-            value: "update1"
-        },],
-
-    },
-    remove: {
-        key: "dk-remove",
-        dropdown1: [{
-            text: "remove1",
-            value: "remove1"
-        },],
-
-    }
-};
+import ActionForm from './ActionForm.js'
 
 /*******************************************************************
  Main body component that will contain all data rendered to browser 
@@ -105,8 +38,8 @@ class MainContent extends React.Component {
         readTable: ""
     };
 
-    viewData = (props) => {
-        console.log(props);
+    submitForm = (formData) => {
+        console.log(formData);
     }
 
     render() {
@@ -115,13 +48,7 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <label>SELECT OPTION TO VIEW ZOO DATA</label>
-                            <SelectDropdown
-                                key={optionProps.view.key}
-                                options={optionProps.view.dropdown1}
-                                changeDataTable={this.viewData}
-                            />
-
+                            <ActionForm key="viewForm" formType="view" submitForm={this.submitForm}/>
                             <DataTable header={this.state.headerNames} data={this.state.tableData[0]} />
                         </div>
                     );
@@ -130,11 +57,7 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <SelectDropdown
-                                key={optionProps.update.key}
-                                options={optionProps.add.dropdown1}
-                                changeDataTable={(e) => console.log(e)}
-                            />
+                            <ActionForm key="addForm" formType="add" submitForm={this.submitForm}/>
                             <DataTable header={this.state.headerNames} data={this.state.tableData[1]} />
                         </div>
                     );
@@ -143,11 +66,7 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <SelectDropdown
-                                key={optionProps.update.key}
-                                options={optionProps.update.dropdown1}
-                                changeDataTable={(e) => console.log(e)}
-                            />
+                            <ActionForm key="updateForm" formType="update" submitForm={this.submitForm}/>
                             <DataTable header={this.state.headerNames} data={this.state.tableData[2]} />
                         </div>
                     );
@@ -156,11 +75,7 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <SelectDropdown
-                                key={optionProps.remove.key}
-                                options={optionProps.remove.dropdown1}
-                                changeDataTable={(e) => console.log(e)}
-                            />
+                            <ActionForm key="removeForm" formType="remove" submitForm={this.submitForm}/>
                             <DataTable header={this.state.headerNames} data={this.state.tableData[3]} />
                         </div>
                     );

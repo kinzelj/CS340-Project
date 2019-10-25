@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import MainContent from './MainContent.js'
 import { Grid, Menu, Segment } from 'semantic-ui-react'
 
-
-
-
 export default class SideMenu extends Component {
   state = { 
     activeContent: "view_items",
