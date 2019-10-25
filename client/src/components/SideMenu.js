@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MainContent from './MainContent.js'
 import { Grid, Menu, Segment } from 'semantic-ui-react'
+import '../css/SideMenu.css'
 
 export default class SideMenu extends Component {
   state = { 
@@ -49,8 +50,8 @@ export default class SideMenu extends Component {
           </Menu>
         </Grid.Column>
 
-        <Grid.Column stretched width={12}>
-          <Segment>
+        <Grid.Column stretched width={12} >
+          <Segment className="dataColumn">
             <MainContent content={this.state.activeContent} />
           </Segment>
         </Grid.Column>

@@ -1,0 +1,4 @@
+.dataColumn {
+    overflow-x: scroll;
+    white-space: nowrap;
+}

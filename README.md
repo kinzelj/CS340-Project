@@ -1,11 +1,10 @@
 In command terminal:
 1. Navigate to local directory where project files will be located
 2. run: git clone https://github.com/kinzelj/CS340-Project.git
-3. Input git hub username and password
-4. run: cd CS340-Project/
-5. run: npm install
-6. run: cd client/
-7. run: npm install
+3. run: cd CS340-Project/
+4. run: npm install
+5. run: cd client/
+6. run: npm install
 
 To deploy as static site without backend:
 1. Navigate to CS340-Project/client/
