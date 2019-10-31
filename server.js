@@ -1,4 +1,5 @@
 var express = require('express');
+var mysql = require('./dbcon.js');
 var bodyParser = require('body-parser');
 var path = require('path');
 
@@ -9,9 +10,33 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 
 const port = process.env.PORT || 5000;
 
-app.get('/test_server', function (req, res, next) {
-    console.log("server request received");
-    res.send("server connected");
+app.post('/view', function (req, res, next) {
+    var query = null;
+    switch (req.body.viewSelect) {
+        case ('approvedFoods'):
+            {
+                break;
+            }
+        case ('workerAnimal'):
+            {
+                break;
+            }
+        case ('workerCage'):
+            {
+                break;
+            }
+        default:
+            {
+                query = "SELECT * FROM " + req.body.viewSelect;
+            }
+    }
+    if (query) {
+        var context = {};
+        mysql.pool.query(query, function (err, rows, fields) {
+            context.results = JSON.stringify(rows);
+            res.send(context.results);
+        })
+    };
 });
 
 app.get('*', (req, res) => {

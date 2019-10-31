@@ -6,16 +6,22 @@ import '../css/SideMenu.css'
 export default class SideMenu extends Component {
   state = { 
     activeContent: "view_items",
-    activeItem: 'View Zoo Items'
+    activeItem: 'View Zoo Items',
+    clicked: false
   }
 
   handleItemClick = (setContent, name) => {
     this.setState({ 
       activeContent: setContent,
-      activeItem: name 
+      activeItem: name,
+      clicked: true
     })
   }
-  
+
+  resetClicked = () => {
+    this.setState({clicked: false});
+  }
+
   render() {
     const { activeItem } = this.state
 
@@ -52,7 +58,7 @@ export default class SideMenu extends Component {
 
         <Grid.Column stretched width={12} >
           <Segment className="dataColumn">
-            <MainContent content={this.state.activeContent} />
+            <MainContent content={this.state.activeContent} clicked={this.state.clicked} reset={this.resetClicked} />
           </Segment>
         </Grid.Column>
       </Grid>

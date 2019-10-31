@@ -11,31 +11,31 @@ const options = {
         key: "dk-view",
         dropdown1: [{
             text: "Animals",
-            value: "Animals"
+            value: "animal"
         },
         {
             text: "Workers",
-            value: "Workers"
+            value: "worker"
         },
         {
             text: "Cages",
-            value: "Cages"
+            value: "cage"
         },
         {
             text: "All Animal Foods",
-            value: "All Animal Foods"
+            value: "food"
         },
         {
             text: "Animal - Approved Foods",
-            value: "Animal - Approved Foods"
+            value: "approvedFoods"
         },
         {
             text: "Worker - Animal Assignments",
-            value: "Worker - Animal Assignments"
+            value: "workerAnimal"
         },
         {
             text: "Worker - Cage Assignments",
-            value: "Worker - Cage Assignments"
+            value: "workerCage"
         },
             // {
             //     text: "",
@@ -163,12 +163,12 @@ class ActionForm extends Component {
     }
 
     handleChange = (e, { name, value }) => {
-        console.log(name, value);
+        // console.log(name, value);
         this.setState({ [name]: value })
     }
 
     handleSubmit = () => {
-        this.props.submitForm(this.state);
+        this.props.api(this.state);
     }
 
     render() {
@@ -213,7 +213,7 @@ class ActionForm extends Component {
         switch (this.state.formType) {
             case ("view"):
                 {
-                    console.log(viewSelect);
+                    // console.log(viewSelect);
                     return (
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group>
