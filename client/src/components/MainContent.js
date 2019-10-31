@@ -9,11 +9,9 @@ import * as ServerCall from '../scripts/ServerCall.js'
 class MainContent extends React.Component {
     state = {
         //table headerNames is an array of strings
-        headerNames:
-            ["SELECT OPTION TO SHOW ZOO DATA"],
+        headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
         //table tableData is an array of objects with keys that match headerNames
-        tableData:
-            [],
+        tableData: [],
     };
 
     submitForm = (formData) => {
@@ -28,14 +26,41 @@ class MainContent extends React.Component {
     }
 
     handleServerCall = (props) => {
-        switch (props.formType) {
-            case ('view'):
+        switch (props.callType) {
+            case ('viewSelect'):
                 {
-                    ServerCall.viewData(props)
-                        .then(res => {
-                            this.updateTable(res);
-                        })
-                        .catch(err => console.log(err));
+                    ServerCall.viewData({ query: props.viewSelect })
+                    .then(res => {
+                        this.updateTable(res);
+                    })
+                    .catch(err => console.log(err));
+                    break;
+                }
+            case ('addSelect'):
+                {
+                    ServerCall.viewData({ query: props.addSelect })
+                    .then(res => {
+                        this.updateTable(res);
+                    })
+                    .catch(err => console.log(err));
+                    break;
+                }
+            case ('updateSelect'):
+                {
+                    ServerCall.viewData({ query: props.updateSelect })
+                    .then(res => {
+                        this.updateTable(res);
+                    })
+                    .catch(err => console.log(err));
+                    break;
+                }
+            case ('removeSelect'):
+                {
+                    ServerCall.viewData({ query: props.removeSelect })
+                    .then(res => {
+                        this.updateTable(res);
+                    })
+                    .catch(err => console.log(err));
                     break;
                 }
             default:
@@ -69,7 +94,7 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <ActionForm key="addForm" formType="add" submitForm={this.submitForm} />
+                            <ActionForm api={this.handleServerCall} key="addForm" formType="add" submitForm={this.submitForm} />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
@@ -78,7 +103,7 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <ActionForm key="updateForm" formType="update" submitForm={this.submitForm} />
+                            <ActionForm api={this.handleServerCall} key="updateForm" formType="update" submitForm={this.submitForm} />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
@@ -87,7 +112,7 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <ActionForm key="removeForm" formType="remove" submitForm={this.submitForm} />
+                            <ActionForm api={this.handleServerCall} key="removeForm" formType="remove" submitForm={this.submitForm} />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );

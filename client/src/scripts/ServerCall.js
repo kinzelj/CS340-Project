@@ -8,11 +8,7 @@ export const viewData = async (props) => {
     }
     const response = await axios(options);
     const responseData = await response.data;
-
-    if (response && response.status === 200 && response.statusText === 'OK') {
-        return responseData;
-    }
-    else Error(responseData.message);
+    return responseData;
 }
 
 // export const newPostRequest = async (props) => {
@@ -23,9 +19,5 @@ export const viewData = async (props) => {
 //     }
 //     const response = await axios(options);
 //     const responseData = await response.data;
-
-//     if (response && response.status === 200 && response.statusText === 'OK') {
-//         return responseData;
-//     }
-//     else Error(responseData.message);
+//     return responseData;
 // }

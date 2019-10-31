@@ -25,19 +25,21 @@ INSERT INTO `worker`(`first_name`, `last_name`, `position`) VALUES
 
 CREATE TABLE `cage` (
     `cage_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+    `cage_name` VARCHAR(255) NOT NULL,
+    `cage_size` int(11) NOT NULL,
     `worker_id` smallint(5) unsigned NOT NULL,
     PRIMARY KEY (`cage_id`),
     CONSTRAINT `fk_cage_worker` FOREIGN KEY (`worker_id`) REFERENCES `worker`(`worker_id`) ON UPDATE CASCADE 
 );
 
-INSERT INTO `cage`(`worker_id`) VALUES
-(3),
-(3),
-(4),
-(3),
-(4),
-(6),
-(4);
+INSERT INTO `cage`(`cage_name`, `cage_size`, `worker_id`) VALUES
+('MASSIVE1',1500,3),
+('AQUA1',600,3),
+('MONKEY CAGE',800,4),
+('SAVANNA',1000,3),
+('AQUA2',800,4),
+('MASSIVE2',2000,6),
+('LION\'S DEN', 700, 4);
 
 CREATE TABLE `animal` (
     `animal_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,

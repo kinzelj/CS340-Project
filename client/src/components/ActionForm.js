@@ -10,33 +10,33 @@ const options = {
     view: {
         key: "dk-view",
         dropdown1: [{
-            text: "Animals",
-            value: "animal"
-        },
-        {
-            text: "Workers",
-            value: "worker"
-        },
-        {
-            text: "Cages",
-            value: "cage"
-        },
-        {
-            text: "All Animal Foods",
-            value: "food"
-        },
-        {
-            text: "Animal - Approved Foods",
-            value: "approvedFoods"
-        },
-        {
-            text: "Worker - Animal Assignments",
-            value: "workerAnimal"
-        },
-        {
-            text: "Worker - Cage Assignments",
-            value: "workerCage"
-        },
+                text: "Animals",
+                value: "animal"
+            },
+            {
+                text: "Workers",
+                value: "worker"
+            },
+            {
+                text: "Cages",
+                value: "cage"
+            },
+            {
+                text: "All Animal Foods",
+                value: "food"
+            },
+            {
+                text: "Animal - Approved Foods",
+                value: "approvedFoods"
+            },
+            {
+                text: "Worker - Animal Assignments",
+                value: "workerAnimal"
+            },
+            {
+                text: "Worker - Cage Assignments",
+                value: "workerCage"
+            },
             // {
             //     text: "",
             //     value: ""
@@ -47,45 +47,43 @@ const options = {
     add: {
         key: "dk-add",
         dropdown1: [{
-            text: "Add Animal",
-            value: "Add Animal"
-        },
-        {
-            text: "Add Worker",
-            value: "Add Worker"
-        },
-        {
-            text: "Add Food",
-            value: "Add Food"
-        },
-        {
-            text: "Add Cage",
-            value: "Add Cage"
-        },
+                text: "Add Animal",
+                value: "animal"
+            },
+            {
+                text: "Add Worker",
+                value: "worker"
+            },
+            {
+                text: "Add Food",
+                value: "food"
+            },
+            {
+                text: "Add Cage",
+                value: "cage"
+            },
         ],
     },
     update: {
         key: "dk-update",
-        dropdown1: [
-            {
+        dropdown1: [{
                 text: "Update Animal",
-                value: "Update Animal"
+                value: "animal"
             },
             {
                 text: "Update Worker",
-                value: "Update Worker"
+                value: "worker"
             },
             {
                 text: "Update Food",
-                value: "Update Food"
+                value: "food"
             },
             {
                 text: "Update Cage",
-                value: "Update Cage"
+                value: "cage"
             },
         ],
-        dropdown2: [
-            {
+        dropdown2: [{
                 text: "updateOption1",
                 value: "updateOption1"
             },
@@ -98,26 +96,24 @@ const options = {
     },
     remove: {
         key: "dk-remove",
-        dropdown1: [
-            {
+        dropdown1: [{
                 text: "Remove Animal",
-                value: "Remove Animal"
+                value: "animal"
             },
             {
                 text: "Remove Worker",
-                value: "Remove Worker"
+                value: "worker"
             },
             {
                 text: "Remove Food",
-                value: "Remove Food"
+                value: "food"
             },
             {
                 text: "Remove Cage",
-                value: "Remove Cage"
+                value: "cage"
             },
         ],
-        dropdown2: [
-            {
+        dropdown2: [{
                 text: "removeOption1",
                 value: "removeOption1"
             },
@@ -134,6 +130,8 @@ class ActionForm extends Component {
     state = {
         //formType value will determine which form is used in callback
         formType: "",
+        
+        callType: "",
 
         //options for View form:
         viewSelect: "",
@@ -162,9 +160,13 @@ class ActionForm extends Component {
         this.setState({ formType: this.props.formType })
     }
 
-    handleChange = (e, { name, value }) => {
-        // console.log(name, value);
-        this.setState({ [name]: value })
+    handleChange = (e, {name ,value, callType}) => {
+        this.setState({ [name]: value, callType: callType }, () => {
+            if (callType === "addSelect" || callType === "updateSelect" || callType === "removeSelect") {
+                this.props.api(this.state);
+            }
+        });
+
     }
 
     handleSubmit = () => {
@@ -176,7 +178,8 @@ class ActionForm extends Component {
         //controlled inputs
         const {
             viewSelect,
-
+            callType,
+            
             addSelect,
             // addAnimalWorder
             // addAnimalCage
@@ -222,6 +225,7 @@ class ActionForm extends Component {
                                     placeholder="Select View Option"
                                     name='viewSelect'
                                     value={viewSelect}
+                                    callType='viewSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Button content='Submit' />
@@ -239,24 +243,28 @@ class ActionForm extends Component {
                                     placeholder="Select Add Option"
                                     name='addSelect'
                                     value={addSelect}
+                                    callType='addSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input
                                     placeholder="Add Input 1"
                                     name='addValue1'
                                     value={addValue1}
+                                    callType='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input
                                     placeholder="Add Input 2"
                                     name='addValue2'
                                     value={addValue2}
+                                    callType='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input
                                     placeholder="Add Input 3"
                                     name='addValue3'
                                     value={addValue3}
+                                    callType='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Button content='Submit' />
@@ -274,6 +282,7 @@ class ActionForm extends Component {
                                     placeholder="Select Update Option"
                                     name='updateSelect'
                                     value={updateSelect}
+                                    callType='updateSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Select
@@ -281,12 +290,14 @@ class ActionForm extends Component {
                                     placeholder="Select Update Item"
                                     name='updateOption'
                                     value={updateOption}
+                                    callType='updateOptionSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input
                                     placeholder="New Value"
                                     name='updateValue'
                                     value={updateValue}
+                                    callType='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Button content='Submit' />
@@ -304,6 +315,7 @@ class ActionForm extends Component {
                                     placeholder="Select Remove Option"
                                     name='removeSelect'
                                     value={removeSelect}
+                                    callType='removeSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Select
@@ -311,6 +323,7 @@ class ActionForm extends Component {
                                     placeholder="Select Item to Remove"
                                     name='removeOption'
                                     value={removeOption}
+                                    callType='removeOption'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Button content='Submit' />
@@ -318,10 +331,11 @@ class ActionForm extends Component {
                         </Form>
                     );
                 }
-            default: return (<div>Loading...</div>);
+            default:
+                return (<div>Loading...</div>);
         }
     }
 }
 
 
-export default ActionForm 
+export default ActionForm
