@@ -10,7 +10,7 @@ CREATE TABLE `worker` (
     `worker_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
     `first_name` VARCHAR(255) NOT NULL,
     `last_name` VARCHAR(255) NOT NULL,
-    `position` VARCHAR(255) NOT NULL,
+    `position` VARCHAR(255),
     PRIMARY KEY (`worker_id`)
 );
 
@@ -25,8 +25,8 @@ INSERT INTO `worker`(`first_name`, `last_name`, `position`) VALUES
 
 CREATE TABLE `cage` (
     `cage_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-    `cage_name` VARCHAR(255) NOT NULL,
-    `cage_size` int(11) NOT NULL,
+    `cage_name` VARCHAR(255),
+    `cage_size` int(11),
     `worker_id` smallint(5) unsigned NOT NULL,
     PRIMARY KEY (`cage_id`),
     CONSTRAINT `fk_cage_worker` FOREIGN KEY (`worker_id`) REFERENCES `worker`(`worker_id`) ON UPDATE CASCADE 
@@ -40,6 +40,9 @@ INSERT INTO `cage`(`cage_name`, `cage_size`, `worker_id`) VALUES
 ('AQUA2',800,4),
 ('MASSIVE2',2000,6),
 ('LION\'S DEN', 700, 4);
+
+INSERT INTO `cage`(`cage_name`, `worker_id`) VALUES
+('FUTURE EXPANSION', 4);
 
 CREATE TABLE `animal` (
     `animal_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
@@ -92,9 +95,11 @@ INSERT INTO `food_animal`(`food_id`, `animal_id`) VALUES
 (5,6),
 (5,7),
 (4,8),
+(5,8),
 (3,9),
 (3,10),
-(2,11);
+(2,11),
+(4,11);
 
 CREATE TABLE `worker_animal` (
     `worker_id` smallint(5) unsigned NOT NULL,
@@ -110,8 +115,10 @@ INSERT INTO `worker_animal`(`worker_id`, `animal_id`) VALUES
 (3,3),
 (4,4),
 (5,5),
+(4,5),
 (5,6),
 (5,7),
+(5,8),
 (3,8),
 (4,9),
 (3,10),

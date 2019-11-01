@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
-// import { Button, Form, Input, Select } from 'semantic-ui-react'
-// import SelectDropdown from './SelectDropdown';
 
 /*******************************************************************
  Dropdown Constants
@@ -131,7 +129,7 @@ class ActionForm extends Component {
         //formType value will determine which form is used in callback
         formType: "",
         
-        callType: "",
+        calltype: "",
 
         //options for View form:
         viewSelect: "",
@@ -160,9 +158,9 @@ class ActionForm extends Component {
         this.setState({ formType: this.props.formType })
     }
 
-    handleChange = (e, {name ,value, callType}) => {
-        this.setState({ [name]: value, callType: callType }, () => {
-            if (callType === "addSelect" || callType === "updateSelect" || callType === "removeSelect") {
+    handleChange = (e, {name ,value, calltype}) => {
+        this.setState({ [name]: value, calltype: calltype }, () => {
+            if (calltype === "viewSelect" || calltype === "addSelect" || calltype === "updateSelect" || calltype === "removeSelect") {
                 this.props.api(this.state);
             }
         });
@@ -170,7 +168,7 @@ class ActionForm extends Component {
     }
 
     handleSubmit = () => {
-        this.props.api(this.state);
+        // this.props.api(this.state);
     }
 
     render() {
@@ -178,8 +176,7 @@ class ActionForm extends Component {
         //controlled inputs
         const {
             viewSelect,
-            callType,
-            
+
             addSelect,
             // addAnimalWorder
             // addAnimalCage
@@ -225,10 +222,9 @@ class ActionForm extends Component {
                                     placeholder="Select View Option"
                                     name='viewSelect'
                                     value={viewSelect}
-                                    callType='viewSelect'
+                                    calltype='viewSelect'
                                     onChange={this.handleChange}
                                 />
-                                <Form.Button content='Submit' />
                             </Form.Group>
                         </Form>
                     );
@@ -243,28 +239,28 @@ class ActionForm extends Component {
                                     placeholder="Select Add Option"
                                     name='addSelect'
                                     value={addSelect}
-                                    callType='addSelect'
+                                    calltype='addSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input
                                     placeholder="Add Input 1"
                                     name='addValue1'
                                     value={addValue1}
-                                    callType='inputUpdate'
+                                    calltype='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input
                                     placeholder="Add Input 2"
                                     name='addValue2'
                                     value={addValue2}
-                                    callType='inputUpdate'
+                                    calltype='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input
                                     placeholder="Add Input 3"
                                     name='addValue3'
                                     value={addValue3}
-                                    callType='inputUpdate'
+                                    calltype='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Button content='Submit' />
@@ -282,7 +278,7 @@ class ActionForm extends Component {
                                     placeholder="Select Update Option"
                                     name='updateSelect'
                                     value={updateSelect}
-                                    callType='updateSelect'
+                                    calltype='updateSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Select
@@ -290,14 +286,14 @@ class ActionForm extends Component {
                                     placeholder="Select Update Item"
                                     name='updateOption'
                                     value={updateOption}
-                                    callType='updateOptionSelect'
+                                    calltype='updateOptionSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input
                                     placeholder="New Value"
                                     name='updateValue'
                                     value={updateValue}
-                                    callType='inputUpdate'
+                                    calltype='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Button content='Submit' />
@@ -315,7 +311,7 @@ class ActionForm extends Component {
                                     placeholder="Select Remove Option"
                                     name='removeSelect'
                                     value={removeSelect}
-                                    callType='removeSelect'
+                                    calltype='removeSelect'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Select
@@ -323,7 +319,7 @@ class ActionForm extends Component {
                                     placeholder="Select Item to Remove"
                                     name='removeOption'
                                     value={removeOption}
-                                    callType='removeOption'
+                                    calltype='removeOption'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Button content='Submit' />

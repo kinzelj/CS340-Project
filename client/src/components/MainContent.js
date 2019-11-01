@@ -26,7 +26,7 @@ class MainContent extends React.Component {
     }
 
     handleServerCall = (props) => {
-        switch (props.callType) {
+        switch (props.calltype) {
             case ('viewSelect'):
                 {
                     ServerCall.viewData({ query: props.viewSelect })
