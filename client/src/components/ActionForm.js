@@ -214,7 +214,6 @@ class ActionForm extends Component {
         switch (this.state.formType) {
             case ("view"):
                 {
-                    console.log("hereActionForm");
                     return (
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group>
