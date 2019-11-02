@@ -53,6 +53,12 @@ export default class SideMenu extends Component {
               name="Remove Zoo Item"
               onClick={() => this.handleItemClick("remove_item", "Remove Zoo Item")}
             />
+            <Menu.Item
+              key="menu-search"
+              active={activeItem === 'Search Zoo Item'}
+              name="Search Zoo Item"
+              onClick={() => this.handleItemClick("search_item", "Search Zoo Item")}
+            />
           </Menu>
         </Grid.Column>
 

@@ -40,7 +40,6 @@ const options = {
             //     value: ""
             // }
         ],
-
     },
     add: {
         key: "dk-add",
@@ -160,7 +159,7 @@ class ActionForm extends Component {
 
     handleChange = (e, {name ,value, calltype}) => {
         this.setState({ [name]: value, calltype: calltype }, () => {
-            if (calltype === "viewSelect" || calltype === "addSelect" || calltype === "updateSelect" || calltype === "removeSelect") {
+            if (calltype === "viewSelect" || calltype === "addSelect" || calltype === "updateSelect" || calltype === "removeSelect" || calltype === "searchSelect") {
                 this.props.api(this.state);
             }
         });
@@ -208,12 +207,14 @@ class ActionForm extends Component {
             //removeFood
             //removeCage
             //removeWorker
+            searchSelect,
+            searchOption,
         } = this.state
 
         switch (this.state.formType) {
             case ("view"):
                 {
-                    // console.log(viewSelect);
+                    console.log("hereActionForm");
                     return (
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group>
@@ -226,6 +227,7 @@ class ActionForm extends Component {
                                     onChange={this.handleChange}
                                 />
                             </Form.Group>
+                            
                         </Form>
                     );
                 }
@@ -314,12 +316,36 @@ class ActionForm extends Component {
                                     calltype='removeSelect'
                                     onChange={this.handleChange}
                                 />
+                                 <Form.Input
+                                    placeholder="New Value"
+                                    name='updateValue'
+                                    value={updateValue}
+                                    calltype='inputUpdate'
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Button content='Submit' />
+                            </Form.Group>
+                        </Form>
+                    );
+                }
+            case ("search"):
+                {
+                    return (
+                        <Form onSubmit={this.handleSubmit}>
+                            <Form.Group>
                                 <Form.Select
-                                    options={options.remove.dropdown2}
-                                    placeholder="Select Item to Remove"
-                                    name='removeOption'
-                                    value={removeOption}
-                                    calltype='removeOption'
+                                    options={options.view.dropdown1}
+                                    placeholder="Select Search Option"
+                                    name='searchSelect'
+                                    value={searchSelect}
+                                    calltype='searchSelect'
+                                    // onChange={this.handleChange}
+                                />
+                                  <Form.Input
+                                    placeholder="Search Value"
+                                    name='updateValue'
+                                    value={updateValue}
+                                    calltype='inputUpdate'
                                     onChange={this.handleChange}
                                 />
                                 <Form.Button content='Submit' />
