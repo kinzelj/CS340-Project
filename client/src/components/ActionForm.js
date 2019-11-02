@@ -151,6 +151,8 @@ class ActionForm extends Component {
         updateOption: "",
         updateValue: "",
 
+        searchValue: ""
+
     }
 
     componentDidMount() {
@@ -166,8 +168,16 @@ class ActionForm extends Component {
 
     }
 
-    handleSubmit = () => {
-        // this.props.api(this.state);
+    handleSubmit = (e, {calltype}) => {
+        this.setState({ calltype: calltype }, () => {
+            this.props.api(this.state);
+        })
+    }
+
+    handleSearchInput = (e, {name, value}) => {
+        this.setState({ 
+            [name]: value.toUpperCase()
+        })
     }
 
     render() {
@@ -202,13 +212,13 @@ class ActionForm extends Component {
             updateValue,
 
             removeSelect,
-            removeOption,
+            // removeOption,
             //removeAnimal
             //removeFood
             //removeCage
             //removeWorker
             searchSelect,
-            searchOption,
+            searchValue,
         } = this.state
 
         switch (this.state.formType) {
@@ -330,7 +340,7 @@ class ActionForm extends Component {
             case ("search"):
                 {
                     return (
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleSubmit} calltype="searchSubmit">
                             <Form.Group>
                                 <Form.Select
                                     options={options.view.dropdown1}
@@ -338,14 +348,13 @@ class ActionForm extends Component {
                                     name='searchSelect'
                                     value={searchSelect}
                                     calltype='searchSelect'
-                                    // onChange={this.handleChange}
+                                    onChange={this.handleChange}
                                 />
                                   <Form.Input
                                     placeholder="Search Value"
-                                    name='updateValue'
-                                    value={updateValue}
-                                    calltype='inputUpdate'
-                                    onChange={this.handleChange}
+                                    name='searchValue'
+                                    value={searchValue}
+                                    onChange={this.handleSearchInput}
                                 />
                                 <Form.Button content='Submit' />
                             </Form.Group>

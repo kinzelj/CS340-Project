@@ -72,6 +72,15 @@ class MainContent extends React.Component {
                     .catch(err => console.log(err));
                     break;
                 }
+            case ('searchSubmit'):
+                {
+                    ServerCall.searchData(props)
+                    .then(res => {
+                        // this.updateTable(res);
+                    })
+                    .catch(err => console.log(err));
+                    break;
+                }
             default:
                 return;
         }

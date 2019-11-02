@@ -11,6 +11,10 @@ export const viewData = async (props) => {
     return responseData;
 }
 
+export const searchData = async (props) => {
+    console.log(props);
+}
+
 // export const newPostRequest = async (props) => {
 //     const options = {
 //         method: 'POST',
