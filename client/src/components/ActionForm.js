@@ -59,6 +59,14 @@ const options = {
                 text: "Add Cage",
                 value: "cage"
             },
+            {
+                text: "Animal - Approved Foods",
+                value: "approvedFoods"
+            },
+            {
+                text: "Worker - Animal Assignments",
+                value: "workerAnimal"
+            },
         ],
     },
     update: {
@@ -78,6 +86,14 @@ const options = {
             {
                 text: "Update Cage",
                 value: "cage"
+            },
+            {
+                text: "Animal - Approved Foods",
+                value: "approvedFoods"
+            },
+            {
+                text: "Worker - Animal Assignments",
+                value: "workerAnimal"
             },
         ],
         dropdown2: [{
@@ -108,6 +124,14 @@ const options = {
             {
                 text: "Remove Cage",
                 value: "cage"
+            },
+            {
+                text: "Animal - Approved Foods",
+                value: "approvedFoods"
+            },
+            {
+                text: "Worker - Animal Assignments",
+                value: "workerAnimal"
             },
         ],
         dropdown2: [{
