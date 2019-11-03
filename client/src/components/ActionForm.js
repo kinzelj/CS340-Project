@@ -40,7 +40,6 @@ const options = {
             //     value: ""
             // }
         ],
-
     },
     add: {
         key: "dk-add",
@@ -152,6 +151,8 @@ class ActionForm extends Component {
         updateOption: "",
         updateValue: "",
 
+        searchValue: ""
+
     }
 
     componentDidMount() {
@@ -160,15 +161,23 @@ class ActionForm extends Component {
 
     handleChange = (e, {name ,value, calltype}) => {
         this.setState({ [name]: value, calltype: calltype }, () => {
-            if (calltype === "viewSelect" || calltype === "addSelect" || calltype === "updateSelect" || calltype === "removeSelect") {
+            if (calltype === "viewSelect" || calltype === "addSelect" || calltype === "updateSelect" || calltype === "removeSelect" || calltype === "searchSelect") {
                 this.props.api(this.state);
             }
         });
 
     }
 
-    handleSubmit = () => {
-        // this.props.api(this.state);
+    handleSubmit = (e, {calltype}) => {
+        this.setState({ calltype: calltype }, () => {
+            this.props.api(this.state);
+        })
+    }
+
+    handleSearchInput = (e, {name, value}) => {
+        this.setState({ 
+            [name]: value.toUpperCase()
+        })
     }
 
     render() {
@@ -203,17 +212,18 @@ class ActionForm extends Component {
             updateValue,
 
             removeSelect,
-            removeOption,
+            // removeOption,
             //removeAnimal
             //removeFood
             //removeCage
             //removeWorker
+            searchSelect,
+            searchValue,
         } = this.state
 
         switch (this.state.formType) {
             case ("view"):
                 {
-                    // console.log(viewSelect);
                     return (
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group>
@@ -226,6 +236,7 @@ class ActionForm extends Component {
                                     onChange={this.handleChange}
                                 />
                             </Form.Group>
+                            
                         </Form>
                     );
                 }
@@ -314,13 +325,36 @@ class ActionForm extends Component {
                                     calltype='removeSelect'
                                     onChange={this.handleChange}
                                 />
-                                <Form.Select
-                                    options={options.remove.dropdown2}
-                                    placeholder="Select Item to Remove"
-                                    name='removeOption'
-                                    value={removeOption}
-                                    calltype='removeOption'
+                                 <Form.Input
+                                    placeholder="New Value"
+                                    name='updateValue'
+                                    value={updateValue}
+                                    calltype='inputUpdate'
                                     onChange={this.handleChange}
+                                />
+                                <Form.Button content='Submit' />
+                            </Form.Group>
+                        </Form>
+                    );
+                }
+            case ("search"):
+                {
+                    return (
+                        <Form onSubmit={this.handleSubmit} calltype="searchSubmit">
+                            <Form.Group>
+                                <Form.Select
+                                    options={options.view.dropdown1}
+                                    placeholder="Select Search Option"
+                                    name='searchSelect'
+                                    value={searchSelect}
+                                    calltype='searchSelect'
+                                    onChange={this.handleChange}
+                                />
+                                  <Form.Input
+                                    placeholder="Search Value"
+                                    name='searchValue'
+                                    value={searchValue}
+                                    onChange={this.handleSearchInput}
                                 />
                                 <Form.Button content='Submit' />
                             </Form.Group>

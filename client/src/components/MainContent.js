@@ -63,6 +63,24 @@ class MainContent extends React.Component {
                     .catch(err => console.log(err));
                     break;
                 }
+            case ('searchSelect'):
+                {
+                    ServerCall.viewData({ query: props.searchSelect })
+                    .then(res => {
+                        this.updateTable(res);
+                    })
+                    .catch(err => console.log(err));
+                    break;
+                }
+            case ('searchSubmit'):
+                {
+                    ServerCall.searchData(props)
+                    .then(res => {
+                        // this.updateTable(res);
+                    })
+                    .catch(err => console.log(err));
+                    break;
+                }
             default:
                 return;
         }
@@ -113,6 +131,15 @@ class MainContent extends React.Component {
                     return (
                         <div>
                             <ActionForm api={this.handleServerCall} key="removeForm" formType="remove" submitForm={this.submitForm} />
+                            <DataTable header={this.state.headerNames} data={this.state.tableData} />
+                        </div>
+                    );
+                }
+            case ("search_item"):
+                {
+                    return (
+                        <div>
+                            <ActionForm api={this.handleServerCall} key="searchForm" formType="search" submitForm={this.submitForm} />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
