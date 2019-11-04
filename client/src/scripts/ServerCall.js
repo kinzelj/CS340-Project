@@ -42,6 +42,19 @@ export const getWorkersDropdown = async(props) => {
     });
     return responseDropdown;
 }
+export const getAnimalDropdown = async(props) => {
+    const options = {
+        method: 'POST',
+        url: '/view',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    const responseDropdown = responseData.map((value, index) => {
+        return { text: value["ID"], value: value["ID"] };
+    });
+    return responseDropdown;
+}
 
 export const getUpdateIdDropdown = async(props) => {
     const options = {
