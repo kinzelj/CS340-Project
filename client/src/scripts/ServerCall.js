@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const viewData = async (props) => {
+export const viewData = async(props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -11,12 +11,11 @@ export const viewData = async (props) => {
     return responseData;
 }
 
-export const searchData = async (props) => {
+export const searchData = async(props) => {
     console.log(props);
 }
 
-export const getFood = async (props) => {
-    // return ([{text: "food1", value: "food1"}]);
+export const getFoodDropdown = async(props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -29,8 +28,8 @@ export const getFood = async (props) => {
     });
     return responseDropdown;
 }
-export const getWorkers = async (props) => {
-    // return ([{text: "food1", value: "food1"}]);
+
+export const getWorkersDropdown = async(props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -39,20 +38,30 @@ export const getWorkers = async (props) => {
     const response = await axios(options);
     const responseData = await response.data;
     const responseDropdown = responseData.map((value, index) => {
-        return { text: value["ID"], value: value["ID"] };
+        return { text: value["FIRST NAME"] + " " + value["LAST NAME"], value: value["ID"] };
     });
     return responseDropdown;
 }
 
-
-
-// export const newPostRequest = async (props) => {
-//     const options = {
-//         method: 'POST',
-//         url: '',
-//         data: props 
-//     }
-//     const response = await axios(options);
-//     const responseData = await response.data;
-//     return responseData;
-// }
+export const getUpdateIdDropdown = async(props) => {
+    const options = {
+        method: 'POST',
+        url: '/view',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    const responseDropdown = responseData.map((value, index) => {
+        switch (props.query) {
+            case ("approvedFoods"):
+                return { text: value["ENTRY ID"], value: value["ENTRY ID"] };
+            case ("workerAnimal"):
+                return { text: value["ENTRY ID"], value: value["ENTRY ID"] };
+            case ("workerCage"):
+                return { text: value["CAGE ID"], value: value["CAGE ID"] };
+            default:
+                return { text: value["ID"], value: value["ID"] };
+        }
+    });
+    return responseDropdown;
+}

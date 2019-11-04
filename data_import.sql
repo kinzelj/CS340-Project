@@ -79,9 +79,10 @@ INSERT INTO `food`(`food_type`) VALUES
 ('SEEDS/NUTS');
 
 CREATE TABLE `food_animal` (
+    `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
     `food_id` smallint(5) unsigned NOT NULL,
     `animal_id` smallint(5) unsigned NOT NULL,
-    PRIMARY KEY (`food_id`, `animal_id`),
+    PRIMARY KEY (`id`),
     CONSTRAINT `fk_food_animal_food` FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`) ON UPDATE CASCADE,
     CONSTRAINT `fk_food_animal_animal` FOREIGN KEY (`animal_id`) REFERENCES `animal`(`animal_id`) ON UPDATE CASCADE 
 );
@@ -102,9 +103,10 @@ INSERT INTO `food_animal`(`food_id`, `animal_id`) VALUES
 (4,11);
 
 CREATE TABLE `worker_animal` (
+    `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
     `worker_id` smallint(5) unsigned NOT NULL,
     `animal_id` smallint(5) unsigned NOT NULL,
-    PRIMARY KEY (`worker_id`, `animal_id`),
+    PRIMARY KEY (`id`),
     CONSTRAINT `fk_worker_animal_worker` FOREIGN KEY (`worker_id`) REFERENCES `worker`(`worker_id`) ON UPDATE CASCADE, 
     CONSTRAINT `fk_worker_animal_animal` FOREIGN KEY (`animal_id`) REFERENCES `animal`(`animal_id`) ON UPDATE CASCADE 
 );

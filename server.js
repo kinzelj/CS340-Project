@@ -17,16 +17,16 @@ const queryText = {
     selectCages: "SELECT cage_id AS 'ID', cage_name AS 'CAGE NAME', cage_size AS 'SQ FT' FROM cage",
     selectFood: "SELECT food_id AS 'ID', food_type AS 'FOOD TYPE' FROM food",
     selectApprovedFoods:
-        "SELECT animal.animal_id AS 'ANIMAL ID', animal.animal_type AS 'ANIMAL TYPE', food.food_type AS 'APPROVED FOOD' FROM animal " +
+        "SELECT food_animal.id AS 'ENTRY ID', animal.animal_id AS 'ANIMAL ID', animal.animal_type AS 'ANIMAL TYPE', food.food_type AS 'APPROVED FOOD' FROM animal " +
         "INNER JOIN food_animal ON animal.animal_id=food_animal.animal_id " +
         "INNER JOIN food ON food_animal.food_id=food.food_id " +
-        "ORDER BY animal.animal_id",
+        "ORDER BY food_animal.id",
     selectWorkerAnimals:
-        "SELECT animal.animal_id AS 'ANIMAL ID', animal.animal_type AS 'ANIMAL TYPE', worker.worker_ID AS 'ASSIGNED WORKER ID', " +
+        "SELECT worker_animal.id AS 'ENTRY ID', animal.animal_id AS 'ANIMAL ID', animal.animal_type AS 'ANIMAL TYPE', worker.worker_ID AS 'ASSIGNED WORKER ID', " +
         "worker.first_name AS 'WORKER FIRST NAME', worker.last_name AS 'WORKER LAST NAME' FROM animal " +
         "INNER JOIN worker_animal ON animal.animal_id=worker_animal.animal_id " +
         "INNER JOIN worker ON worker_animal.worker_id=worker.worker_id " +
-        "ORDER BY animal.animal_id",
+        "ORDER BY worker_animal.id",
     selectWorkerCages:
         "SELECT cage.cage_id AS 'CAGE ID', cage.cage_name AS 'CAGE NAME', " +
         "worker.worker_ID AS 'ASSIGNED WORKER ID', worker.first_name AS 'WORKER FIRST NAME', worker.last_name AS 'WORKER LAST NAME' FROM cage " +
