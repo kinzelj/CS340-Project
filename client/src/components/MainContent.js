@@ -30,55 +30,55 @@ class MainContent extends React.Component {
             case ('viewSelect'):
                 {
                     ServerCall.viewData({ query: props.viewSelect })
-                    .then(res => {
-                        this.updateTable(res);
-                    })
-                    .catch(err => console.log(err));
+                        .then(res => {
+                            this.updateTable(res);
+                        })
+                        .catch(err => console.log(err));
                     break;
                 }
             case ('addSelect'):
                 {
                     ServerCall.viewData({ query: props.addSelect })
-                    .then(res => {
-                        this.updateTable(res);
-                    })
-                    .catch(err => console.log(err));
+                        .then(res => {
+                            this.updateTable(res);
+                        })
+                        .catch(err => console.log(err));
                     break;
                 }
             case ('updateSelect'):
                 {
                     ServerCall.viewData({ query: props.updateSelect })
-                    .then(res => {
-                        this.updateTable(res);
-                    })
-                    .catch(err => console.log(err));
+                        .then(res => {
+                            this.updateTable(res);
+                        })
+                        .catch(err => console.log(err));
                     break;
                 }
             case ('removeSelect'):
                 {
                     ServerCall.viewData({ query: props.removeSelect })
-                    .then(res => {
-                        this.updateTable(res);
-                    })
-                    .catch(err => console.log(err));
+                        .then(res => {
+                            this.updateTable(res);
+                        })
+                        .catch(err => console.log(err));
                     break;
                 }
             case ('searchSelect'):
                 {
                     ServerCall.viewData({ query: props.searchSelect })
-                    .then(res => {
-                        this.updateTable(res);
-                    })
-                    .catch(err => console.log(err));
+                        .then(res => {
+                            this.updateTable(res);
+                        })
+                        .catch(err => console.log(err));
                     break;
                 }
             case ('searchSubmit'):
                 {
                     ServerCall.searchData(props)
-                    .then(res => {
-                        // this.updateTable(res);
-                    })
-                    .catch(err => console.log(err));
+                        .then(res => {
+                            // this.updateTable(res);
+                        })
+                        .catch(err => console.log(err));
                     break;
                 }
             default:
@@ -112,7 +112,13 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <ActionForm api={this.handleServerCall} key="addForm" formType="add" submitForm={this.submitForm} />
+                            <ActionForm
+                                getFood={this.handleServerCall}
+                                api={this.handleServerCall}
+                                key="addForm"
+                                formType="add"
+                                submitForm={this.submitForm}
+                            />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
