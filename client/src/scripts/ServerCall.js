@@ -53,6 +53,7 @@ export const getAnimalDropdown = async(props) => {
     const responseDropdown = responseData.map((value, index) => {
         return { text: value["ID"], value: value["ID"] };
     });
+    responseDropdown.sort(function(a,b) {return a.text-b.text });
     return responseDropdown;
 }
 

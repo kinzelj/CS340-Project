@@ -221,7 +221,6 @@ class ActionForm extends Component {
                         ServerCall.getFoodDropdown({ query: "food" })
                         .then(res => {
                             options.addFood.foodDropdown = res;
-                            console.log(options.addFood.foodDropdown);
                             this.setState(this.state);
                         })
                         .catch(err => console.log(err));
@@ -231,7 +230,6 @@ class ActionForm extends Component {
                     {
                         ServerCall.getWorkersDropdown({ query: "worker" })
                         .then(res => {
-                            console.log(res);
                             options.addWorkers.workerDropdown = res;
                             this.setState(this.state);
                         })
@@ -242,7 +240,6 @@ class ActionForm extends Component {
                     {
                         ServerCall.getWorkersDropdown({ query: "worker" })
                         .then(res => {
-                            console.log(res);
                             options.addWorkers.workerDropdown = res;
                             this.setState(this.state);
                         })
@@ -250,7 +247,6 @@ class ActionForm extends Component {
 
                         ServerCall.getAnimalDropdown({ query: "animal" })
                         .then(res => {
-                            console.log(res);
                             options.addAnimal.animalDropdown = res;
                             this.setState(this.state);
                         })
@@ -262,7 +258,6 @@ class ActionForm extends Component {
                     {
                         ServerCall.getFoodDropdown({ query: "food" })
                         .then(res => {
-                            console.log(res);
                             options.addFood.foodDropdown = res;
                             this.setState(this.state);
                         })
@@ -270,7 +265,6 @@ class ActionForm extends Component {
 
                         ServerCall.getAnimalDropdown({ query: "animal" })
                         .then(res => {
-                            console.log(res);
                             options.addAnimal.animalDropdown = res;
                             this.setState(this.state);
                         })
