@@ -69,21 +69,21 @@ const options = {
 
     addFood: {
         key: "dk-addFood",
-        foodDropdown: [{}],
+        foodDropdown: [{key: ""}],
     },
 
     addWorkers: {
         key: "dk-addWorkers",
-        workerDropdown: [{}],
+        workerDropdown: [{key: ""}],
     },
     addAnimal: {
         key: "dk-addAnimals",
-        animalDropdown: [{}],
+        animalDropdown: [{key: ""}],
     },
 
     updateId: {
         key: "dk-updateId",
-        idDropdown: [{}],
+        idDropdown: [{key: ""}],
     },
 
     update: {
@@ -152,7 +152,7 @@ const options = {
     },
     removeId: {
         key: "dk-updateId",
-        idDropdown: [{}],
+        idDropdown: [{key: ""}],
     },
 };
 
@@ -186,7 +186,6 @@ class ActionForm extends Component {
         //options for Update form:
         updateSelect: "",
         updateId: "",
-        updateValue: "",
 
         removeSelect: "",
         removeId: "",
@@ -221,8 +220,8 @@ class ActionForm extends Component {
                     {
                         ServerCall.getFoodDropdown({ query: "food" })
                         .then(res => {
-                            console.log(res);
                             options.addFood.foodDropdown = res;
+                            console.log(options.addFood.foodDropdown);
                             this.setState(this.state);
                         })
                         .catch(err => console.log(err));
@@ -309,8 +308,8 @@ class ActionForm extends Component {
             this.props.api(this.state)
             ServerCall.getUpdateIdDropdown({ query: this.state.removeSelect })
                 .then(res => {
-                    console.log(res);
                     options.removeId.idDropdown = res;
+                    console.log(options.removeId.idDropdown);
                     this.setState(this.state);
                 })
                 .catch(err => console.log(err));
@@ -352,7 +351,6 @@ class ActionForm extends Component {
 
             updateSelect,
             updateId,
-            updateValue,
 
             removeSelect,
             removeId,
