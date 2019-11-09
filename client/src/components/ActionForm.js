@@ -316,7 +316,55 @@ class ActionForm extends Component {
         })
     }
 
-    handleSubmit = (e, { calltype }) => {
+    handleAddSubmit = (e, { calltype }) => {
+        this.setState({ calltype: calltype }, () => {
+          switch(calltype) {
+              //validate form input, then submit to api callback
+            case ("addAnimal"):
+              {
+                console.log(this.state);
+                break;
+              }
+              case ("addWorker"):
+              {
+                console.log(this.state);
+                break;
+              }
+              case ("addCage"):
+              {
+                console.log(this.state);
+                break;
+              }
+              case ("addFood"):
+              {
+                console.log(this.state);
+                break;
+              }
+              case ("addWorkerAnimal"):
+              {
+                console.log(this.state);
+                break;
+              }
+              case ("addApprovedFood"):
+              {
+                console.log(this.state);
+                break;
+              }
+          }
+            this.props.api(this.state);
+        })
+    }
+    handleUpdateSubmit = (e, { calltype }) => {
+        this.setState({ calltype: calltype }, () => {
+            this.props.api(this.state);
+        })
+    }
+    handleRemoveSubmit = (e, { calltype }) => {
+        this.setState({ calltype: calltype }, () => {
+            this.props.api(this.state);
+        })
+    }
+    handleSearchSubmit = (e, { calltype }) => {
         this.setState({ calltype: calltype }, () => {
             this.props.api(this.state);
         })
@@ -356,7 +404,7 @@ class ActionForm extends Component {
             case ("view"):
                 {
                     return (
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form>
                             <Form.Group>
                                 <Form.Select
                                     options={options.view.dropdown1}
@@ -393,7 +441,7 @@ class ActionForm extends Component {
                         case ("animal"):
                             {
                                 return (
-                                    <Form onSubmit={this.handleSubmit} >
+                                    <Form onSubmit={this.handleAddSubmit} calltype='addAnimal'>
                                         <Form.Group>
                                             <Form.Select
                                                 options={options.add.selectDropdown}
@@ -404,17 +452,19 @@ class ActionForm extends Component {
                                                 onChange={this.handleAddSelectChange}
                                             />
                                             <Form.Input
-                                                placeholder="New Animal Type"
-                                                name='addAnimalType'
-                                                value={addAnimalType}
-                                                calltype='inputUpdate'
-                                                onChange={this.handleTextInput}
-                                            />
+                                                  placeholder="New Animal Type"
+                                                  name='addAnimalType'
+                                                  value={addAnimalType}
+                                                  calltype='inputUpdate'
+                                  								required
+                                                  onChange={this.handleTextInput}
+                                              />
                                             <Form.Input
                                                 placeholder="Cage No."
                                                 name='addAnimalCage'
                                                 value={addAnimalCage}
                                                 calltype='inputUpdate'
+                                  							required
                                                 onChange={this.handleTextInput}
                                             />
                                             <Form.Select
@@ -433,7 +483,7 @@ class ActionForm extends Component {
                         case ("worker"):
                             {
                                 return (
-                                    <Form onSubmit={this.handleSubmit}>
+                                    <Form onSubmit={this.handleAddSubmit} calltype='addWorker'>
                                     <Form.Group>
                                         <Form.Select
                                             options={options.add.selectDropdown}
@@ -473,7 +523,7 @@ class ActionForm extends Component {
                         case ("food"):
                             {
                                 return (
-                                    <Form onSubmit={this.handleSubmit}>
+                                    <Form onSubmit={this.handleAddSubmit} calltype='addFood'>
                                     <Form.Group>
                                         <Form.Select
                                             options={options.add.selectDropdown}
@@ -499,7 +549,7 @@ class ActionForm extends Component {
                         case ("cage"):
                             {
                                 return (
-                                    <Form onSubmit={this.handleSubmit}>
+                                    <Form onSubmit={this.handleAddSubmit} calltype='addCage'>
                                     <Form.Group>
                                         <Form.Select
                                             options={options.add.selectDropdown}
@@ -540,7 +590,7 @@ class ActionForm extends Component {
                         case ("workerAnimal"):
                             {
                                 return (
-                                    <Form onSubmit={this.handleSubmit}>
+                                    <Form onSubmit={this.handleAddSubmit} calltype='addWorkerAnimal'>
                                     <Form.Group>
                                         <Form.Select
                                             options={options.add.selectDropdown}
@@ -575,7 +625,7 @@ class ActionForm extends Component {
                         case ("approvedFoods"):
                             {
                                 return (
-                                    <Form onSubmit={this.handleSubmit}>
+                                    <Form onSubmit={this.handleAddSubmit} calltype='addApprovedFood'>
                                     <Form.Group>
                                         <Form.Select
                                             options={options.add.selectDropdown}
@@ -614,7 +664,7 @@ class ActionForm extends Component {
             case ("update"):
                 {
                     return (
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleUpdateSubmit} calltype='updateItem'>
                             <Form.Group>
                                 <Form.Select
                                     options={options.update.dropdown1}
@@ -640,7 +690,7 @@ class ActionForm extends Component {
             case ("remove"):
                 {
                     return (
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleRemoveSubmit} calltype='removeItem'>
                             <Form.Group>
                                 <Form.Select
                                     options={options.remove.dropdown1}
@@ -666,7 +716,7 @@ class ActionForm extends Component {
             case ("search"):
                 {
                     return (
-                        <Form onSubmit={this.handleSubmit} calltype="searchSubmit">
+                        <Form onSubmit={this.handleSearchSubmit} calltype="searchItem">
                             <Form.Group>
                                 <Form.Select
                                     options={options.view.dropdown1}
