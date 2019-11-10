@@ -12,7 +12,14 @@ export const viewData = async(props) => {
 }
 
 export const searchData = async(props) => {
-    console.log(props);
+    const options = {
+        method: 'POST',
+        url: '/search',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    return responseData;
 }
 
 export const getFoodDropdown = async(props) => {
@@ -76,6 +83,20 @@ export const getUpdateIdDropdown = async(props) => {
             default:
                 return { text: value["ID"], value: value["ID"] };
         }
+    });
+    return responseDropdown;
+}
+
+export const getSearchDropdown = async(props) => {
+    const options = {
+        method: 'POST',
+        url: '/view',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    const responseDropdown = Object.keys(responseData[0]).map((value, index) => {
+        return { text: value, value: value };
     });
     return responseDropdown;
 }

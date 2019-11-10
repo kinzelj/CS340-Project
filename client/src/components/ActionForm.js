@@ -9,151 +9,155 @@ const options = {
     view: {
         key: "dk-view",
         dropdown1: [{
-                text: "Animals",
-                value: "animal"
-            },
-            {
-                text: "Workers",
-                value: "worker"
-            },
-            {
-                text: "Cages",
-                value: "cage"
-            },
-            {
-                text: "All Animal Foods",
-                value: "food"
-            },
-            {
-                text: "Animal - Approved Foods",
-                value: "approvedFoods"
-            },
-            {
-                text: "Worker - Animal Assignments",
-                value: "workerAnimal"
-            },
-            {
-                text: "Worker - Cage Assignments",
-                value: "workerCage"
-            },
+            text: "Animals",
+            value: "animal"
+        },
+        {
+            text: "Workers",
+            value: "worker"
+        },
+        {
+            text: "Cages",
+            value: "cage"
+        },
+        {
+            text: "All Animal Foods",
+            value: "food"
+        },
+        {
+            text: "Animal - Approved Foods",
+            value: "approvedFoods"
+        },
+        {
+            text: "Worker - Animal Assignments",
+            value: "workerAnimal"
+        },
+        {
+            text: "Worker - Cage Assignments",
+            value: "workerCage"
+        },
         ],
     },
     add: {
         key: "dk-add",
         selectDropdown: [{
-                text: "Add Animal",
-                value: "animal"
-            },
-            {
-                text: "Add Worker",
-                value: "worker"
-            },
-            {
-                text: "Add Food",
-                value: "food"
-            },
-            {
-                text: "Add Cage",
-                value: "cage"
-            },
-            {
-                text: "Add Worker Animal Assignment",
-                value: "workerAnimal"
-            },
-            {
-                text: "Add Animal Approved Food",
-                value: "approvedFoods"
-            },
+            text: "Add Animal",
+            value: "animal"
+        },
+        {
+            text: "Add Worker",
+            value: "worker"
+        },
+        {
+            text: "Add Food",
+            value: "food"
+        },
+        {
+            text: "Add Cage",
+            value: "cage"
+        },
+        {
+            text: "Add Worker Animal Assignment",
+            value: "workerAnimal"
+        },
+        {
+            text: "Add Animal Approved Food",
+            value: "approvedFoods"
+        },
         ],
     },
 
     addFood: {
         key: "dk-addFood",
-        foodDropdown: [{key: ""}],
+        foodDropdown: [{ key: "" }],
     },
 
     addWorkers: {
         key: "dk-addWorkers",
-        workerDropdown: [{key: ""}],
+        workerDropdown: [{ key: "" }],
     },
     addAnimal: {
         key: "dk-addAnimals",
-        animalDropdown: [{key: ""}],
+        animalDropdown: [{ key: "" }],
     },
 
     updateId: {
         key: "dk-updateId",
-        idDropdown: [{key: ""}],
+        idDropdown: [{ key: "" }],
     },
 
     update: {
         key: "dk-update",
         dropdown1: [{
-                text: "Update Animal",
-                value: "animal"
-            },
-            {
-                text: "Update Worker",
-                value: "worker"
-            },
-            {
-                text: "Update Food",
-                value: "food"
-            },
-            {
-                text: "Update Cage",
-                value: "cage"
-            },
-            {
-                text: "Animal - Approved Foods",
-                value: "approvedFoods"
-            },
-            {
-                text: "Worker - Animal Assignments",
-                value: "workerAnimal"
-            },
-            {
-                text: "Worker - Cage Assignments",
-                value: "workerCage"
-            },
+            text: "Update Animal",
+            value: "animal"
+        },
+        {
+            text: "Update Worker",
+            value: "worker"
+        },
+        {
+            text: "Update Food",
+            value: "food"
+        },
+        {
+            text: "Update Cage",
+            value: "cage"
+        },
+        {
+            text: "Animal - Approved Foods",
+            value: "approvedFoods"
+        },
+        {
+            text: "Worker - Animal Assignments",
+            value: "workerAnimal"
+        },
+        {
+            text: "Worker - Cage Assignments",
+            value: "workerCage"
+        },
         ],
     },
     remove: {
         key: "dk-remove",
         dropdown1: [{
-                text: "Remove Animal",
-                value: "animal"
-            },
-            {
-                text: "Remove Worker",
-                value: "worker"
-            },
-            {
-                text: "Remove Food",
-                value: "food"
-            },
-            {
-                text: "Remove Cage",
-                value: "cage"
-            },
-            {
-                text: "Animal - Approved Foods",
-                value: "approvedFoods"
-            },
-            {
-                text: "Worker - Animal Assignments",
-                value: "workerAnimal"
-            },
-            {
-                text: "Worker - Cage Assignments",
-                value: "workerCage"
-            },
+            text: "Remove Animal",
+            value: "animal"
+        },
+        {
+            text: "Remove Worker",
+            value: "worker"
+        },
+        {
+            text: "Remove Food",
+            value: "food"
+        },
+        {
+            text: "Remove Cage",
+            value: "cage"
+        },
+        {
+            text: "Animal - Approved Foods",
+            value: "approvedFoods"
+        },
+        {
+            text: "Worker - Animal Assignments",
+            value: "workerAnimal"
+        },
+        {
+            text: "Worker - Cage Assignments",
+            value: "workerCage"
+        },
         ],
     },
     removeId: {
         key: "dk-updateId",
-        idDropdown: [{key: ""}],
+        idDropdown: [{ key: "" }],
     },
+    search: {
+        key: "dk-search",
+        dropdown1: [{ key: "" }],
+    }
 };
 
 class ActionForm extends Component {
@@ -191,7 +195,8 @@ class ActionForm extends Component {
         removeId: "",
 
         searchValue: "",
-
+        searchSelect: "",
+        searchAttributeSelect: ""
     }
 
     componentDidMount() {
@@ -219,62 +224,77 @@ class ActionForm extends Component {
                 case ("animal"):
                     {
                         ServerCall.getFoodDropdown({ query: "food" })
-                        .then(res => {
-                            options.addFood.foodDropdown = res;
-                            this.setState(this.state);
-                        })
-                        .catch(err => console.log(err));
+                            .then(res => {
+                                options.addFood.foodDropdown = res;
+                                this.setState(this.state);
+                            })
+                            .catch(err => console.log(err));
                         break;
                     }
                 case ("cage"):
                     {
                         ServerCall.getWorkersDropdown({ query: "worker" })
-                        .then(res => {
-                            options.addWorkers.workerDropdown = res;
-                            this.setState(this.state);
-                        })
-                        .catch(err => console.log(err));
+                            .then(res => {
+                                options.addWorkers.workerDropdown = res;
+                                this.setState(this.state);
+                            })
+                            .catch(err => console.log(err));
                         break;
                     }
                 case ("workerAnimal"):
                     {
                         ServerCall.getWorkersDropdown({ query: "worker" })
-                        .then(res => {
-                            options.addWorkers.workerDropdown = res;
-                            this.setState(this.state);
-                        })
-                        .catch(err => console.log(err));
+                            .then(res => {
+                                options.addWorkers.workerDropdown = res;
+                                this.setState(this.state);
+                            })
+                            .catch(err => console.log(err));
 
                         ServerCall.getAnimalDropdown({ query: "animal" })
-                        .then(res => {
-                            options.addAnimal.animalDropdown = res;
-                            this.setState(this.state);
-                        })
-                        .catch(err => console.log(err));
+                            .then(res => {
+                                options.addAnimal.animalDropdown = res;
+                                this.setState(this.state);
+                            })
+                            .catch(err => console.log(err));
 
                         break;
                     }
                 case ("approvedFoods"):
                     {
                         ServerCall.getFoodDropdown({ query: "food" })
-                        .then(res => {
-                            options.addFood.foodDropdown = res;
-                            this.setState(this.state);
-                        })
-                        .catch(err => console.log(err));
+                            .then(res => {
+                                options.addFood.foodDropdown = res;
+                                this.setState(this.state);
+                            })
+                            .catch(err => console.log(err));
 
                         ServerCall.getAnimalDropdown({ query: "animal" })
-                        .then(res => {
-                            options.addAnimal.animalDropdown = res;
-                            this.setState(this.state);
-                        })
-                        .catch(err => console.log(err));
+                            .then(res => {
+                                options.addAnimal.animalDropdown = res;
+                                this.setState(this.state);
+                            })
+                            .catch(err => console.log(err));
                         break;
                     }
                 default:
                     return;
             }
 
+        });
+    }
+
+    handleSearchSelectChange = (e, { name, value, calltype }) => {
+        this.setState({
+            [name]: value,
+            calltype: calltype
+        }, () => {
+            this.props.api(this.state)
+            ServerCall.getSearchDropdown({ query: this.state.searchSelect })
+                .then(res => {
+                    options.search.dropdown1 = res;
+                    this.setState(this.state);
+                })
+                .catch(err => console.log(err));
         });
     }
 
@@ -318,39 +338,40 @@ class ActionForm extends Component {
 
     handleAddSubmit = (e, { calltype }) => {
         this.setState({ calltype: calltype }, () => {
-          switch(calltype) {
-              //validate form input, then submit to api callback
-            case ("addAnimal"):
-              {
-                console.log(this.state);
-                break;
-              }
-              case ("addWorker"):
-              {
-                console.log(this.state);
-                break;
-              }
-              case ("addCage"):
-              {
-                console.log(this.state);
-                break;
-              }
-              case ("addFood"):
-              {
-                console.log(this.state);
-                break;
-              }
-              case ("addWorkerAnimal"):
-              {
-                console.log(this.state);
-                break;
-              }
-              case ("addApprovedFood"):
-              {
-                console.log(this.state);
-                break;
-              }
-          }
+            switch (calltype) {
+                //validate form input, then submit to api callback
+                case ("addAnimal"):
+                    {
+                        console.log(this.state);
+                        break;
+                    }
+                case ("addWorker"):
+                    {
+                        console.log(this.state);
+                        break;
+                    }
+                case ("addCage"):
+                    {
+                        console.log(this.state);
+                        break;
+                    }
+                case ("addFood"):
+                    {
+                        console.log(this.state);
+                        break;
+                    }
+                case ("addWorkerAnimal"):
+                    {
+                        console.log(this.state);
+                        break;
+                    }
+                case ("addApprovedFood"):
+                    {
+                        console.log(this.state);
+                        break;
+                    }
+                default: return;
+            }
             this.props.api(this.state);
         })
     }
@@ -397,6 +418,7 @@ class ActionForm extends Component {
             removeSelect,
             removeId,
             searchSelect,
+            searchAttributeSelect,
             searchValue,
         } = this.state
 
@@ -452,19 +474,19 @@ class ActionForm extends Component {
                                                 onChange={this.handleAddSelectChange}
                                             />
                                             <Form.Input
-                                                  placeholder="New Animal Type"
-                                                  name='addAnimalType'
-                                                  value={addAnimalType}
-                                                  calltype='inputUpdate'
-                                  								required
-                                                  onChange={this.handleTextInput}
-                                              />
+                                                placeholder="New Animal Type"
+                                                name='addAnimalType'
+                                                value={addAnimalType}
+                                                calltype='inputUpdate'
+                                                required
+                                                onChange={this.handleTextInput}
+                                            />
                                             <Form.Input
                                                 placeholder="Cage No."
                                                 name='addAnimalCage'
                                                 value={addAnimalCage}
                                                 calltype='inputUpdate'
-                                  							required
+                                                required
                                                 onChange={this.handleTextInput}
                                             />
                                             <Form.Select
@@ -484,39 +506,39 @@ class ActionForm extends Component {
                             {
                                 return (
                                     <Form onSubmit={this.handleAddSubmit} calltype='addWorker'>
-                                    <Form.Group>
-                                        <Form.Select
-                                            options={options.add.selectDropdown}
-                                            placeholder="Select Add Option"
-                                            name='addSelect'
-                                            value={addSelect}
-                                            calltype='addSelect'
-                                            onChange={this.handleAddSelectChange}
-                                        />
-                                        <Form.Input
-                                            placeholder="Worker First Name"
-                                            name='addWorkerFirst'
-                                            value={addWorkerFirst}
-                                            calltype='inputUpdate'
-                                            onChange={this.handleTextInput}
-                                        />
-                                        <Form.Input
-                                            placeholder="Worker Last Name"
-                                            name='addWorkerLast'
-                                            value={addWorkerLast}
-                                            calltype='inputUpdate'
-                                            onChange={this.handleTextInput}
-                                        />
-                                        <Form.Input
-                                            placeholder="Worker Position"
-                                            name='addWorkerPosition'
-                                            value={addWorkerPosition}
-                                            calltype='inputUpdate'
-                                            onChange={this.handleTextInput}
-                                        />
-                                        <Form.Button content='Add Worker' />
-                                    </Form.Group>
-                                </Form>
+                                        <Form.Group>
+                                            <Form.Select
+                                                options={options.add.selectDropdown}
+                                                placeholder="Select Add Option"
+                                                name='addSelect'
+                                                value={addSelect}
+                                                calltype='addSelect'
+                                                onChange={this.handleAddSelectChange}
+                                            />
+                                            <Form.Input
+                                                placeholder="Worker First Name"
+                                                name='addWorkerFirst'
+                                                value={addWorkerFirst}
+                                                calltype='inputUpdate'
+                                                onChange={this.handleTextInput}
+                                            />
+                                            <Form.Input
+                                                placeholder="Worker Last Name"
+                                                name='addWorkerLast'
+                                                value={addWorkerLast}
+                                                calltype='inputUpdate'
+                                                onChange={this.handleTextInput}
+                                            />
+                                            <Form.Input
+                                                placeholder="Worker Position"
+                                                name='addWorkerPosition'
+                                                value={addWorkerPosition}
+                                                calltype='inputUpdate'
+                                                onChange={this.handleTextInput}
+                                            />
+                                            <Form.Button content='Add Worker' />
+                                        </Form.Group>
+                                    </Form>
                                 );
 
                             }
@@ -524,25 +546,25 @@ class ActionForm extends Component {
                             {
                                 return (
                                     <Form onSubmit={this.handleAddSubmit} calltype='addFood'>
-                                    <Form.Group>
-                                        <Form.Select
-                                            options={options.add.selectDropdown}
-                                            placeholder="Select Add Option"
-                                            name='addSelect'
-                                            value={addSelect}
-                                            calltype='addSelect'
-                                            onChange={this.handleAddSelectChange}
-                                        />
-                                        <Form.Input
-                                            placeholder="Food Type"
-                                            name='addFoodType'
-                                            value={addFoodType}
-                                            calltype='inputUpdate'
-                                            onChange={this.handleTextInput}
-                                        />
-                                        <Form.Button content='Add Food' />
-                                    </Form.Group>
-                                </Form>
+                                        <Form.Group>
+                                            <Form.Select
+                                                options={options.add.selectDropdown}
+                                                placeholder="Select Add Option"
+                                                name='addSelect'
+                                                value={addSelect}
+                                                calltype='addSelect'
+                                                onChange={this.handleAddSelectChange}
+                                            />
+                                            <Form.Input
+                                                placeholder="Food Type"
+                                                name='addFoodType'
+                                                value={addFoodType}
+                                                calltype='inputUpdate'
+                                                onChange={this.handleTextInput}
+                                            />
+                                            <Form.Button content='Add Food' />
+                                        </Form.Group>
+                                    </Form>
                                 );
 
                             }
@@ -550,40 +572,40 @@ class ActionForm extends Component {
                             {
                                 return (
                                     <Form onSubmit={this.handleAddSubmit} calltype='addCage'>
-                                    <Form.Group>
-                                        <Form.Select
-                                            options={options.add.selectDropdown}
-                                            placeholder="Select Add Option"
-                                            name='addSelect'
-                                            value={addSelect}
-                                            calltype='addSelect'
-                                            onChange={this.handleAddSelectChange}
-                                        />
-                                        <Form.Input
-                                            placeholder="Cage Name"
-                                            name='addCageName'
-                                            value={addCageName}
-                                            calltype='inputUpdate'
-                                            onChange={this.handleTextInput}
-                                        />
-                                        <Form.Input
-                                            placeholder="Cage Size"
-                                            name='addCageSize'
-                                            value={addCageSize}
-                                            calltype='inputUpdate'
-                                            onChange={this.handleTextInput}
-                                        />
-                                        <Form.Select
-                                            options={options.addWorkers.workerDropdown}
-                                            placeholder="Assign Cage Worker"
-                                            name='addCageWorker'
-                                            value={addCageWorker}
-                                            calltype='addWorkerSelect'
-                                            onChange={this.handleSelectChange}
-                                        />
-                                        <Form.Button content='Add Cage' />
-                                    </Form.Group>
-                                </Form>
+                                        <Form.Group>
+                                            <Form.Select
+                                                options={options.add.selectDropdown}
+                                                placeholder="Select Add Option"
+                                                name='addSelect'
+                                                value={addSelect}
+                                                calltype='addSelect'
+                                                onChange={this.handleAddSelectChange}
+                                            />
+                                            <Form.Input
+                                                placeholder="Cage Name"
+                                                name='addCageName'
+                                                value={addCageName}
+                                                calltype='inputUpdate'
+                                                onChange={this.handleTextInput}
+                                            />
+                                            <Form.Input
+                                                placeholder="Cage Size"
+                                                name='addCageSize'
+                                                value={addCageSize}
+                                                calltype='inputUpdate'
+                                                onChange={this.handleTextInput}
+                                            />
+                                            <Form.Select
+                                                options={options.addWorkers.workerDropdown}
+                                                placeholder="Assign Cage Worker"
+                                                name='addCageWorker'
+                                                value={addCageWorker}
+                                                calltype='addWorkerSelect'
+                                                onChange={this.handleSelectChange}
+                                            />
+                                            <Form.Button content='Add Cage' />
+                                        </Form.Group>
+                                    </Form>
                                 );
 
                             }
@@ -591,34 +613,34 @@ class ActionForm extends Component {
                             {
                                 return (
                                     <Form onSubmit={this.handleAddSubmit} calltype='addWorkerAnimal'>
-                                    <Form.Group>
-                                        <Form.Select
-                                            options={options.add.selectDropdown}
-                                            placeholder="Select Add Option"
-                                            name='addSelect'
-                                            value={addSelect}
-                                            calltype='addSelect'
-                                            onChange={this.handleAddSelectChange}
-                                        />
-                                        <Form.Select
-                                            options={options.addAnimal.animalDropdown}
-                                            placeholder="Select Animal ID"
-                                            name='assignAnimal'
-                                            value={assignAnimal}
-                                            calltype='assignAnimalSelect'
-                                            onChange={this.handleSelectChange}
-                                        />
-                                        <Form.Select
-                                            options={options.addWorkers.workerDropdown}
-                                            placeholder="Assign Cage Worker"
-                                            name='assignAnimalWorker'
-                                            value={assignAnimalWorker}
-                                            calltype='assignAnimalWorkerSelect'
-                                            onChange={this.handleSelectChange}
-                                        />
-                                        <Form.Button content='Assign Worker to Animal' />
-                                    </Form.Group>
-                                </Form>
+                                        <Form.Group>
+                                            <Form.Select
+                                                options={options.add.selectDropdown}
+                                                placeholder="Select Add Option"
+                                                name='addSelect'
+                                                value={addSelect}
+                                                calltype='addSelect'
+                                                onChange={this.handleAddSelectChange}
+                                            />
+                                            <Form.Select
+                                                options={options.addAnimal.animalDropdown}
+                                                placeholder="Select Animal ID"
+                                                name='assignAnimal'
+                                                value={assignAnimal}
+                                                calltype='assignAnimalSelect'
+                                                onChange={this.handleSelectChange}
+                                            />
+                                            <Form.Select
+                                                options={options.addWorkers.workerDropdown}
+                                                placeholder="Assign Cage Worker"
+                                                name='assignAnimalWorker'
+                                                value={assignAnimalWorker}
+                                                calltype='assignAnimalWorkerSelect'
+                                                onChange={this.handleSelectChange}
+                                            />
+                                            <Form.Button content='Assign Worker to Animal' />
+                                        </Form.Group>
+                                    </Form>
                                 );
 
                             }
@@ -626,34 +648,34 @@ class ActionForm extends Component {
                             {
                                 return (
                                     <Form onSubmit={this.handleAddSubmit} calltype='addApprovedFood'>
-                                    <Form.Group>
-                                        <Form.Select
-                                            options={options.add.selectDropdown}
-                                            placeholder="Select Add Option"
-                                            name='addSelect'
-                                            value={addSelect}
-                                            calltype='addSelect'
-                                            onChange={this.handleAddSelectChange}
-                                        />
-                                        <Form.Select
-                                            options={options.addAnimal.animalDropdown}
-                                            placeholder="Select Animal ID"
-                                            name='assignAnimalFood'
-                                            value={assignAnimalFood}
-                                            calltype='assignAnimalFoodSelect'
-                                            onChange={this.handleSelectChange}
-                                        />
-                                        <Form.Select
-                                            options={options.addFood.foodDropdown}
-                                            placeholder="Assign Animal Food"
-                                            name='assignFood'
-                                            value={assignFood}
-                                            calltype='assignFoodSelect'
-                                            onChange={this.handleSelectChange}
-                                        />
-                                        <Form.Button content='Approve Food for Animal' />
-                                    </Form.Group>
-                                </Form>
+                                        <Form.Group>
+                                            <Form.Select
+                                                options={options.add.selectDropdown}
+                                                placeholder="Select Add Option"
+                                                name='addSelect'
+                                                value={addSelect}
+                                                calltype='addSelect'
+                                                onChange={this.handleAddSelectChange}
+                                            />
+                                            <Form.Select
+                                                options={options.addAnimal.animalDropdown}
+                                                placeholder="Select Animal ID"
+                                                name='assignAnimalFood'
+                                                value={assignAnimalFood}
+                                                calltype='assignAnimalFoodSelect'
+                                                onChange={this.handleSelectChange}
+                                            />
+                                            <Form.Select
+                                                options={options.addFood.foodDropdown}
+                                                placeholder="Assign Animal Food"
+                                                name='assignFood'
+                                                value={assignFood}
+                                                calltype='assignFoodSelect'
+                                                onChange={this.handleSelectChange}
+                                            />
+                                            <Form.Button content='Approve Food for Animal' />
+                                        </Form.Group>
+                                    </Form>
                                 );
 
                             }
@@ -716,7 +738,7 @@ class ActionForm extends Component {
             case ("search"):
                 {
                     return (
-                        <Form onSubmit={this.handleSearchSubmit} calltype="searchItem">
+                        <Form onSubmit={this.handleSearchSubmit} calltype="searchSubmit">
                             <Form.Group>
                                 <Form.Select
                                     options={options.view.dropdown1}
@@ -724,6 +746,14 @@ class ActionForm extends Component {
                                     name='searchSelect'
                                     value={searchSelect}
                                     calltype='searchSelect'
+                                    onChange={this.handleSearchSelectChange}
+                                />
+                                <Form.Select
+                                    options={options.search.dropdown1}
+                                    placeholder="Select Search Criteria"
+                                    name='searchAttributeSelect'
+                                    value={searchAttributeSelect}
+                                    calltype='searchAttributeSelect'
                                     onChange={this.handleSelectChange}
                                 />
                                 <Form.Input

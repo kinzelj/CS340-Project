@@ -32,6 +32,7 @@ class MainContent extends React.Component {
                     ServerCall.viewData({ query: props.viewSelect })
                         .then(res => {
                             this.updateTable(res);
+                            return res;
                         })
                         .catch(err => console.log(err));
                     break;
@@ -76,7 +77,7 @@ class MainContent extends React.Component {
                 {
                     ServerCall.searchData(props)
                         .then(res => {
-                            // this.updateTable(res);
+                            this.updateTable(res);
                         })
                         .catch(err => console.log(err));
                     break;
