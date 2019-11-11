@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'semantic-ui-react'
 
-class ErrorPopup extends Component {
-  state = { open: false, message:"" }
+class Popup extends Component {
+  state = { open: false, title: "", message:"" }
 
   closeConfigShow = (closeOnEscape, closeOnDimmerClick) => () => {
     this.setState({ closeOnEscape, closeOnDimmerClick, open: true })
   }
 
-  open = () => this.setState({ open: true, message: this.props.message})
+  open = () => this.setState({ open: true, title: this.props.title, message: this.props.message})
   close = () => this.setState({ open: false }, () => this.props.closePopup())
 
   componentDidMount() {
@@ -16,7 +16,7 @@ class ErrorPopup extends Component {
   }
 
   render() {
-    const { message, open, closeOnEscape, closeOnDimmerClick } = this.state
+    const { title, message, open, closeOnEscape, closeOnDimmerClick } = this.state
 
     return (
       <div>
@@ -26,12 +26,12 @@ class ErrorPopup extends Component {
           closeOnDimmerClick={closeOnDimmerClick}
           onClose={this.close}
         >
-          <Modal.Header>ERROR!</Modal.Header>
+          <Modal.Header>{title}</Modal.Header>
           <Modal.Content>
             <p>{message}</p>
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={this.close} negative>
+            <Button onClick={this.close} >
              OK 
             </Button>
           </Modal.Actions>
@@ -41,4 +41,4 @@ class ErrorPopup extends Component {
   }
 }
 
-export default ErrorPopup
+export default Popup

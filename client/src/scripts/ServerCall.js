@@ -11,6 +11,17 @@ export const viewData = async(props) => {
     return responseData;
 }
 
+export const addItem = async(props) => {
+  const options = {
+        method: 'POST',
+        url: '/add',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    return responseData;
+}
+
 export const searchData = async(props) => {
     const options = {
         method: 'POST',
@@ -100,3 +111,4 @@ export const getSearchDropdown = async(props) => {
     });
     return responseDropdown;
 }
+

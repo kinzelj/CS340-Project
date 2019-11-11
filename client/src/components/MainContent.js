@@ -2,7 +2,7 @@ import React from 'react'
 import DataTable from './DataTable.js'
 import ActionForm from './ActionForm.js'
 import * as ServerCall from '../scripts/ServerCall.js'
-import ErrorPopup from './ErrorPopup.js'
+import Popup from './Popup.js'
 
 /*******************************************************************
  Main body component that will contain all data rendered to browser 
@@ -13,7 +13,9 @@ class MainContent extends React.Component {
         headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
         //table tableData is an array of objects with keys that match headerNames
         tableData: [],
-        invalidInput: false,
+        showPopup: false,
+      	popupTitle: "",
+      	popupMessage: "",
     };
 
     submitForm = (formData) => {
@@ -100,14 +102,16 @@ class MainContent extends React.Component {
         }
     }
 
-    handleInvalidInput = () => {
-        this.setState({ invalidInput: true });
+    handlePopup = (title, message) => {
+        this.setState({ showPopup: true, popupTitle: title, popupMessage: message });
     }
     handlePopupClose = () => {
         this.setState({
             headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
             tableData: [{}],
-            invalidInput: false
+            showPopup: false,
+          	popupTitle: "",
+          	popupMessage: ""
         });
     }
 
@@ -124,8 +128,8 @@ class MainContent extends React.Component {
                 }
             case ("add_item"):
                 {
-                    if (this.state.invalidInput) {
-                        return <ErrorPopup closePopup={this.handlePopupClose} message="Invalid Input, please try again."/>
+                    if (this.state.showPopup) {
+                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
                     }
                     return (
                         <div>
@@ -135,7 +139,7 @@ class MainContent extends React.Component {
                                 key="addForm"
                                 formType="add"
                                 submitForm={this.submitForm}
-                                invalidInput={this.handleInvalidInput}
+                                popup={this.handlePopup}
                             />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
@@ -143,8 +147,9 @@ class MainContent extends React.Component {
                 }
             case ("update_item"):
                 {
-                    if (this.state.invalidInput) {
-                        return <ErrorPopup closePopup={this.handlePopupClose} message="Unable to update this item, please try again." />
+                    if (this.state.showPopup) {
+                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
+//                         return <ErrorPopup closePopup={this.handlePopupClose} message="Unable to update this item, please try again." />
                     }
                     return (
                         <div>
@@ -155,8 +160,9 @@ class MainContent extends React.Component {
                 }
             case ("remove_item"):
                 {
-                    if (this.state.invalidInput) {
-                        return <ErrorPopup closePopup={this.handlePopupClose} message="Cannot remove this item, please try again."/>
+                    if (this.state.showPopup) {
+                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
+//                         return <ErrorPopup closePopup={this.handlePopupClose} message="Cannot remove this item, please try again."/>
                     }
                     return (
                         <div>
@@ -167,8 +173,9 @@ class MainContent extends React.Component {
                 }
             case ("search_item"):
                 {
-                    if (this.state.invalidInput) {
-                        return <ErrorPopup closePopup={this.handlePopupClose} message="Search returned zero results, please try again." />
+                    if (this.state.showPopup) {
+                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
+//                         return <ErrorPopup closePopup={this.handlePopupClose} message="Search returned zero results, please try again." />
                     }
                     return (
                         <div>

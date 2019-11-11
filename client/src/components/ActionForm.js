@@ -342,9 +342,24 @@ class ActionForm extends Component {
                 //validate form input, then submit to api callback
                 case ("addAnimal"):
                     {
-                        this.props.invalidInput();
-                        console.log(this.state);
+                      if(this.state.addAnimalFood === "") {
+                        const title="ERROR!";
+                        const message= "Invalid input: At least one food type must be assigned to the new animal."
+                        this.props.popup(title, message);
                         break;
+                      }
+                      ServerCall.addItem(this.state)
+                        .then(res => {
+                            const title="SUCCESS!";
+                            const message= "Aniaml successfully added to zoo database."
+                            this.props.popup(title, message);
+                          })
+                        .catch((error) => {
+                           const title="ERROR!";
+                           const message= "Unable to add Animal ---> " + error;
+                           this.props.popup(title, message); 
+                      	});
+                      break;
                     }
                 case ("addWorker"):
                     {
@@ -483,6 +498,7 @@ class ActionForm extends Component {
                                                 onChange={this.handleTextInput}
                                             />
                                             <Form.Input
+                                  							type="number"
                                                 placeholder="Cage No."
                                                 name='addAnimalCage'
                                                 value={addAnimalCage}
