@@ -342,6 +342,7 @@ class ActionForm extends Component {
                 //validate form input, then submit to api callback
                 case ("addAnimal"):
                     {
+                        this.props.invalidInput();
                         console.log(this.state);
                         break;
                     }
