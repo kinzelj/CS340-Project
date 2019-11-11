@@ -74,8 +74,49 @@ SELECT :searchTable WHERE :searchCriteria = :searchValue
 -----------------------------------------------------------------------------------------
 -- UPDATE Queries
 -----------------------------------------------------------------------------------------
+-- Query to update an animal specified by the animal_id
+UPDATE animal 
+SET animal_type = :animal_typeInput, cage_id = :cage_idInput, cage_name = :cage_nameInput
+WHERE animal_id = :animal_idInput
 
+-- Query to update a worker specified by the worker_id
+UPDATE worker 
+SET first_name = :first_nameInput, last_name = :last_nameInput, position = :positionInput
+WHERE worker_id = :worker_idInput
+
+-- Query to update a food specified by the food_id
+UPDATE food
+SET food_type = :food_typeInput
+WHERE food_id = :food_idInput
+
+-- Query to update the food_animal table specified by the id
+UPDATE food_animal
+SET food_id = :food_idInput, animal_id = :animal_idInput
+WHERE id = :idInput
+
+-- Query to update the worker_animal table specified by the id
+UPDATE worker_animal
+SET worker_id = :worker_idInput, animal_id = :animal_idInput
+WHERE id = :idInput
 -----------------------------------------------------------------------------------------
 -- DELETE Queries
 -----------------------------------------------------------------------------------------
+-- Query to delete an animal specified by the animal_id
+DELETE FROM animal
+WHERE animal_id = :animal_idInput
 
+-- Query to delete a worker specified by the worker_id
+DELETE FROM worker
+WHERE worker_id = :worker_idInput
+
+-- Query to delete a food specified by the food_id
+DELETE FROM food
+WHERE food_id = :food_idInput
+
+-- Query to delete from the food_animal table specified by the id
+DELETE FROM food_animal
+WHERE id = :idInput
+
+-- Query to delete from the worker_animal table specified by the id 
+DELETE FROM worker_animal
+WHERE id = :idInput
