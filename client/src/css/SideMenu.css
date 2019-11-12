@@ -2,4 +2,5 @@
     overflow-x: scroll;
     white-space: nowrap;
     min-height: 355px;
+    max-height: 750px;
 }

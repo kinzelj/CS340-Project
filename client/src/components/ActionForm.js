@@ -73,12 +73,19 @@ const options = {
     },
 
     addWorkers: {
-        key: "dk-addWorkers",
+        key: "dk-addWorker",
         workerDropdown: [{ key: "" }],
     },
     addAnimal: {
-        key: "dk-addAnimals",
+        key: "dk-addAnimal",
         animalDropdown: [{ key: "" }],
+        foodDropdown: [{ key: "" }],
+        cageDropdown: [{ key: "" }],
+        workerDropdown: [{ key: "" }],
+    },
+    addCage: {
+        key: "dk-addCage",
+        workerDropdown: [{ key: "" }],
     },
 
     updateId: {
@@ -175,6 +182,7 @@ class ActionForm extends Component {
         addAnimalType: "",
         addAnimalCage: "",
         addAnimalFood: "",
+        addAnimalWorker: "",
         addWorkerFirst: "",
         addWorkerLast: "",
         addWorkerPosition: "",
@@ -225,7 +233,19 @@ class ActionForm extends Component {
                     {
                         ServerCall.getFoodDropdown({ query: "food" })
                             .then(res => {
-                                options.addFood.foodDropdown = res;
+                                options.addAnimal.foodDropdown = res;
+                                this.setState(this.state);
+                            })
+                            .catch(err => console.log(err));
+                        ServerCall.getWorkersDropdown({ query: "worker" })
+                            .then(res => {
+                                options.addAnimal.workerDropdown = res;
+                                this.setState(this.state);
+                            })
+                            .catch(err => console.log(err));
+                        ServerCall.getCageDropdown({ query: "cage" })
+                            .then(res => {
+                                options.addAnimal.cageDropdown = res;
                                 this.setState(this.state);
                             })
                             .catch(err => console.log(err));
@@ -235,7 +255,7 @@ class ActionForm extends Component {
                     {
                         ServerCall.getWorkersDropdown({ query: "worker" })
                             .then(res => {
-                                options.addWorkers.workerDropdown = res;
+                                options.addCage.workerDropdown = res;
                                 this.setState(this.state);
                             })
                             .catch(err => console.log(err));
@@ -306,7 +326,6 @@ class ActionForm extends Component {
             this.props.api(this.state)
             ServerCall.getUpdateIdDropdown({ query: this.state.updateSelect })
                 .then(res => {
-                    console.log(res);
                     options.updateId.idDropdown = res;
                     this.setState(this.state);
                 })
@@ -323,7 +342,6 @@ class ActionForm extends Component {
             ServerCall.getUpdateIdDropdown({ query: this.state.removeSelect })
                 .then(res => {
                     options.removeId.idDropdown = res;
-                    console.log(options.removeId.idDropdown);
                     this.setState(this.state);
                 })
                 .catch(err => console.log(err));
@@ -342,24 +360,36 @@ class ActionForm extends Component {
                 //validate form input, then submit to api callback
                 case ("addAnimal"):
                     {
-                      if(this.state.addAnimalFood === "") {
-                        const title="ERROR!";
-                        const message= "Invalid input: At least one food type must be assigned to the new animal."
-                        this.props.popup(title, message);
-                        break;
-                      }
-                      ServerCall.addItem(this.state)
-                        .then(res => {
-                            const title="SUCCESS!";
-                            const message= "Aniaml successfully added to zoo database."
+                        if (this.state.addAnimalFood === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: At least one food type must be assigned to the new animal."
                             this.props.popup(title, message);
-                          })
-                        .catch((error) => {
-                           const title="ERROR!";
-                           const message= "Unable to add Animal ---> " + error;
-                           this.props.popup(title, message); 
-                      	});
-                      break;
+                            break;
+                        }
+                        if (this.state.addAnimalWorker === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: At least one worker must be assigned to the new animal."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        if (this.state.addAnimalCage === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: A cage must be assigned to the new animal."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        ServerCall.addItem(this.state)
+                            .then(res => {
+                                const title = "SUCCESS!";
+                                const message = "Aniaml successfully added to zoo database."
+                                this.props.popup(title, message);
+                            })
+                            .catch((error) => {
+                                const title = "ERROR!";
+                                const message = "Unable to add Animal ---> " + error;
+                                this.props.popup(title, message);
+                            });
+                        break;
                     }
                 case ("addWorker"):
                     {
@@ -376,12 +406,12 @@ class ActionForm extends Component {
                         console.log(this.state);
                         break;
                     }
-                case ("addWorkerAnimal"):
+                case ("addAnimalWorker"):
                     {
                         console.log(this.state);
                         break;
                     }
-                case ("addApprovedFood"):
+                case ("addAnimalFood"):
                     {
                         console.log(this.state);
                         break;
@@ -416,6 +446,7 @@ class ActionForm extends Component {
             addAnimalType,
             addAnimalCage,
             addAnimalFood,
+            addAnimalWorker,
             addWorkerFirst,
             addWorkerLast,
             addWorkerPosition,
@@ -497,17 +528,24 @@ class ActionForm extends Component {
                                                 required
                                                 onChange={this.handleTextInput}
                                             />
-                                            <Form.Input
-                                  							type="number"
-                                                placeholder="Cage No."
+                                            <Form.Select
+                                                options={options.addAnimal.cageDropdown}
+                                                placeholder="Assign Cage for Animal"
                                                 name='addAnimalCage'
                                                 value={addAnimalCage}
-                                                calltype='inputUpdate'
-                                                required
-                                                onChange={this.handleTextInput}
+                                                calltype='addAnimalSelect'
+                                                onChange={this.handleSelectChange}
                                             />
                                             <Form.Select
-                                                options={options.addFood.foodDropdown}
+                                                options={options.addAnimal.workerDropdown}
+                                                placeholder="Assign Worker to Animal"
+                                                name='addAnimalWorker'
+                                                value={addAnimalWorker}
+                                                calltype='addAnimalSelect'
+                                                onChange={this.handleSelectChange}
+                                            />
+                                            <Form.Select
+                                                options={options.addAnimal.foodDropdown}
                                                 placeholder="Assign Animal Food"
                                                 name='addAnimalFood'
                                                 value={addAnimalFood}
@@ -613,7 +651,7 @@ class ActionForm extends Component {
                                                 onChange={this.handleTextInput}
                                             />
                                             <Form.Select
-                                                options={options.addWorkers.workerDropdown}
+                                                options={options.addCage.workerDropdown}
                                                 placeholder="Assign Cage Worker"
                                                 name='addCageWorker'
                                                 value={addCageWorker}
@@ -629,7 +667,7 @@ class ActionForm extends Component {
                         case ("workerAnimal"):
                             {
                                 return (
-                                    <Form onSubmit={this.handleAddSubmit} calltype='addWorkerAnimal'>
+                                    <Form onSubmit={this.handleAddSubmit} calltype='addAnimalWorker'>
                                         <Form.Group>
                                             <Form.Select
                                                 options={options.add.selectDropdown}
@@ -664,7 +702,7 @@ class ActionForm extends Component {
                         case ("approvedFoods"):
                             {
                                 return (
-                                    <Form onSubmit={this.handleAddSubmit} calltype='addApprovedFood'>
+                                    <Form onSubmit={this.handleAddSubmit} calltype='addAnimalFood'>
                                         <Form.Group>
                                             <Form.Select
                                                 options={options.add.selectDropdown}

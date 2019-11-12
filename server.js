@@ -11,8 +11,8 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 const port = process.env.PORT || 5000;
 
 const attributeTag = {
-    "animal.animal_id": "ANIMAL ID", 
-    "animal.animal_type": "ANIMAL TYPE", 
+    "animal.animal_id": "ANIMAL ID",
+    "animal.animal_type": "ANIMAL TYPE",
 
     "worker.worker_id": "WORKER ID",
     "worker.first_name": "FIRST NAME",
@@ -35,44 +35,44 @@ function getTagKey(value) {
 
 const queryText = {
     selectAnimals: "SELECT animal.animal_id AS '" + attributeTag["animal.animal_id"] +
-        "', animal.animal_type AS '"+ attributeTag["animal.animal_type"] +
+        "', animal.animal_type AS '" + attributeTag["animal.animal_type"] +
         "', animal.cage_id AS '" + attributeTag["cage.cage_id"] +
-        "', cage.cage_name AS '" + attributeTag["cage.cage_name"] + 
+        "', cage.cage_name AS '" + attributeTag["cage.cage_name"] +
         "' FROM animal INNER JOIN cage ON animal.cage_id=cage.cage_id",
 
-    selectWorkers: "SELECT worker_id AS '" + attributeTag["worker.worker_id"] + 
-        "', first_name AS '" + attributeTag["worker.first_name"] + 
-        "', last_name AS '" + attributeTag["worker.last_name"] + 
+    selectWorkers: "SELECT worker_id AS '" + attributeTag["worker.worker_id"] +
+        "', first_name AS '" + attributeTag["worker.first_name"] +
+        "', last_name AS '" + attributeTag["worker.last_name"] +
         "', position AS '" + attributeTag["worker.position"] + "' FROM worker",
 
-    selectCages: "SELECT cage_id AS '" + attributeTag["cage.cage_id"] + 
-        "', cage_name AS '" + attributeTag["cage.cage_name"] + 
+    selectCages: "SELECT cage_id AS '" + attributeTag["cage.cage_id"] +
+        "', cage_name AS '" + attributeTag["cage.cage_name"] +
         "', cage_size AS '" + attributeTag["cage.cage_size"] + "' FROM cage",
 
-    selectFood: "SELECT food_id AS '" + attributeTag["food.food_id"] + 
+    selectFood: "SELECT food_id AS '" + attributeTag["food.food_id"] +
         "', food_type AS '" + attributeTag["food.food_type"] + "' FROM food",
 
     selectApprovedFoods:
-        "SELECT food_animal.id AS '" + attributeTag["id"] + 
-        "', animal.animal_id AS '" + attributeTag["animal.animal_id"] + 
-        "', animal.animal_type AS '" + attributeTag["animal.animal_type"] + 
+        "SELECT food_animal.id AS '" + attributeTag["id"] +
+        "', animal.animal_id AS '" + attributeTag["animal.animal_id"] +
+        "', animal.animal_type AS '" + attributeTag["animal.animal_type"] +
         "', food.food_type AS '" + attributeTag["food.food_type"] + "' FROM animal " +
         "INNER JOIN food_animal ON animal.animal_id=food_animal.animal_id " +
         "INNER JOIN food ON food_animal.food_id=food.food_id",
 
     selectWorkerAnimals:
-        "SELECT worker_animal.id AS '" + attributeTag["id"] + 
-        "', animal.animal_id AS '" + attributeTag["animal.animal_id"] + 
-        "', animal.animal_type AS '" + attributeTag["animal.animal_type"] + 
+        "SELECT worker_animal.id AS '" + attributeTag["id"] +
+        "', animal.animal_id AS '" + attributeTag["animal.animal_id"] +
+        "', animal.animal_type AS '" + attributeTag["animal.animal_type"] +
         "', worker.worker_ID AS 'ASSIGNED WORKER ID', " +
         "worker.first_name AS 'WORKER FIRST NAME', worker.last_name AS 'WORKER LAST NAME' FROM animal " +
         "INNER JOIN worker_animal ON animal.animal_id=worker_animal.animal_id " +
         "INNER JOIN worker ON worker_animal.worker_id=worker.worker_id",
 
     selectWorkerCages:
-        "SELECT cage.cage_id AS '" + attributeTag["cage.cage_id"] + 
-        "', cage.cage_name AS '" + attributeTag["cage.cage_name"]+ 
-        "', worker.worker_ID AS 'ASSIGNED WORKER ID', worker.first_name AS 'WORKER FIRST NAME'" + 
+        "SELECT cage.cage_id AS '" + attributeTag["cage.cage_id"] +
+        "', cage.cage_name AS '" + attributeTag["cage.cage_name"] +
+        "', worker.worker_ID AS 'ASSIGNED WORKER ID', worker.first_name AS 'WORKER FIRST NAME'" +
         ", worker.last_name AS 'WORKER LAST NAME' FROM cage " +
         "INNER JOIN worker ON cage.worker_id=worker.worker_id",
 }
@@ -131,16 +131,16 @@ app.post('/search', function (req, res, next) {
     const searchTable = req.body.searchSelect;
     var searchCriteria = req.body.searchAttributeSelect;
     const searchValue = req.body.searchValue;
-    switch(searchCriteria) {
-        case("ASSIGNED WORKER ID"): {
+    switch (searchCriteria) {
+        case ("ASSIGNED WORKER ID"): {
             searchCriteria = "workder_id";
             break;
         }
-        case("WORKER FIRST NAME"): {
+        case ("WORKER FIRST NAME"): {
             searchCriteria = "first_name";
             break;
         }
-        case("ASSIGNED LAST NAME"): {
+        case ("ASSIGNED LAST NAME"): {
             searchCriteria = "last_name";
             break;
         }
@@ -184,7 +184,7 @@ app.post('/search', function (req, res, next) {
             }
         case ('workerCage'):
             {
-                query = queryText.selectWorkerCages + " WHERE " + searchCriteria + " = ? ORDER BY cage.cage_id";  
+                query = queryText.selectWorkerCages + " WHERE " + searchCriteria + " = ? ORDER BY cage.cage_id";
                 break;
             }
     }
@@ -199,44 +199,45 @@ app.post('/search', function (req, res, next) {
 
 app.post('/add', function (req, res, next) {
     var query = null;
-  	var values = [];
+    var values = [];
     switch (req.body.calltype) {
-      case ('addAnimal'): {
-        var context = {};
-        var foodID = "";
-        query = "SELECT food_id FROM food WHERE food_type = (?)";
-        values = [req.body.addAnimalFood];
-        mysql.pool.query(query, values, function (err, rows, fields) {
-          if(err){
-      			next(err);
-      			return;
-    			}
-          foodID = rows[0].food_id;
-          query = "INSERT INTO `animal`(`animal_type`,`cage_id`) VALUES (?, ?)"; 
-          values = [req.body.addAnimalType, req.body.addAnimalCage];
-          mysql.pool.query(query, values, function (err, rows, fields) {
-            if(err){
-              next(err);
-              return;
-            }
-            var newAnimalId = rows.insertId;
-            query = "INSERT INTO `food_animal`(`animal_id`, `food_id`) VALUES (?, ?)"
-            values = [newAnimalId, foodID]
+        case ('addAnimal'): {
+            var context = {};
+            var foodID = req.body.addAnimalFood;
+            query = "INSERT INTO `animal`(`animal_type`,`cage_id`) VALUES (?, ?)";
+            values = [req.body.addAnimalType, req.body.addAnimalCage];
             mysql.pool.query(query, values, function (err, rows, fields) {
-              if(err){
-                next(err);
-              	return;
-            	}
-              context.results = JSON.stringify(rows);
-              res.send(context.results);
-          	})
-        	})
-      	})
-        break;
-      }
-     case ('addWorker'): {break;}
-     case ('addFood'): {break;}
-     case ('addCage'): {break;}
+                if (err) {
+                    next(err);
+                    return;
+                }
+                var newAnimalId = rows.insertId;
+                query = "INSERT INTO `food_animal`(`animal_id`, `food_id`) VALUES (?, ?)"
+                values = [newAnimalId, foodID]
+                mysql.pool.query(query, values, function (err, rows, fields) {
+                    if (err) {
+                        next(err);
+                        return;
+                    }
+                    query = "INSERT INTO `worker_animal`(`animal_id`, `worker_id`) VALUES (?, ?)";
+                    values = [newAnimalId, req.body.addAnimalWorker];
+                    mysql.pool.query(query, values, function (err, rows, fields) {
+                        if (err) {
+                            next(err);
+                            return;
+                        }
+                        context.results = JSON.stringify(rows);
+                        res.send(context.results);
+                    })
+                })
+            })
+            break;
+        }
+        case ('addWorker'): { break; }
+        case ('addFood'): { break; }
+        case ('addCage'): { break; }
+        case ('addAnimalWorker'): { break; }
+        case ('addAnimalFood'): { break; }
     }
 });
 

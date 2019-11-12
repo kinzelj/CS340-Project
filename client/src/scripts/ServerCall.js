@@ -42,7 +42,7 @@ export const getFoodDropdown = async(props) => {
     const response = await axios(options);
     const responseData = await response.data;
     const responseDropdown = responseData.map((value, index) => {
-        return { text: value["FOOD TYPE"], value: value["FOOD TYPE"] };
+        return { text: value["FOOD TYPE"], value: value["FOOD ID"] };
     });
     return responseDropdown;
 }
@@ -56,7 +56,7 @@ export const getWorkersDropdown = async(props) => {
     const response = await axios(options);
     const responseData = await response.data;
     const responseDropdown = responseData.map((value, index) => {
-        return { text: value["FIRST NAME"] + " " + value["LAST NAME"], value: value["ID"] };
+        return { key: "dk-"+value["LAST NAME"]+index, text: value["FIRST NAME"] + " " + value["LAST NAME"], value: value["WORKER ID"] };
     });
     return responseDropdown;
 }
@@ -69,7 +69,22 @@ export const getAnimalDropdown = async(props) => {
     const response = await axios(options);
     const responseData = await response.data;
     const responseDropdown = responseData.map((value, index) => {
-        return { text: value["ID"], value: value["ID"] };
+        return { key: "dk-"+value["ANIMAL TYPE"]+index, text: value["ANIMAL ID"], value: value["ANIMAL ID"] };
+    });
+    responseDropdown.sort(function(a,b) {return a.text-b.text });
+    return responseDropdown;
+}
+
+export const getCageDropdown = async(props) => {
+    const options = {
+        method: 'POST',
+        url: '/view',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    const responseDropdown = responseData.map((value, index) => {
+        return { text: value["CAGE NAME"], value: value["CAGE NUMBER"] };
     });
     responseDropdown.sort(function(a,b) {return a.text-b.text });
     return responseDropdown;
@@ -85,14 +100,21 @@ export const getUpdateIdDropdown = async(props) => {
     const responseData = await response.data;
     const responseDropdown = responseData.map((value, index) => {
         switch (props.query) {
+            case ("animal"):
+                return { text: value["ANIMAL ID"], value: value["ANIMAL ID"] };
+            case ("worker"):
+                return { text: value["WORKER ID"], value: value["WORKER ID"] };
+            case ("food"):
+                return { text: value["FOOD ID"], value: value["FOOD ID"] };
+            case ("cage"):
+                return { text: value["CAGE NUMBER"], value: value["CAGE NUMBER"] };
             case ("approvedFoods"):
                 return { text: value["ENTRY ID"], value: value["ENTRY ID"] };
             case ("workerAnimal"):
                 return { text: value["ENTRY ID"], value: value["ENTRY ID"] };
             case ("workerCage"):
-                return { text: value["CAGE ID"], value: value["CAGE ID"] };
-            default:
-                return { text: value["ID"], value: value["ID"] };
+                return { text: value["CAGE NUMBER"], value: value["CAGE NUMBER"] };
+            default: return {};
         }
     });
     return responseDropdown;
