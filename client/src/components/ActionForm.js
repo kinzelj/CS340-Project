@@ -422,9 +422,10 @@ class ActionForm extends Component {
         })
     }
     handleUpdateSubmit = (e, { calltype }) => {
-        this.setState({ calltype: calltype }, () => {
-            this.props.api(this.state);
-        })
+      this.props.updatePopup(this.state.updateSelect, this.state.updateId);
+//         this.setState({ calltype: calltype }, () => {
+//             this.props.api(this.state);
+//         })
     }
     handleRemoveSubmit = (e, { calltype }) => {
         this.setState({ calltype: calltype }, () => {

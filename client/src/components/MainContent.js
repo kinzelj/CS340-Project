@@ -1,6 +1,7 @@
 import React from 'react'
 import DataTable from './DataTable.js'
 import ActionForm from './ActionForm.js'
+import UpdateForm from './UpdateForm.js'
 import * as ServerCall from '../scripts/ServerCall.js'
 import Popup from './Popup.js'
 
@@ -16,6 +17,9 @@ class MainContent extends React.Component {
         showPopup: false,
       	popupTitle: "",
       	popupMessage: "",
+      	showUpdatePopup: false,
+      	updateSelect: "",
+      	updateId: ""
     };
 
     submitForm = (formData) => {
@@ -114,6 +118,20 @@ class MainContent extends React.Component {
           	popupMessage: ""
         });
     }
+    
+    handleUpdatePopup = (select, id) => {
+      console.log(id);
+      this.setState( {showUpdatePopup: true, updateSelect: select, updateId: id } )
+    }
+    handleUpdatePopupClose = () => {
+        this.setState({
+            headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
+            tableData: [{}],
+            showUpdatePopup: false,
+          	updateSelect: "",
+          	updateId: ""
+        });
+    }
 
     render() {
         switch (this.props.content) {
@@ -121,7 +139,11 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <ActionForm api={this.handleServerCall} key="viewForm" formType="view" submitForm={this.submitForm} />
+                            <ActionForm 
+                      				api={this.handleServerCall} 
+                      				key="viewForm" 
+                      				formType="view" 
+                      				submitForm={this.submitForm} />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
@@ -149,11 +171,20 @@ class MainContent extends React.Component {
                 {
                     if (this.state.showPopup) {
                         return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
-//                         return <ErrorPopup closePopup={this.handlePopupClose} message="Unable to update this item, please try again." />
+                    }
+                    if (this.state.showUpdatePopup) {
+                        return <UpdateForm closePopup={this.handleUpdatePopupClose} select={this.state.updateSelect} id={this.state.updateId}/>
                     }
                     return (
                         <div>
-                            <ActionForm api={this.handleServerCall} key="updateForm" formType="update" submitForm={this.submitForm} />
+                            <ActionForm 
+                      				api={this.handleServerCall} 
+                      				key="updateForm" 
+                      				formType="update" 
+                      				submitForm={this.submitForm} 
+                      				popup={this.handlePopup}
+                      				updatePopup={this.handleUpdatePopup}
+                      			/>
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
@@ -162,11 +193,16 @@ class MainContent extends React.Component {
                 {
                     if (this.state.showPopup) {
                         return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
-//                         return <ErrorPopup closePopup={this.handlePopupClose} message="Cannot remove this item, please try again."/>
                     }
                     return (
                         <div>
-                            <ActionForm api={this.handleServerCall} key="removeForm" formType="remove" submitForm={this.submitForm} />
+                            <ActionForm 
+                      				api={this.handleServerCall} 
+                      				key="removeForm" 
+                      				formType="remove" 
+                      				submitForm={this.submitForm} 
+                      				popup={this.handlePopup}
+                      			/>
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
@@ -175,11 +211,16 @@ class MainContent extends React.Component {
                 {
                     if (this.state.showPopup) {
                         return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
-//                         return <ErrorPopup closePopup={this.handlePopupClose} message="Search returned zero results, please try again." />
                     }
                     return (
                         <div>
-                            <ActionForm api={this.handleServerCall} key="searchForm" formType="search" submitForm={this.submitForm} />
+                            <ActionForm 
+                      				api={this.handleServerCall} 
+                      				key="searchForm" 
+                      				formType="search" 
+                      				submitForm={this.submitForm} 
+                      				popup={this.handlePopup}
+                      			/>
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );

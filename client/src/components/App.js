@@ -9,7 +9,9 @@ class App extends Component {
     return (
       <div className="main-div">
         <h2 className="ui block header" id="top-border" style={{ marginTop: "20px" }}>
-          <FontAwesomeIcon icon={faPaw} style={{ width: "25px", height: "25px", border: "1px solid white", borderRadius: "3px"}}/> Zoo Management Database</h2>
+          <FontAwesomeIcon icon={faPaw} style={{ width: "25px", height: "25px", marginRight: "0.5em", border: "1px solid white", borderRadius: "3px"}}/> 
+      		Zoo Management Database
+      	</h2>
         <SideMenu />
       </div>
     );
