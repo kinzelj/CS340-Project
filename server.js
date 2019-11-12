@@ -78,46 +78,41 @@ const queryText = {
 }
 
 
-
-app.post('/view', function (req, res, next) {
-    var query = null;
-    switch (req.body.query) {
+function getSelectQuery(queryType) {
+    switch (queryType) {
         case ('animal'):
             {
-                query = queryText.selectAnimals + " ORDER BY animal.animal_id";
-                break;
+                return (queryText.selectAnimals + " ORDER BY animal.animal_id");
             }
         case ('worker'):
             {
-                query = queryText.selectWorkers;
-                break;
+                return (queryText.selectWorkers);
             }
         case ('cage'):
             {
-                query = queryText.selectCages;
-                break;
+                return (queryText.selectCages);
             }
         case ('food'):
             {
-                query = queryText.selectFood;
-                break;
+                return (queryText.selectFood);
             }
         case ('approvedFoods'):
             {
-                query = queryText.selectApprovedFoods + " ORDER BY food_animal.id";
-                break;
+                return (queryText.selectApprovedFoods + " ORDER BY food_animal.id");
             }
         case ('workerAnimal'):
             {
-                query = queryText.selectWorkerAnimals + " ORDER BY worker_animal.id";
-                break;
+                return (queryText.selectWorkerAnimals + " ORDER BY worker_animal.id");
             }
         case ('workerCage'):
             {
-                query = queryText.selectWorkerCages + " ORDER BY cage.cage_id";
-                break;
+                return (queryText.selectWorkerCages + " ORDER BY cage.cage_id");
             }
     }
+}
+
+app.post('/view', function (req, res, next) {
+    var query = getSelectQuery(req.body.query);
     if (query) {
         var context = {};
         mysql.pool.query(query, function (err, rows, fields) {
@@ -154,7 +149,7 @@ app.post('/search', function (req, res, next) {
     switch (searchTable) {
         case ('animal'):
             {
-                query = queryText.selectAnimals + " WHERE " + searchCriteria + "= ?";
+                query =  queryText.selectAnimals + " WHERE " + searchCriteria + "= ?";
                 break;
             }
         case ('worker'):
