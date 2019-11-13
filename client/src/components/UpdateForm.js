@@ -18,10 +18,15 @@ class UpdateForm extends Component {
     searchValue: "", 
     
     //add animal
+    animalId: "",
     animalType: "",
     animalCage: "",
     
     //add worker
+    workerId: "",
+    workerFirst: "",
+    workerLast: "",
+    workerPosition: ""
   }
 
   contents = null;
@@ -52,7 +57,8 @@ class UpdateForm extends Component {
               this.setState(
                 {
                   animalType: data["ANIMAL TYPE"], 
-                  animalCage: data["CAGE NUMBER"]
+                  animalCage: data["CAGE NUMBER"],
+                  animalId: data["ANIMAL ID"]
                 }, () => {
                   ServerCall.getCageDropdown({ query: "cage" })
                   .then(res => {
@@ -65,7 +71,15 @@ class UpdateForm extends Component {
             }
         case ("worker"):
             {
-
+              this.setState(
+                {
+                  workerId: data["WORKER ID"],
+                  workerFirst: data["FIRST NAME"], 
+                  workerLast: data["LAST NAME"],
+                  workerPosition: data["POSITION"]
+                }, () => { this.showContents() }
+              )
+              break;
             }
         default: return;
       }
@@ -74,6 +88,7 @@ class UpdateForm extends Component {
   }
 
   showContents() {
+    console.log(this.state);
     switch (this.state.searchSelect) {
       		case ("animal"):
           	{
@@ -81,12 +96,18 @@ class UpdateForm extends Component {
                 <div className='formContents'>
                   <Header>Modify animal data, then submit:</Header>
                   <Form>
-                    <Form.Group widths='equal'>
-                      <Form.Field>
+                    <Form.Group >
+                      <Form.Input 
+                				fluid label='Animal ID' 
+                				placeholder={this.state.animalId} 
+                				readOnly 
+                				width={2} /> 
+                      <Form.Field width={5}>
                         <label>Animal Type</label>
                         <Input value={this.state.animalType} />
                       </Form.Field>
                       <Form.Select
+                				width = {5}
                         label = "Animal Assigned Cage"
                         options={options.updateAnimal.cageDropdown}
                         name='animalCage'
@@ -101,6 +122,33 @@ class UpdateForm extends Component {
             }
         case ("worker"):
             {
+              this.contents= (
+                <div className='formContents'>
+                  <Header>Modify worker data, then submit:</Header>
+                  <Form>
+                    <Form.Group >
+                      <Form.Input 
+                				fluid label='Worker ID' 
+                				placeholder={this.state.workerId} 
+                				readOnly 
+                				width={2} 
+                			/> 
+                      <Form.Field width={5}>
+                        <label>Worker First Name</label>
+                        <Input value={this.state.workerFirst} />
+                      </Form.Field>
+                      <Form.Field width={5}>
+                        <label>Worker Last Name</label>
+                        <Input value={this.state.workerLast} />
+                      </Form.Field>
+                      <Form.Field width={5}>
+                        <label>Worker Position</label>
+                        <Input value={this.state.workerPosition} />
+                      </Form.Field>
+                    </Form.Group>
+                  </Form>
+                </div>
+              );
               break;
             }
         default: return;
