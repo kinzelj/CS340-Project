@@ -3,56 +3,126 @@ import { Button, Header, Image, Modal, Form, Input } from 'semantic-ui-react'
 import * as ServerCall from '../scripts/ServerCall.js'
 import { Server } from 'http'
 
+const options = {
+  updateAnimal: {
+    key: "dk-updateAnimal",
+    cageDropDown: [{key: ""}]
+  }
+}
+
 class UpdateForm extends Component {
-  state = { open: false, searchSelect: "", searchAttributeSelect: "", searchValue: "" }
+  state = { 
+    open: false, 
+    searchSelect: "", 
+    searchAttributeSelect: "", 
+    searchValue: "", 
+    
+    //add animal
+    animalType: "",
+    animalCage: "",
+    
+    //add worker
+  }
 
   contents = null;
 
   close = () => this.setState({ open: false }, () => this.props.closePopup())
 
   submit = () => {
+    console.log(this.state);
     this.setState({ open: false }, () => this.props.closePopup())
   }
-
-  formContents() {
+  
+  getKey = (object, value) => {
+      return Object.keys(object).find(key => object[key] === value);
+  }
+  
+  handleSelectChange = (e, { name, value }) => {
+      this.setState({ [name]: value }, () => this.showContents());
+  }
+  
+  getInitialData() {
     ServerCall.searchData(this.state)
       .then(res => {
-        switch (this.state.searchSelect) {
-          case ("animal"):
-            {
-              this.contents= (<div>{res[0]["ANIMAL TYPE"]}</div>);
-              this.setState(this.state);
+      	this.setState({dbData: res[0]})
+        const data = this.state.dbData;
+      	switch (this.state.searchSelect) {
+      		case ("animal"):
+          	{
+              this.setState(
+                {
+                  animalType: data["ANIMAL TYPE"], 
+                  animalCage: data["CAGE NUMBER"]
+                }, () => {
+                  ServerCall.getCageDropdown({ query: "cage" })
+                  .then(res => {
+                    options.updateAnimal.cageDropdown = res;
+                    this.showContents();
+                  }).catch(err => console.log(err)); 
+              	}
+              )
+              break;
             }
-          default: return;
-        }
-      })
-      .catch(err => console.log(err));
-      console.log("test");
+        case ("worker"):
+            {
+
+            }
+        default: return;
+      }
+       })
+    	.catch(err => console.log(err));
   }
 
-  // getContents() {
-  //   this.forumContents()
-  //   .then(res => console.log(res));
-  //   this.setState({ contents: newContents })
-  // }
+  showContents() {
+    switch (this.state.searchSelect) {
+      		case ("animal"):
+          	{
+              this.contents= (
+                <div className='formContents'>
+                  <Header>Modify animal data, then submit:</Header>
+                  <Form>
+                    <Form.Group widths='equal'>
+                      <Form.Field>
+                        <label>Animal Type</label>
+                        <Input value={this.state.animalType} />
+                      </Form.Field>
+                      <Form.Select
+                        label = "Animal Assigned Cage"
+                        options={options.updateAnimal.cageDropdown}
+                        name='animalCage'
+                        value={this.state.animalCage}
+                        onChange={this.handleSelectChange}
+                      />
+                    </Form.Group>
+                  </Form>
+                </div>
+              );
+              break;
+            }
+        case ("worker"):
+            {
+              break;
+            }
+        default: return;
+      }
+    this.setState({open: true});
+  }
 
   componentDidMount() {
     this.setState({
-      open: true,
       searchSelect: this.props.select,
       searchValue: this.props.id,
       searchAttributeSelect: this.props.idName
-    }, () => this.formContents());
+    }, () => this.getInitialData());
   }
 
   render() {
     return (
       <div>
         <Modal open={this.state.open} onClose={this.close}>
-          <Modal.Header>POPUP HEADER</Modal.Header>
+          <Modal.Header>UPDATE ZOO DATA</Modal.Header>
           <Modal.Content image>
             <Modal.Description>
-              <Header>CONTENT HEADER</Header>
               {this.contents}
             </Modal.Description>
           </Modal.Content>
@@ -70,20 +140,5 @@ export default UpdateForm
 
 
 // const FormExampleEvenlyDividedGroup = () => (
-//   <Form>
-//     <Form.Group widths='equal'>
-//       <Form.Field>
-//         <label>First name</label>
-//         <Input fluid placeholder='First name' />
-//       </Form.Field>
-//       <Form.Field>
-//         <label>Middle name</label>
-//         <Input fluid placeholder='Middle name' />
-//       </Form.Field>
-//       <Form.Field>
-//         <label>Last name</label>
-//         <Input fluid placeholder='Last name' />
-//       </Form.Field>
-//     </Form.Group>
-//   </Form>
+
 // )
