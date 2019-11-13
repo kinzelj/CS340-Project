@@ -15,11 +15,12 @@ class MainContent extends React.Component {
         //table tableData is an array of objects with keys that match headerNames
         tableData: [],
         showPopup: false,
-      	popupTitle: "",
-      	popupMessage: "",
-      	showUpdatePopup: false,
-      	updateSelect: "",
-      	updateId: ""
+        popupTitle: "",
+        popupMessage: "",
+        showUpdatePopup: false,
+        updateSelect: "",
+        updateId: "",
+        updateIdName: ""
     };
 
     submitForm = (formData) => {
@@ -114,22 +115,26 @@ class MainContent extends React.Component {
             headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
             tableData: [{}],
             showPopup: false,
-          	popupTitle: "",
-          	popupMessage: ""
+            popupTitle: "",
+            popupMessage: ""
         });
     }
-    
-    handleUpdatePopup = (select, id) => {
-      console.log(id);
-      this.setState( {showUpdatePopup: true, updateSelect: select, updateId: id } )
+
+    handleUpdatePopup = (select, id, idName) => {
+        this.setState({
+            showUpdatePopup: true,
+            updateSelect: select,
+            updateId: id,
+            updateIdName: idName
+        });
     }
     handleUpdatePopupClose = () => {
         this.setState({
             headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
             tableData: [{}],
             showUpdatePopup: false,
-          	updateSelect: "",
-          	updateId: ""
+            updateSelect: "",
+            updateId: ""
         });
     }
 
@@ -139,11 +144,11 @@ class MainContent extends React.Component {
                 {
                     return (
                         <div>
-                            <ActionForm 
-                      				api={this.handleServerCall} 
-                      				key="viewForm" 
-                      				formType="view" 
-                      				submitForm={this.submitForm} />
+                            <ActionForm
+                                api={this.handleServerCall}
+                                key="viewForm"
+                                formType="view"
+                                submitForm={this.submitForm} />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
@@ -151,7 +156,7 @@ class MainContent extends React.Component {
             case ("add_item"):
                 {
                     if (this.state.showPopup) {
-                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
+                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage} />
                     }
                     return (
                         <div>
@@ -170,21 +175,28 @@ class MainContent extends React.Component {
             case ("update_item"):
                 {
                     if (this.state.showPopup) {
-                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
+                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage} />
                     }
                     if (this.state.showUpdatePopup) {
-                        return <UpdateForm closePopup={this.handleUpdatePopupClose} select={this.state.updateSelect} id={this.state.updateId}/>
+                        return (
+                            <UpdateForm
+                                closePopup={this.handleUpdatePopupClose}
+                                select={this.state.updateSelect}
+                                id={this.state.updateId}
+                                idName={this.state.updateIdName}
+                            />
+                        );
                     }
                     return (
                         <div>
-                            <ActionForm 
-                      				api={this.handleServerCall} 
-                      				key="updateForm" 
-                      				formType="update" 
-                      				submitForm={this.submitForm} 
-                      				popup={this.handlePopup}
-                      				updatePopup={this.handleUpdatePopup}
-                      			/>
+                            <ActionForm
+                                api={this.handleServerCall}
+                                key="updateForm"
+                                formType="update"
+                                submitForm={this.submitForm}
+                                popup={this.handlePopup}
+                                updatePopup={this.handleUpdatePopup}
+                            />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
@@ -192,17 +204,17 @@ class MainContent extends React.Component {
             case ("remove_item"):
                 {
                     if (this.state.showPopup) {
-                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
+                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage} />
                     }
                     return (
                         <div>
-                            <ActionForm 
-                      				api={this.handleServerCall} 
-                      				key="removeForm" 
-                      				formType="remove" 
-                      				submitForm={this.submitForm} 
-                      				popup={this.handlePopup}
-                      			/>
+                            <ActionForm
+                                api={this.handleServerCall}
+                                key="removeForm"
+                                formType="remove"
+                                submitForm={this.submitForm}
+                                popup={this.handlePopup}
+                            />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );
@@ -210,17 +222,17 @@ class MainContent extends React.Component {
             case ("search_item"):
                 {
                     if (this.state.showPopup) {
-                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage}/>
+                        return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage} />
                     }
                     return (
                         <div>
-                            <ActionForm 
-                      				api={this.handleServerCall} 
-                      				key="searchForm" 
-                      				formType="search" 
-                      				submitForm={this.submitForm} 
-                      				popup={this.handlePopup}
-                      			/>
+                            <ActionForm
+                                api={this.handleServerCall}
+                                key="searchForm"
+                                formType="search"
+                                submitForm={this.submitForm}
+                                popup={this.handlePopup}
+                            />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
                     );

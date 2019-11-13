@@ -125,7 +125,6 @@ app.post('/view', function (req, res, next) {
 app.post('/search', function (req, res, next) {
     const searchTable = req.body.searchSelect;
     var searchCriteria = req.body.searchAttributeSelect;
-    const searchValue = req.body.searchValue;
     switch (searchCriteria) {
         case ("ASSIGNED WORKER ID"): {
             searchCriteria = "workder_id";
@@ -183,6 +182,7 @@ app.post('/search', function (req, res, next) {
                 break;
             }
     }
+
     if (query) {
         var context = {};
         mysql.pool.query(query, values, function (err, rows, fields) {

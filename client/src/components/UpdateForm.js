@@ -1,26 +1,59 @@
 import React, { Component } from 'react'
 import { Button, Header, Image, Modal, Form, Input } from 'semantic-ui-react'
 import * as ServerCall from '../scripts/ServerCall.js'
+import { Server } from 'http'
 
 class UpdateForm extends Component {
-  state = { open: true }
+  state = { open: false, searchSelect: "", searchAttributeSelect: "", searchValue: "" }
+
+  contents = null;
 
   close = () => this.setState({ open: false }, () => this.props.closePopup())
+
   submit = () => {
     this.setState({ open: false }, () => this.props.closePopup())
   }
 
-  render() {
-    console.log(this.props);
-    const { open } = this.state
+  formContents() {
+    ServerCall.searchData(this.state)
+      .then(res => {
+        switch (this.state.searchSelect) {
+          case ("animal"):
+            {
+              this.contents= (<div>{res[0]["ANIMAL TYPE"]}</div>);
+              this.setState(this.state);
+            }
+          default: return;
+        }
+      })
+      .catch(err => console.log(err));
+      console.log("test");
+  }
 
+  // getContents() {
+  //   this.forumContents()
+  //   .then(res => console.log(res));
+  //   this.setState({ contents: newContents })
+  // }
+
+  componentDidMount() {
+    this.setState({
+      open: true,
+      searchSelect: this.props.select,
+      searchValue: this.props.id,
+      searchAttributeSelect: this.props.idName
+    }, () => this.formContents());
+  }
+
+  render() {
     return (
       <div>
-        <Modal open={open} onClose={this.close}>
+        <Modal open={this.state.open} onClose={this.close}>
           <Modal.Header>POPUP HEADER</Modal.Header>
           <Modal.Content image>
             <Modal.Description>
               <Header>CONTENT HEADER</Header>
+              {this.contents}
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
@@ -33,7 +66,7 @@ class UpdateForm extends Component {
   }
 }
 
-export default UpdateForm 
+export default UpdateForm
 
 
 // const FormExampleEvenlyDividedGroup = () => (

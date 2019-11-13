@@ -326,8 +326,8 @@ class ActionForm extends Component {
             this.props.api(this.state)
             ServerCall.getUpdateIdDropdown({ query: this.state.updateSelect })
                 .then(res => {
-                    options.updateId.idDropdown = res;
-                    this.setState(this.state);
+                    options.updateId.idDropdown = res.responseDropdown;
+                    this.setState({updateIdName: res.idName});
                 })
                 .catch(err => console.log(err));
         });
@@ -422,7 +422,7 @@ class ActionForm extends Component {
         })
     }
     handleUpdateSubmit = (e, { calltype }) => {
-      this.props.updatePopup(this.state.updateSelect, this.state.updateId);
+      this.props.updatePopup(this.state.updateSelect, this.state.updateId, this.state.updateIdName);
 //         this.setState({ calltype: calltype }, () => {
 //             this.props.api(this.state);
 //         })
