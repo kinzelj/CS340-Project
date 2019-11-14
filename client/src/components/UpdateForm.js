@@ -1,27 +1,26 @@
 import React, { Component } from 'react'
-import { Button, Header, Image, Modal, Form, Input } from 'semantic-ui-react'
+import { Button, Header, Modal, Form, Input } from 'semantic-ui-react'
 import * as ServerCall from '../scripts/ServerCall.js'
-import { Server } from 'http'
 
 const options = {
   updateAnimal: {
     key: "dk-updateAnimal",
-    cageDropDown: [{key: ""}]
+    cageDropDown: [{ key: "" }]
   }
 }
 
 class UpdateForm extends Component {
-  state = { 
-    open: false, 
-    searchSelect: "", 
-    searchAttributeSelect: "", 
-    searchValue: "", 
-    
+  state = {
+    open: false,
+    searchSelect: "",
+    searchAttributeSelect: "",
+    searchValue: "",
+
     //add animal
     animalId: "",
     animalType: "",
     animalCage: "",
-    
+
     //add worker
     workerId: "",
     workerFirst: "",
@@ -34,126 +33,166 @@ class UpdateForm extends Component {
   close = () => this.setState({ open: false }, () => this.props.closePopup())
 
   submit = () => {
-    console.log(this.state);
-    this.setState({ open: false }, () => this.props.closePopup())
+    ServerCall.updateItem(this.state)
+      .then(res => {
+        this.setState({ open: false }, () => this.props.closePopup())
+      }).catch(
+        err => {
+          console.log(err)
+          this.setState({ open: false }, () => this.props.closePopup())
+        });
+
   }
-  
+
   getKey = (object, value) => {
-      return Object.keys(object).find(key => object[key] === value);
+    return Object.keys(object).find(key => object[key] === value);
   }
-  
+
   handleSelectChange = (e, { name, value }) => {
-      this.setState({ [name]: value }, () => this.showContents());
+    this.setState({ [name]: value }, () => this.showContents());
   }
-  
+
+  handleInputChange = (e, { name, value }) => {
+    this.setState({
+      [name]: value.toUpperCase()
+    }, () => this.showContents())
+  }
+
   getInitialData() {
     ServerCall.searchData(this.state)
       .then(res => {
-      	this.setState({dbData: res[0]})
+        this.setState({ dbData: res[0] })
         const data = this.state.dbData;
-      	switch (this.state.searchSelect) {
-      		case ("animal"):
-          	{
+        switch (this.state.searchSelect) {
+          case ("animal"):
+            {
               this.setState(
                 {
-                  animalType: data["ANIMAL TYPE"], 
+                  animalType: data["ANIMAL TYPE"],
                   animalCage: data["CAGE NUMBER"],
                   animalId: data["ANIMAL ID"]
                 }, () => {
                   ServerCall.getCageDropdown({ query: "cage" })
-                  .then(res => {
-                    options.updateAnimal.cageDropdown = res;
-                    this.showContents();
-                  }).catch(err => console.log(err)); 
-              	}
+                    .then(res => {
+                      options.updateAnimal.cageDropdown = res;
+                      this.showContents();
+                    }).catch(err => console.log(err));
+                }
               )
               break;
             }
-        case ("worker"):
+          case ("worker"):
             {
               this.setState(
                 {
                   workerId: data["WORKER ID"],
-                  workerFirst: data["FIRST NAME"], 
+                  workerFirst: data["FIRST NAME"],
                   workerLast: data["LAST NAME"],
                   workerPosition: data["POSITION"]
                 }, () => { this.showContents() }
               )
               break;
             }
-        default: return;
-      }
-       })
-    	.catch(err => console.log(err));
+          default: return;
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   showContents() {
-    console.log(this.state);
+    const {
+      animalType,
+      animalCage,
+      animalId,
+
+      workerId,
+      workerFirst,
+      workerLast,
+      workerPosition,
+    } = this.state
+
     switch (this.state.searchSelect) {
-      		case ("animal"):
-          	{
-              this.contents= (
-                <div className='formContents'>
-                  <Header>Modify animal data, then submit:</Header>
-                  <Form>
-                    <Form.Group >
-                      <Form.Input 
-                				fluid label='Animal ID' 
-                				placeholder={this.state.animalId} 
-                				readOnly 
-                				width={2} /> 
-                      <Form.Field width={5}>
-                        <label>Animal Type</label>
-                        <Input value={this.state.animalType} />
-                      </Form.Field>
-                      <Form.Select
-                				width = {5}
-                        label = "Animal Assigned Cage"
-                        options={options.updateAnimal.cageDropdown}
-                        name='animalCage'
-                        value={this.state.animalCage}
-                        onChange={this.handleSelectChange}
-                      />
-                    </Form.Group>
-                  </Form>
-                </div>
-              );
-              break;
-            }
-        case ("worker"):
-            {
-              this.contents= (
-                <div className='formContents'>
-                  <Header>Modify worker data, then submit:</Header>
-                  <Form>
-                    <Form.Group >
-                      <Form.Input 
-                				fluid label='Worker ID' 
-                				placeholder={this.state.workerId} 
-                				readOnly 
-                				width={2} 
-                			/> 
-                      <Form.Field width={5}>
-                        <label>Worker First Name</label>
-                        <Input value={this.state.workerFirst} />
-                      </Form.Field>
-                      <Form.Field width={5}>
-                        <label>Worker Last Name</label>
-                        <Input value={this.state.workerLast} />
-                      </Form.Field>
-                      <Form.Field width={5}>
-                        <label>Worker Position</label>
-                        <Input value={this.state.workerPosition} />
-                      </Form.Field>
-                    </Form.Group>
-                  </Form>
-                </div>
-              );
-              break;
-            }
-        default: return;
-      }
-    this.setState({open: true});
+      case ("animal"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Modify animal data, then submit:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Input
+                    fluid label='Animal ID'
+                    placeholder={animalId}
+                    readOnly
+                    width={2}
+                  />
+                  <Form.Field width={5}>
+                    <label>Animal Type</label>
+                    <Input
+                      name="animalType"
+                      value={animalType}
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Field>
+                  <Form.Select
+                    width={5}
+                    label="Animal Assigned Cage"
+                    options={options.updateAnimal.cageDropdown}
+                    name='animalCage'
+                    value={animalCage}
+                    onChange={this.handleSelectChange}
+                  />
+                </Form.Group>
+              </Form>
+            </div>
+          );
+          break;
+        }
+      case ("worker"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Modify worker data, then submit:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Input
+                    fluid label='Worker ID'
+                    placeholder={workerId}
+                    readOnly
+                    width={2}
+                  />
+                  <Form.Field width={5}>
+                    <label>Worker First Name</label>
+                    <Input 
+                      name="workerFirst" 
+                      value={workerFirst} 
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Field>
+                  <Form.Field width={5}>
+                    <label>Worker Last Name</label>
+                    <Input 
+                      name="workerLast" 
+                      value={workerLast} 
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Field>
+                  <Form.Field width={5}>
+                    <label>Worker Position</label>
+                    <Input 
+                      name="workerPosition" 
+                      value={workerPosition} 
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Form>
+            </div>
+          );
+          break;
+        }
+      default: return;
+    }
+    this.setState({ open: true });
   }
 
   componentDidMount() {

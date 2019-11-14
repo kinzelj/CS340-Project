@@ -148,7 +148,7 @@ app.post('/search', function (req, res, next) {
     switch (searchTable) {
         case ('animal'):
             {
-                query =  queryText.selectAnimals + " WHERE " + searchCriteria + "= ?";
+                query = queryText.selectAnimals + " WHERE " + searchCriteria + "= ?";
                 break;
             }
         case ('worker'):
@@ -234,6 +234,38 @@ app.post('/add', function (req, res, next) {
         case ('addAnimalWorker'): { break; }
         case ('addAnimalFood'): { break; }
     }
+});
+
+app.post('/update', function (req, res, next) {
+    var query = null;
+    var values = [];
+    var context = {};
+    const updateTable = req.body.searchSelect;
+    switch (updateTable) {
+        case ('animal'): {
+            query = "UPDATE animal SET animal_type = ?, cage_id = ? WHERE animal_id = ?"
+            values = [req.body.animalType, req.body.animalCage, req.body.animalId];
+            break;
+        }
+        case ('worker'): {
+            query = "UPDATE worker SET first_name = ?, last_name = ?, position = ? WHERE worker_id = ?"
+            values = [req.body.workerFirst, req.body.workerLast, req.body.workerPosition, req.body.workerId];
+            break;
+        }
+        case ('food'): { break; }
+        case ('food_animal'): { break; }
+        case ('worker_animal'): { break; }
+        case ('addAnimalFood'): { break; }
+    }
+    mysql.pool.query(query, values, function (err, rows, fields) {
+        if (err) {
+            next(err);
+            return;
+        }
+        context.results = JSON.stringify(rows);
+        res.send(context.results);
+    })
+    return;
 });
 
 app.get('*', (req, res) => {

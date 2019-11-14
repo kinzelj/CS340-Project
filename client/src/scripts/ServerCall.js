@@ -22,6 +22,17 @@ export const addItem = async (props) => {
     return responseData;
 }
 
+export const updateItem = async (props) => {
+    const options = {
+        method: 'POST',
+        url: '/update',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    return responseData;
+}
+
 export const searchData = async (props) => {
     const options = {
         method: 'POST',
