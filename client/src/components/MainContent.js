@@ -128,14 +128,24 @@ class MainContent extends React.Component {
             updateIdName: idName
         });
     }
-    handleUpdatePopupClose = () => {
+    handleUpdatePopupClose = (type, statusMessage) => {
+      	var title;
+        var message;
+      	if (statusMessage === "success") {
+          title = "SUCCESS!"
+          message = type + " successfully updated in zoo database.";
+        }
+        else {
+          title = "ERROR!";
+          message = "Unable to update " + type + " ---> " + statusMessage;
+      	}
         this.setState({
             headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
             tableData: [{}],
             showUpdatePopup: false,
             updateSelect: "",
             updateId: ""
-        });
+        }, () => { if(statusMessage != "close") { this.handlePopup(title, message) }});
     }
 
     render() {

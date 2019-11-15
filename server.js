@@ -316,16 +316,25 @@ app.post('/update', function (req, res, next) {
     const updateTable = req.body.searchSelect;
     switch (updateTable) {
         case ('animal'): {
-            query = "UPDATE animal SET animal_type = ?, cage_id = ? WHERE animal_id = ?"
+            query = "UPDATE animal SET animal_type = ?, cage_id = ? WHERE animal_id = ?";
             values = [req.body.animalType, req.body.animalCage, req.body.animalId];
             break;
         }
         case ('worker'): {
-            query = "UPDATE worker SET first_name = ?, last_name = ?, position = ? WHERE worker_id = ?"
+            query = "UPDATE worker SET first_name = ?, last_name = ?, position = ? WHERE worker_id = ?";
             values = [req.body.workerFirst, req.body.workerLast, req.body.workerPosition, req.body.workerId];
             break;
         }
-        case ('food'): { break; }
+        case ('food'): { 
+          query = "UPDATE food SET food_type = ? WHERE food_id = ?";
+          values = [req.body.foodType, req.body.foodId];
+          break; 
+        }
+        case ('cage'): { 
+          query = "UPDATE cage SET cage_name = ?, cage_size = ? WHERE cage_id = ?";
+          values = [req.body.cageName, req.body.cageSize, req.body.cageId];
+          break;
+        }
         case ('food_animal'): { break; }
         case ('worker_animal'): { break; }
         case ('addAnimalFood'): { break; }

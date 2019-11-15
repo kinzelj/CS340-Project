@@ -16,30 +16,39 @@ class UpdateForm extends Component {
     searchAttributeSelect: "",
     searchValue: "",
 
-    //add animal
+    //update animal
     animalId: "",
     animalType: "",
     animalCage: "",
 
-    //add worker
+    //update worker
     workerId: "",
     workerFirst: "",
     workerLast: "",
-    workerPosition: ""
+    workerPosition: "",
+    
+    //update food
+    foodId: "",
+    foodType: "",
+    
+    //update cage
+    cageId: "",
+    cageName: "",
+    cageSize: "",
   }
 
   contents = null;
 
-  close = () => this.setState({ open: false }, () => this.props.closePopup())
+  close = () => this.setState({ open: false }, () => this.props.closePopup(null, "close"))
 
   submit = () => {
     ServerCall.updateItem(this.state)
       .then(res => {
-        this.setState({ open: false }, () => this.props.closePopup())
+        this.setState({ open: false }, () => this.props.closePopup(this.state.searchSelect.toUpperCase() ,"success"))
       }).catch(
         err => {
           console.log(err)
-          this.setState({ open: false }, () => this.props.closePopup())
+          this.setState({ open: false }, () => this.props.closePopup(this.state.searchSelect.toUpperCase() ,err))
         });
 
   }
@@ -63,6 +72,7 @@ class UpdateForm extends Component {
       .then(res => {
         this.setState({ dbData: res[0] })
         const data = this.state.dbData;
+        console.log(data);
         switch (this.state.searchSelect) {
           case ("animal"):
             {
@@ -93,6 +103,26 @@ class UpdateForm extends Component {
               )
               break;
             }
+            case ("food"):
+            {
+              this.setState(
+                {
+                  foodId: data["FOOD ID"],
+                  foodType: data["FOOD TYPE"]
+                }, () => { this.showContents() }
+              )
+              break;
+            }
+          case ("cage"):
+            {
+              this.setState({
+                cageId: data["CAGE NUMBER"],
+                cageName: data["CAGE NAME"],
+                cageSize: data["SQ FT"]
+              }, () => { this.showContents() }
+             )
+             break;
+            }
           default: return;
         }
       })
@@ -109,6 +139,15 @@ class UpdateForm extends Component {
       workerFirst,
       workerLast,
       workerPosition,
+      
+      foodId,
+      foodType,
+      
+      cageId,
+      cageName,
+      cageSize,
+      
+      
     } = this.state
 
     switch (this.state.searchSelect) {
@@ -181,6 +220,68 @@ class UpdateForm extends Component {
                     <Input 
                       name="workerPosition" 
                       value={workerPosition} 
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Form>
+            </div>
+          );
+          break;
+        }
+        case ("food"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Modify food data, then submit:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Input
+                    fluid label='Food ID'
+                    placeholder={foodId}
+                    readOnly
+                    width={2}
+                  />
+                  <Form.Field width={5}>
+                    <label>Food Type</label>
+                    <Input 
+                      name="foodType" 
+                      value={foodType} 
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Form>
+            </div>
+          );
+          break;
+        }
+        case ("cage"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Modify cage data, then submit:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Input
+                    fluid label='Cage ID'
+                    placeholder={cageId}
+                    readOnly
+                    width={2}
+                  />
+                  <Form.Field width={5}>
+                    <label>CAGE NAME</label>
+                    <Input 
+                      name="cageName" 
+                      value={cageName} 
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Field>
+                  <Form.Field width={5}>
+                    <label>CAGE SIZE</label>
+                    <Input 
+                      name="cageSize" 
+                      value={cageSize} 
                       onChange={this.handleInputChange}
                     />
                   </Form.Field>
