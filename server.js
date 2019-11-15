@@ -228,11 +228,84 @@ app.post('/add', function (req, res, next) {
             })
             break;
         }
-        case ('addWorker'): { break; }
-        case ('addFood'): { break; }
-        case ('addCage'): { break; }
-        case ('addAnimalWorker'): { break; }
-        case ('addAnimalFood'): { break; }
+        case ('addWorker'): { 
+            var context = {};
+            query = "INSERT INTO `worker` (`first_name`, `last_name`, `position`) VALUES (?, ?, ?)";
+            values = [req.body.addWorkerFirst, req.body.addWorkerLast, req.body.addWorkerPosition];
+            mysql.pool.query(query, values, function(err, rows, fields) {
+                if (err) {
+                    console.log('err');
+                    next(err);
+                    return;
+                }
+                context.results = JSON.stringify(rows);
+                res.send(context.results);
+            })
+            break; 
+        }
+        case ('addFood'): {  
+            var context = {};
+            query = "INSERT INTO `food` (`food_type`) VALUES (?)";
+            values = [req.body.addFoodType];
+            mysql.pool.query(query, values, function(err, rows, fields) {
+                if (err) {
+                    console.log('err');
+                    next(err);
+                    return;
+                }
+                context.results = JSON.stringify(rows);
+                res.send(context.results);
+            })
+            break; 
+        }
+        case ('addCage'): { 
+            var context = {};
+            query = "INSERT INTO `cage` (`cage_name`, `cage_size`, `worker_id`) VALUES (?, ?, ?)";
+            if (req.body.addCageSize === '') { 
+                req.body.addCageSize = null;
+            }
+            values = [req.body.addCageName, req.body.addCageSize, req.body.addCageWorker];
+            // console.log(values);
+            mysql.pool.query(query, values, function(err, rows, fields) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                context.results = JSON.stringify(rows);
+                res.send(context.results);
+            })
+            break; 
+        }
+        case ('addAnimalWorker'): { 
+            var context = {};
+            query = "INSERT INTO `worker_animal` (`animal_id`, `worker_id`) VALUES (?, ?)";
+            values = [req.body.assignAnimal, req.body.assignAnimalWorker];
+            // console.log(values);
+            mysql.pool.query(query, values, function(err, rows, fields) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                context.results = JSON.stringify(rows);
+                res.send(context.results);
+            })
+            break; 
+        }
+        case ('addAnimalFood'): { 
+            var context = {};
+            query = "INSERT INTO `food_animal` (`animal_id`, `food_id`) VALUES (?, ?)";
+            values = [req.body.assignAnimalFood, req.body.assignFood];
+            // console.log(values);
+            mysql.pool.query(query, values, function(err, rows, fields) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                context.results = JSON.stringify(rows);
+                res.send(context.results);
+            })
+            break;  
+        }
     }
 });
 
