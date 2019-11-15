@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
 import * as ServerCall from '../scripts/ServerCall.js'
+import { Server } from 'http';
 
 /*******************************************************************
  Dropdown Constants
@@ -381,7 +382,7 @@ class ActionForm extends Component {
                         ServerCall.addItem(this.state)
                             .then(res => {
                                 const title = "SUCCESS!";
-                                const message = "Aniaml successfully added to zoo database."
+                                const message = "Animal successfully added to zoo database."
                                 this.props.popup(title, message);
                             })
                             .catch((error) => {
@@ -393,27 +394,131 @@ class ActionForm extends Component {
                     }
                 case ("addWorker"):
                     {
-                        console.log(this.state);
+                        if (this.state.addWorkerFirst === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: Worker must have First Name."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        if (this.state.addWorkerLast === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: Worker must have Last Name."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        ServerCall.addItem(this.state)
+                            .then(res => {
+                                const title = "SUCCESS!";
+                                const message = "Worker successfully added to zoo database."
+                                this.props.popup(title, message);
+                            })
+                            .catch((error) => {
+                                const title = "ERRROR!";
+                                const message = "Unable to add Worker ---> " + error;
+                                this.props.popup(title, message);
+                            })
                         break;
                     }
                 case ("addCage"):
                     {
-                        console.log(this.state);
+                        if (this.state.addCageWorker === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: Cage must have an assigned Worker ID."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        if (this.state.addCageName === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: Cage must have a name."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        ServerCall.addItem(this.state)
+                        .then(res => {
+                            const title = "SUCCESS!";
+                            const message = "Cage successfully added to zoo database."
+                            this.props.popup(title, message);
+                        })
+                        .catch((error) => {
+                            const title = "ERRROR!";
+                            const message = "Unable to add Cage ---> " + error;
+                            this.props.popup(title, message);
+                        })
                         break;
                     }
                 case ("addFood"):
                     {
-                        console.log(this.state);
+                        if (this.state.addFoodType === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: Food must have a Food Type."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        ServerCall.addItem(this.state)
+                            .then(res => {
+                                const title = "SUCCESS!";
+                                const message = "Food successfully added to zoo database."
+                                this.props.popup(title, message);
+                            })
+                            .catch((error) => {
+                                const title = "ERRROR!";
+                                const message = "Unable to add Food ---> " + error;
+                                this.props.popup(title, message);
+                            })
                         break;
                     }
                 case ("addAnimalWorker"):
                     {
-                        console.log(this.state);
+                        if (this.state.assignAnimal === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: An Animal ID must be chosen."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        if (this.state.assignAnimalWorker === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: A Worker must be chosen."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        ServerCall.addItem(this.state)
+                            .then(res => {
+                                const title = "SUCCESS!";
+                                const message = "Worker-Animal assignment successfully added to zoo database."
+                                this.props.popup(title, message);
+                            })
+                            .catch((error) => {
+                                const title = "ERRROR!";
+                                const message = "Unable to add Food ---> " + error;
+                                this.props.popup(title, message);
+                            })
                         break;
                     }
                 case ("addAnimalFood"):
                     {
-                        console.log(this.state);
+                        if (this.state.assignAnimalFood === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: An Animal ID must be chosen."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        if (this.state.assignFood === "") {
+                            const title = "ERROR!";
+                            const message = "Invalid input: A Food must be chosen."
+                            this.props.popup(title, message);
+                            break;
+                        }
+                        ServerCall.addItem(this.state)
+                            .then(res => {
+                                const title = "SUCCESS!";
+                                const message = "Food-Animal assignment successfully added to zoo database."
+                                this.props.popup(title, message);
+                            })
+                            .catch((error) => {
+                                const title = "ERRROR!";
+                                const message = "Unable to add Food ---> " + error;
+                                this.props.popup(title, message);
+                            })
                         break;
                     }
                 default: return;
