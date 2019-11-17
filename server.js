@@ -228,11 +228,11 @@ app.post('/add', function (req, res, next) {
             })
             break;
         }
-        case ('addWorker'): { 
+        case ('addWorker'): {
             var context = {};
             query = "INSERT INTO `worker` (`first_name`, `last_name`, `position`) VALUES (?, ?, ?)";
             values = [req.body.addWorkerFirst, req.body.addWorkerLast, req.body.addWorkerPosition];
-            mysql.pool.query(query, values, function(err, rows, fields) {
+            mysql.pool.query(query, values, function (err, rows, fields) {
                 if (err) {
                     console.log('err');
                     next(err);
@@ -241,13 +241,13 @@ app.post('/add', function (req, res, next) {
                 context.results = JSON.stringify(rows);
                 res.send(context.results);
             })
-            break; 
+            break;
         }
-        case ('addFood'): {  
+        case ('addFood'): {
             var context = {};
             query = "INSERT INTO `food` (`food_type`) VALUES (?)";
             values = [req.body.addFoodType];
-            mysql.pool.query(query, values, function(err, rows, fields) {
+            mysql.pool.query(query, values, function (err, rows, fields) {
                 if (err) {
                     console.log('err');
                     next(err);
@@ -256,17 +256,17 @@ app.post('/add', function (req, res, next) {
                 context.results = JSON.stringify(rows);
                 res.send(context.results);
             })
-            break; 
+            break;
         }
-        case ('addCage'): { 
+        case ('addCage'): {
             var context = {};
             query = "INSERT INTO `cage` (`cage_name`, `cage_size`, `worker_id`) VALUES (?, ?, ?)";
-            if (req.body.addCageSize === '') { 
+            if (req.body.addCageSize === '') {
                 req.body.addCageSize = null;
             }
             values = [req.body.addCageName, req.body.addCageSize, req.body.addCageWorker];
             // console.log(values);
-            mysql.pool.query(query, values, function(err, rows, fields) {
+            mysql.pool.query(query, values, function (err, rows, fields) {
                 if (err) {
                     next(err);
                     return;
@@ -274,14 +274,14 @@ app.post('/add', function (req, res, next) {
                 context.results = JSON.stringify(rows);
                 res.send(context.results);
             })
-            break; 
+            break;
         }
-        case ('addAnimalWorker'): { 
+        case ('addAnimalWorker'): {
             var context = {};
             query = "INSERT INTO `worker_animal` (`animal_id`, `worker_id`) VALUES (?, ?)";
             values = [req.body.assignAnimal, req.body.assignAnimalWorker];
             // console.log(values);
-            mysql.pool.query(query, values, function(err, rows, fields) {
+            mysql.pool.query(query, values, function (err, rows, fields) {
                 if (err) {
                     next(err);
                     return;
@@ -289,14 +289,14 @@ app.post('/add', function (req, res, next) {
                 context.results = JSON.stringify(rows);
                 res.send(context.results);
             })
-            break; 
+            break;
         }
-        case ('addAnimalFood'): { 
+        case ('addAnimalFood'): {
             var context = {};
             query = "INSERT INTO `food_animal` (`animal_id`, `food_id`) VALUES (?, ?)";
             values = [req.body.assignAnimalFood, req.body.assignFood];
             // console.log(values);
-            mysql.pool.query(query, values, function(err, rows, fields) {
+            mysql.pool.query(query, values, function (err, rows, fields) {
                 if (err) {
                     next(err);
                     return;
@@ -304,7 +304,7 @@ app.post('/add', function (req, res, next) {
                 context.results = JSON.stringify(rows);
                 res.send(context.results);
             })
-            break;  
+            break;
         }
     }
 });
@@ -325,19 +325,31 @@ app.post('/update', function (req, res, next) {
             values = [req.body.workerFirst, req.body.workerLast, req.body.workerPosition, req.body.workerId];
             break;
         }
-        case ('food'): { 
-          query = "UPDATE food SET food_type = ? WHERE food_id = ?";
-          values = [req.body.foodType, req.body.foodId];
-          break; 
+        case ('food'): {
+            query = "UPDATE food SET food_type = ? WHERE food_id = ?";
+            values = [req.body.foodType, req.body.foodId];
+            break;
         }
-        case ('cage'): { 
-          query = "UPDATE cage SET cage_name = ?, cage_size = ? WHERE cage_id = ?";
-          values = [req.body.cageName, req.body.cageSize, req.body.cageId];
-          break;
+        case ('cage'): {
+            query = "UPDATE cage SET cage_name = ?, cage_size = ? WHERE cage_id = ?";
+            values = [req.body.cageName, req.body.cageSize, req.body.cageId];
+            break;
         }
-        case ('food_animal'): { break; }
-        case ('worker_animal'): { break; }
-        case ('addAnimalFood'): { break; }
+        case ('approvedFoods'): {
+            query = "UPDATE food_animal SET food_id = ? WHERE animal_id = ?";
+            values = [req.body.foodId, req.body.animalId];
+            break;
+        }
+        case ('workerAnimal'): {
+            query = "UPDATE worker_animal SET worker_id = ? WHERE animal_id = ?";
+            values = [req.body.workerId, req.body.animalId];
+            break;
+        }
+        case ('workerCage'): {
+            query = "UPDATE cage SET worker_id = ? WHERE cage_id = ?";
+            values = [req.body.workerId, req.body.cageId];
+            break;
+        }
     }
     mysql.pool.query(query, values, function (err, rows, fields) {
         if (err) {
@@ -350,6 +362,11 @@ app.post('/update', function (req, res, next) {
     return;
 });
 
+app.post('/remove', function (req, res, next) {
+    //reset table id auto-increment:
+    // ALTER TABLE table_name AUTO_INCREMENT = 1
+});
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
@@ -357,5 +374,4 @@ app.get('*', (req, res) => {
 var server = app.listen(port, () => console.log(`Server started on port ${port}`));
 server.timeout = 10000;
 
-//reset table id auto-increment
-// ALTER TABLE table_name AUTO_INCREMENT = 1
+

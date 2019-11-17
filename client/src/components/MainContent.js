@@ -145,7 +145,7 @@ class MainContent extends React.Component {
             showUpdatePopup: false,
             updateSelect: "",
             updateId: ""
-        }, () => { if(statusMessage != "close") { this.handlePopup(title, message) }});
+        }, () => { if(statusMessage !== "close") { this.handlePopup(title, message) }});
     }
 
     render() {

@@ -6,6 +6,14 @@ const options = {
   updateAnimal: {
     key: "dk-updateAnimal",
     cageDropDown: [{ key: "" }]
+  },
+  updateApprovedFood: {
+    key: 'dk-updateApprovedFood',
+    foodDropdown: [{ key: "" }]
+  },
+  updateAnimalWorker: {
+    key: 'dk-updateAnimalWorker',
+    workerDropdown: [{ key: "" }]
   }
 }
 
@@ -15,26 +23,20 @@ class UpdateForm extends Component {
     searchSelect: "",
     searchAttributeSelect: "",
     searchValue: "",
-
-    //update animal
     animalId: "",
     animalType: "",
     animalCage: "",
-
-    //update worker
     workerId: "",
     workerFirst: "",
     workerLast: "",
     workerPosition: "",
-    
-    //update food
     foodId: "",
     foodType: "",
-    
-    //update cage
     cageId: "",
     cageName: "",
     cageSize: "",
+    foodEntryId: "",
+    animalWorkerEntryId: ""
   }
 
   contents = null;
@@ -44,11 +46,11 @@ class UpdateForm extends Component {
   submit = () => {
     ServerCall.updateItem(this.state)
       .then(res => {
-        this.setState({ open: false }, () => this.props.closePopup(this.state.searchSelect.toUpperCase() ,"success"))
+        this.setState({ open: false }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), "success"))
       }).catch(
         err => {
           console.log(err)
-          this.setState({ open: false }, () => this.props.closePopup(this.state.searchSelect.toUpperCase() ,err))
+          this.setState({ open: false }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), err))
         });
 
   }
@@ -70,61 +72,118 @@ class UpdateForm extends Component {
   getInitialData() {
     ServerCall.searchData(this.state)
       .then(res => {
-        this.setState({ dbData: res[0] })
-        const data = this.state.dbData;
-        console.log(data);
-        switch (this.state.searchSelect) {
-          case ("animal"):
-            {
-              this.setState(
-                {
+        this.setState({ dbData: res[0] }, () => {
+          const data = this.state.dbData;
+          switch (this.state.searchSelect) {
+            case ("animal"):
+              {
+                this.setState(
+                  {
+                    animalType: data["ANIMAL TYPE"],
+                    animalCage: data["CAGE NUMBER"],
+                    animalId: data["ANIMAL ID"]
+                  }, () => {
+                    ServerCall.getCageDropdown({ query: "cage" })
+                      .then(res => {
+                        options.updateAnimal.cageDropdown = res;
+                        this.showContents();
+                      }).catch(err => console.log(err));
+                  }
+                )
+                break;
+              }
+            case ("worker"):
+              {
+                this.setState(
+                  {
+                    workerId: data["WORKER ID"],
+                    workerFirst: data["FIRST NAME"],
+                    workerLast: data["LAST NAME"],
+                    workerPosition: data["POSITION"]
+                  }, () => { this.showContents() }
+                )
+                break;
+              }
+            case ("food"):
+              {
+                this.setState(
+                  {
+                    foodId: data["FOOD ID"],
+                    foodType: data["FOOD TYPE"]
+                  }, () => { this.showContents() }
+                )
+                break;
+              }
+            case ("cage"):
+              {
+                this.setState({
+                  cageId: data["CAGE NUMBER"],
+                  cageName: data["CAGE NAME"],
+                  cageSize: data["SQ FT"]
+                }, () => { this.showContents() }
+                )
+                break;
+              }
+            case ("approvedFoods"):
+              {
+                this.setState({
+                  foodEntryId: data["ENTRY ID"],
+                  animalId: data["ANIMAL ID"],
                   animalType: data["ANIMAL TYPE"],
-                  animalCage: data["CAGE NUMBER"],
-                  animalId: data["ANIMAL ID"]
                 }, () => {
-                  ServerCall.getCageDropdown({ query: "cage" })
+                  ServerCall.getFoodDropdown({ query: "food" })
                     .then(res => {
-                      options.updateAnimal.cageDropdown = res;
+                      options.updateApprovedFood.foodDropdown = res;
+                      const indexSearch = (foodName) => {
+                        const i = options.updateApprovedFood.foodDropdown.findIndex(
+                          (dropdownArray) => { return (dropdownArray.text === foodName) });
+                        return (options.updateApprovedFood.foodDropdown[i].value);
+                      }
+                      this.setState({ foodId: indexSearch(data["FOOD TYPE"]) }, () => {
+                        this.showContents();
+                      });
+
+                    }).catch(err => console.log(err));
+                }
+                )
+                break;
+              }
+            case ("workerAnimal"):
+              {
+                this.setState({
+                  animalWorkerEntryId: data["ENTRY ID"],
+                  animalId: data["ANIMAL ID"],
+                  animalType: data["ANIMAL TYPE"],
+                  workerId: data["ASSIGNED WORKER ID"]
+                }, () => {
+                  ServerCall.getWorkersDropdown({ query: "worker" })
+                    .then(res => {
+                      options.updateAnimalWorker.workerDropdown = res;
                       this.showContents();
                     }).catch(err => console.log(err));
                 }
-              )
-              break;
-            }
-          case ("worker"):
-            {
-              this.setState(
-                {
-                  workerId: data["WORKER ID"],
-                  workerFirst: data["FIRST NAME"],
-                  workerLast: data["LAST NAME"],
-                  workerPosition: data["POSITION"]
-                }, () => { this.showContents() }
-              )
-              break;
-            }
-            case ("food"):
-            {
-              this.setState(
-                {
-                  foodId: data["FOOD ID"],
-                  foodType: data["FOOD TYPE"]
-                }, () => { this.showContents() }
-              )
-              break;
-            }
-          case ("cage"):
-            {
-              this.setState({
-                cageId: data["CAGE NUMBER"],
-                cageName: data["CAGE NAME"],
-                cageSize: data["SQ FT"]
-              }, () => { this.showContents() }
-             )
-             break;
-            }
-          default: return;
-        }
+                )
+                break;
+              }
+            case ("workerCage"):
+              {
+                this.setState({
+                  cageId: data["CAGE NUMBER"],
+                  cageName: data["CAGE NAME"],
+                  workerId: data["ASSIGNED WORKER ID"]
+                }, () => {
+                  ServerCall.getWorkersDropdown({ query: "worker" })
+                    .then(res => {
+                      options.updateAnimalWorker.workerDropdown = res;
+                      this.showContents();
+                    }).catch(err => console.log(err));
+                }
+                )
+                break;
+              }
+            default: return;
+          }
+        })
       })
       .catch(err => console.log(err));
   }
@@ -134,20 +193,17 @@ class UpdateForm extends Component {
       animalType,
       animalCage,
       animalId,
-
       workerId,
       workerFirst,
       workerLast,
       workerPosition,
-      
       foodId,
       foodType,
-      
       cageId,
       cageName,
       cageSize,
-      
-      
+      foodEntryId,
+      animalWorkerEntryId,
     } = this.state
 
     switch (this.state.searchSelect) {
@@ -201,25 +257,25 @@ class UpdateForm extends Component {
                   />
                   <Form.Field width={5}>
                     <label>Worker First Name</label>
-                    <Input 
-                      name="workerFirst" 
-                      value={workerFirst} 
+                    <Input
+                      name="workerFirst"
+                      value={workerFirst}
                       onChange={this.handleInputChange}
                     />
                   </Form.Field>
                   <Form.Field width={5}>
                     <label>Worker Last Name</label>
-                    <Input 
-                      name="workerLast" 
-                      value={workerLast} 
+                    <Input
+                      name="workerLast"
+                      value={workerLast}
                       onChange={this.handleInputChange}
                     />
                   </Form.Field>
                   <Form.Field width={5}>
                     <label>Worker Position</label>
-                    <Input 
-                      name="workerPosition" 
-                      value={workerPosition} 
+                    <Input
+                      name="workerPosition"
+                      value={workerPosition}
                       onChange={this.handleInputChange}
                     />
                   </Form.Field>
@@ -229,7 +285,7 @@ class UpdateForm extends Component {
           );
           break;
         }
-        case ("food"):
+      case ("food"):
         {
           this.contents = (
             <div className='formContents'>
@@ -244,9 +300,9 @@ class UpdateForm extends Component {
                   />
                   <Form.Field width={5}>
                     <label>Food Type</label>
-                    <Input 
-                      name="foodType" 
-                      value={foodType} 
+                    <Input
+                      name="foodType"
+                      value={foodType}
                       onChange={this.handleInputChange}
                     />
                   </Form.Field>
@@ -256,7 +312,7 @@ class UpdateForm extends Component {
           );
           break;
         }
-        case ("cage"):
+      case ("cage"):
         {
           this.contents = (
             <div className='formContents'>
@@ -271,23 +327,122 @@ class UpdateForm extends Component {
                   />
                   <Form.Field width={5}>
                     <label>CAGE NAME</label>
-                    <Input 
-                      name="cageName" 
-                      value={cageName} 
+                    <Input
+                      name="cageName"
+                      value={cageName}
                       onChange={this.handleInputChange}
                     />
                   </Form.Field>
                   <Form.Field width={5}>
                     <label>CAGE SIZE</label>
-                    <Input 
-                      name="cageSize" 
-                      value={cageSize} 
+                    <Input
+                      name="cageSize"
+                      value={cageSize}
                       onChange={this.handleInputChange}
                     />
                   </Form.Field>
                 </Form.Group>
               </Form>
             </div>
+          );
+          break;
+        }
+      case ("approvedFoods"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Modify animal approved food, then submit:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Input
+                    fluid label='Entry ID'
+                    placeholder={foodEntryId}
+                    readOnly
+                    width={2}
+                  />
+                  <Form.Input
+                    fluid label='Animal'
+                    placeholder={"Animal ID #" + animalId + ":  " + animalType}
+                    readOnly
+                    width={5}
+                  />
+                  <Form.Select
+                    width={5}
+                    label="Approved Food"
+                    options={options.updateApprovedFood.foodDropdown}
+                    name='foodId'
+                    value={foodId}
+                    onChange={this.handleSelectChange}
+                  />
+                </Form.Group>
+              </Form>
+            </div >
+          );
+          break;
+        }
+      case ("workerAnimal"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Modify assigned animal worker, then submit:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Input
+                    fluid label='Entry ID'
+                    placeholder={animalWorkerEntryId}
+                    readOnly
+                    width={2}
+                  />
+                  <Form.Input
+                    fluid label='Animal'
+                    placeholder={"Animal ID #" + animalId + ":  " + animalType}
+                    readOnly
+                    width={5}
+                  />
+                  <Form.Select
+                    width={5}
+                    label="Assigned Worker"
+                    options={options.updateAnimalWorker.workerDropdown}
+                    name='workerId'
+                    value={workerId}
+                    onChange={this.handleSelectChange}
+                  />
+                </Form.Group>
+              </Form>
+            </div >
+          );
+          break;
+        }
+      case ("workerCage"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Modify assigned cage worker, then submit:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Input
+                    fluid label='Cage Number'
+                    placeholder={cageId}
+                    readOnly
+                    width={2}
+                  />
+                  <Form.Input
+                    fluid label='Cage Name'
+                    placeholder={cageName}
+                    readOnly
+                    width={5}
+                  />
+                  <Form.Select
+                    width={5}
+                    label="Assigned Worker"
+                    options={options.updateAnimalWorker.workerDropdown}
+                    name='workerId'
+                    value={workerId}
+                    onChange={this.handleSelectChange}
+                  />
+                </Form.Group>
+              </Form>
+            </div >
           );
           break;
         }
@@ -325,8 +480,3 @@ class UpdateForm extends Component {
 }
 
 export default UpdateForm
-
-
-// const FormExampleEvenlyDividedGroup = () => (
-
-// )

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
 import * as ServerCall from '../scripts/ServerCall.js'
-import { Server } from 'http';
 
 /*******************************************************************
  Dropdown Constants
