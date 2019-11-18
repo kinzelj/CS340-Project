@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const viewData = async(props) => {
+export const viewData = async (props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -11,8 +11,8 @@ export const viewData = async(props) => {
     return responseData;
 }
 
-export const addItem = async(props) => {
-  const options = {
+export const addItem = async (props) => {
+    const options = {
         method: 'POST',
         url: '/add',
         data: props
@@ -22,7 +22,18 @@ export const addItem = async(props) => {
     return responseData;
 }
 
-export const searchData = async(props) => {
+export const updateItem = async (props) => {
+    const options = {
+        method: 'POST',
+        url: '/update',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    return responseData;
+}
+
+export const searchData = async (props) => {
     const options = {
         method: 'POST',
         url: '/search',
@@ -33,7 +44,7 @@ export const searchData = async(props) => {
     return responseData;
 }
 
-export const getFoodDropdown = async(props) => {
+export const getFoodDropdown = async (props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -47,7 +58,7 @@ export const getFoodDropdown = async(props) => {
     return responseDropdown;
 }
 
-export const getWorkersDropdown = async(props) => {
+export const getWorkersDropdown = async (props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -56,11 +67,11 @@ export const getWorkersDropdown = async(props) => {
     const response = await axios(options);
     const responseData = await response.data;
     const responseDropdown = responseData.map((value, index) => {
-        return { key: "dk-"+value["LAST NAME"]+index, text: value["FIRST NAME"] + " " + value["LAST NAME"], value: value["WORKER ID"] };
+        return { key: "dk-" + value["LAST NAME"] + index, text: value["FIRST NAME"] + " " + value["LAST NAME"], value: value["WORKER ID"] };
     });
     return responseDropdown;
 }
-export const getAnimalDropdown = async(props) => {
+export const getAnimalDropdown = async (props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -69,13 +80,13 @@ export const getAnimalDropdown = async(props) => {
     const response = await axios(options);
     const responseData = await response.data;
     const responseDropdown = responseData.map((value, index) => {
-        return { key: "dk-"+value["ANIMAL TYPE"]+index, text: value["ANIMAL ID"], value: value["ANIMAL ID"] };
+        return { key: "dk-" + value["ANIMAL TYPE"] + index, text: value["ANIMAL ID"], value: value["ANIMAL ID"] };
     });
-    responseDropdown.sort(function(a,b) {return a.text-b.text });
+    responseDropdown.sort(function (a, b) { return a.text - b.text });
     return responseDropdown;
 }
 
-export const getCageDropdown = async(props) => {
+export const getCageDropdown = async (props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -86,11 +97,11 @@ export const getCageDropdown = async(props) => {
     const responseDropdown = responseData.map((value, index) => {
         return { text: value["CAGE NAME"], value: value["CAGE NUMBER"] };
     });
-    responseDropdown.sort(function(a,b) {return a.text-b.text });
+    responseDropdown.sort(function (a, b) { return a.text - b.text });
     return responseDropdown;
 }
 
-export const getUpdateIdDropdown = async(props) => {
+export const getUpdateIdDropdown = async (props) => {
     const options = {
         method: 'POST',
         url: '/view',
@@ -98,29 +109,40 @@ export const getUpdateIdDropdown = async(props) => {
     }
     const response = await axios(options);
     const responseData = await response.data;
-    const responseDropdown = responseData.map((value, index) => {
+    var results = { resonseDropdown: {}, idName: "" }
+    results.responseDropdown = responseData.map((value, index) => {
         switch (props.query) {
             case ("animal"):
-                return { text: value["ANIMAL ID"], value: value["ANIMAL ID"] };
+                return { key: "uk-" + value["ANIMAL TYPE"] + index, text: value["ANIMAL ID"], value: value["ANIMAL ID"] };
             case ("worker"):
-                return { text: value["WORKER ID"], value: value["WORKER ID"] };
+                return { key: "uk-" + value["LAST NAME"] + index, text: value["WORKER ID"], value: value["WORKER ID"] };
             case ("food"):
-                return { text: value["FOOD ID"], value: value["FOOD ID"] };
+                return { key: "uk-" + value["FOOD TYPE"] + index, text: value["FOOD ID"], value: value["FOOD ID"] };
             case ("cage"):
-                return { text: value["CAGE NUMBER"], value: value["CAGE NUMBER"] };
+                return { key: "uk-" + value["CAGE NAME"] + index, text: value["CAGE NUMBER"], value: value["CAGE NUMBER"] };
             case ("approvedFoods"):
-                return { text: value["ENTRY ID"], value: value["ENTRY ID"] };
+                return { key: "uk-" + value["ANIMAL TYPE"] + index, text: value["ENTRY ID"], value: value["ENTRY ID"] };
             case ("workerAnimal"):
-                return { text: value["ENTRY ID"], value: value["ENTRY ID"] };
+                return { key: "uk-" + value["ANIMAL TYPE"] + index, text: value["ENTRY ID"], value: value["ENTRY ID"] };
             case ("workerCage"):
-                return { text: value["CAGE NUMBER"], value: value["CAGE NUMBER"] };
+                return { key: "uk-" + value["CAGE NAME"] + index, text: value["CAGE NUMBER"], value: value["CAGE NUMBER"] };
             default: return {};
         }
     });
-    return responseDropdown;
+    switch (props.query) {
+        case ("animal"): { results.idName = "ANIMAL ID"; break; }
+        case ("worker"): { results.idName = "WORKER ID"; break; }
+        case ("food"): { results.idName = "FOOD ID"; break; }
+        case ("cage"): { results.idName = "CAGE NUMBER"; break; }
+        case ("approvedFoods"): { results.idName = "ENTRY ID"; break; }
+        case ("workerAnimal"): { results.idName = "ENTRY ID"; break; }
+        case ("workerCage"): { results.idName = "CAGE NUMBER"; break; }
+        default: return {};
+    }
+    return results;
 }
 
-export const getSearchDropdown = async(props) => {
+export const getSearchDropdown = async (props) => {
     const options = {
         method: 'POST',
         url: '/view',
