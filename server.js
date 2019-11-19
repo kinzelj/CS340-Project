@@ -359,12 +359,24 @@ app.post('/update', function (req, res, next) {
         context.results = JSON.stringify(rows);
         res.send(context.results);
     })
-    return;
 });
 
 app.post('/remove', function (req, res, next) {
-    //reset table id auto-increment:
-    // ALTER TABLE table_name AUTO_INCREMENT = 1
+  console.log(req.body);
+  res.send("/remove called");
+});
+
+app.post('/refreshId', function (req, res, next) {
+  var context = {};
+  var query = "ALTER TABLE " + req.body.searchSelect + " AUTO_INCREMENT = 1";
+  mysql.pool.query(query, function (err, rows, fields) {
+      if (err) {
+          next(err);
+          return;
+      }
+      context.results = JSON.stringify(rows);
+      res.send(context.results);
+  })
 });
 
 app.get('*', (req, res) => {

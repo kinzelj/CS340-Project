@@ -4,6 +4,7 @@ import ActionForm from './ActionForm.js'
 import UpdateForm from './UpdateForm.js'
 import * as ServerCall from '../scripts/ServerCall.js'
 import Popup from './Popup.js'
+import RemovePopup from './RemovePopup.js'
 
 /*******************************************************************
  Main body component that will contain all data rendered to browser 
@@ -20,7 +21,11 @@ class MainContent extends React.Component {
         showUpdatePopup: false,
         updateSelect: "",
         updateId: "",
-        updateIdName: ""
+        updateIdName: "",
+      	showRemovePopup: false,
+      	removeSelect: "",
+      	removeId: "",
+      	removeIdName: "",
     };
 
     submitForm = (formData) => {
@@ -115,6 +120,7 @@ class MainContent extends React.Component {
             headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
             tableData: [{}],
             showPopup: false,
+            showRemovePopup: false,
             popupTitle: "",
             popupMessage: ""
         });
@@ -145,6 +151,34 @@ class MainContent extends React.Component {
             showUpdatePopup: false,
             updateSelect: "",
             updateId: ""
+        }, () => { if(statusMessage !== "close") { this.handlePopup(title, message) }});
+    }
+    
+    handleRemovePopup = (select, id, idName) => {
+        this.setState({
+            showRemovePopup: true,
+            removeSelect: select,
+            removeId: id,
+            removeIdName: idName
+        });
+    }
+    handleRemovePopupClose = (type, statusMessage) => {
+      	var title;
+        var message;
+      	if (statusMessage === "success") {
+          title = "SUCCESS!"
+          message = type + " successfully remove from zoo database.";
+        }
+        else {
+          title = "ERROR!";
+          message = "Unable to remove " + type + " ---> " + statusMessage;
+      	}
+        this.setState({
+            headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
+            tableData: [{}],
+            showRemovePopup: false,
+            removeSelect: "",
+            removeId: ""
         }, () => { if(statusMessage !== "close") { this.handlePopup(title, message) }});
     }
 
@@ -216,6 +250,16 @@ class MainContent extends React.Component {
                     if (this.state.showPopup) {
                         return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage} />
                     }
+                    if (this.state.showRemovePopup) {
+                      return (
+                          <RemovePopup
+                              closePopup={this.handleRemovePopupClose}
+                              select={this.state.removeSelect}
+                              id={this.state.removeId}
+                              idName={this.state.removeIdName}
+                          />
+                      );
+                  	}
                     return (
                         <div>
                             <ActionForm
@@ -224,6 +268,7 @@ class MainContent extends React.Component {
                                 formType="remove"
                                 submitForm={this.submitForm}
                                 popup={this.handlePopup}
+                      					removePopup={this.handleRemovePopup}
                             />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>

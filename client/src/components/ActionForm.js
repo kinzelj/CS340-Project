@@ -198,9 +198,11 @@ class ActionForm extends Component {
         //options for Update form:
         updateSelect: "",
         updateId: "",
+      	updateIdName: "",
 
         removeSelect: "",
         removeId: "",
+      	removeIdName: "",
 
         searchValue: "",
         searchSelect: "",
@@ -323,6 +325,7 @@ class ActionForm extends Component {
             [name]: value,
             calltype: calltype
         }, () => {
+          console.log(this.state);
             this.props.api(this.state)
             ServerCall.getUpdateIdDropdown({ query: this.state.updateSelect })
                 .then(res => {
@@ -341,8 +344,8 @@ class ActionForm extends Component {
             this.props.api(this.state)
             ServerCall.getUpdateIdDropdown({ query: this.state.removeSelect })
                 .then(res => {
-                    options.removeId.idDropdown = res;
-                    this.setState(this.state);
+                    options.removeId.idDropdown = res.responseDropdown;
+                    this.setState({removeIdName: res.idName});
                 })
                 .catch(err => console.log(err));
         });
@@ -527,14 +530,9 @@ class ActionForm extends Component {
     }
     handleUpdateSubmit = (e, { calltype }) => {
       this.props.updatePopup(this.state.updateSelect, this.state.updateId, this.state.updateIdName);
-//         this.setState({ calltype: calltype }, () => {
-//             this.props.api(this.state);
-//         })
     }
     handleRemoveSubmit = (e, { calltype }) => {
-        this.setState({ calltype: calltype }, () => {
-            this.props.api(this.state);
-        })
+      this.props.removePopup(this.state.removeSelect, this.state.removeId, this.state.removeIdName);
     }
     handleSearchSubmit = (e, { calltype }) => {
         this.setState({ calltype: calltype }, () => {

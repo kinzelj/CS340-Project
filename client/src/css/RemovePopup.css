@@ -1,0 +1,5 @@
+.ui.form input:not([type]),.ui.form input[type=number],.ui.form input[type=text] {
+  background-color: #fff6f6;
+  border-color: #e0b4b4;
+  color: #9f3a38;
+}

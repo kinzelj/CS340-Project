@@ -29,7 +29,7 @@ CREATE TABLE `cage` (
     `cage_size` int(11),
     `worker_id` smallint(5) unsigned NOT NULL,
     PRIMARY KEY (`cage_id`),
-    CONSTRAINT `fk_cage_worker` FOREIGN KEY (`worker_id`) REFERENCES `worker`(`worker_id`) ON UPDATE CASCADE 
+    CONSTRAINT `fk_cage_worker` FOREIGN KEY (`worker_id`) REFERENCES `worker`(`worker_id`)
 );
 
 INSERT INTO `cage`(`cage_name`, `cage_size`, `worker_id`) VALUES
@@ -49,7 +49,7 @@ CREATE TABLE `animal` (
     `animal_type` VARCHAR(255) NOT NULL,
     `cage_id` smallint(5) unsigned NOT NULL,
     PRIMARY KEY (`animal_id`),
-    CONSTRAINT `fk_animal_cage` FOREIGN KEY (`cage_id`) REFERENCES `cage`(`cage_id`) ON UPDATE CASCADE 
+    CONSTRAINT `fk_animal_cage` FOREIGN KEY (`cage_id`) REFERENCES `cage`(`cage_id`) 
 );
 
 INSERT INTO `animal`(`animal_type`, `cage_id`) VALUES
@@ -83,8 +83,8 @@ CREATE TABLE `food_animal` (
     `food_id` smallint(5) unsigned NOT NULL,
     `animal_id` smallint(5) unsigned NOT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_food_animal_food` FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`) ON UPDATE CASCADE,
-    CONSTRAINT `fk_food_animal_animal` FOREIGN KEY (`animal_id`) REFERENCES `animal`(`animal_id`) ON UPDATE CASCADE 
+    CONSTRAINT `fk_food_animal_food` FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_food_animal_animal` FOREIGN KEY (`animal_id`) REFERENCES `animal`(`animal_id`) ON DELETE CASCADE 
 );
 
 INSERT INTO `food_animal`(`food_id`, `animal_id`) VALUES
@@ -107,8 +107,8 @@ CREATE TABLE `worker_animal` (
     `worker_id` smallint(5) unsigned NOT NULL,
     `animal_id` smallint(5) unsigned NOT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_worker_animal_worker` FOREIGN KEY (`worker_id`) REFERENCES `worker`(`worker_id`) ON UPDATE CASCADE, 
-    CONSTRAINT `fk_worker_animal_animal` FOREIGN KEY (`animal_id`) REFERENCES `animal`(`animal_id`) ON UPDATE CASCADE 
+    CONSTRAINT `fk_worker_animal_worker` FOREIGN KEY (`worker_id`) REFERENCES `worker`(`worker_id`) ON DELETE CASCADE, 
+    CONSTRAINT `fk_worker_animal_animal` FOREIGN KEY (`animal_id`) REFERENCES `animal`(`animal_id`) ON DELETE CASCADE 
 );
 
 INSERT INTO `worker_animal`(`worker_id`, `animal_id`) VALUES

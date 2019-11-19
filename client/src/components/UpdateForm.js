@@ -214,12 +214,14 @@ class UpdateForm extends Component {
               <Header>Modify animal data, then submit:</Header>
               <Form>
                 <Form.Group >
-                  <Form.Input
-                    fluid label='Animal ID'
-                    placeholder={animalId}
-                    readOnly
-                    width={2}
-                  />
+                  <Form.Field width={2}>
+                    <label>Animal ID</label>
+                    <Input
+                      placeholder={animalId}
+                      readOnly
+                      width={2}
+                    />
+                  </Form.Field>
                   <Form.Field width={5}>
                     <label>Animal Type</label>
                     <Input
@@ -249,12 +251,14 @@ class UpdateForm extends Component {
               <Header>Modify worker data, then submit:</Header>
               <Form>
                 <Form.Group >
-                  <Form.Input
-                    fluid label='Worker ID'
-                    placeholder={workerId}
-                    readOnly
-                    width={2}
-                  />
+                   <Form.Field width={2}>
+                    <label>Worker ID</label>
+                    <Input
+                      placeholder={workerId}
+                      readOnly
+                      width={2}
+                    />
+                  </Form.Field>
                   <Form.Field width={5}>
                     <label>Worker First Name</label>
                     <Input
@@ -292,12 +296,14 @@ class UpdateForm extends Component {
               <Header>Modify food data, then submit:</Header>
               <Form>
                 <Form.Group >
-                  <Form.Input
-                    fluid label='Food ID'
-                    placeholder={foodId}
-                    readOnly
-                    width={2}
-                  />
+                  <Form.Field width={2}>
+                    <label>Food ID</label>
+                    <Input
+                      placeholder={foodId}
+                      readOnly
+                      width={2}
+                    />
+                  </Form.Field>
                   <Form.Field width={5}>
                     <label>Food Type</label>
                     <Input
@@ -319,12 +325,14 @@ class UpdateForm extends Component {
               <Header>Modify cage data, then submit:</Header>
               <Form>
                 <Form.Group >
-                  <Form.Input
-                    fluid label='Cage ID'
-                    placeholder={cageId}
-                    readOnly
-                    width={2}
-                  />
+                  <Form.Field width={2}>
+                    <label>Cage ID</label>
+                    <Input
+                      placeholder={cageId}
+                      readOnly
+                      width={2}
+                    />
+                  </Form.Field>
                   <Form.Field width={5}>
                     <label>CAGE NAME</label>
                     <Input
@@ -354,12 +362,14 @@ class UpdateForm extends Component {
               <Header>Modify animal approved food, then submit:</Header>
               <Form>
                 <Form.Group >
-                  <Form.Input
-                    fluid label='Entry ID'
-                    placeholder={foodEntryId}
-                    readOnly
-                    width={2}
-                  />
+                  <Form.Field width={2}>
+                    <label>Entry ID</label>
+                    <Input
+                      placeholder={foodEntryId}
+                      readOnly
+                      width={2}
+                    />
+                  </Form.Field>
                   <Form.Input
                     fluid label='Animal'
                     placeholder={"Animal ID #" + animalId + ":  " + animalType}
@@ -387,12 +397,14 @@ class UpdateForm extends Component {
               <Header>Modify assigned animal worker, then submit:</Header>
               <Form>
                 <Form.Group >
-                  <Form.Input
-                    fluid label='Entry ID'
-                    placeholder={animalWorkerEntryId}
-                    readOnly
-                    width={2}
-                  />
+                  <Form.Field width={2}>
+                    <label>Entry ID</label>
+                    <Input
+                      placeholder={animalWorkerEntryId}
+                      readOnly
+                      width={2}
+                    />
+                  </Form.Field>
                   <Form.Input
                     fluid label='Animal'
                     placeholder={"Animal ID #" + animalId + ":  " + animalType}
@@ -420,12 +432,14 @@ class UpdateForm extends Component {
               <Header>Modify assigned cage worker, then submit:</Header>
               <Form>
                 <Form.Group >
-                  <Form.Input
-                    fluid label='Cage Number'
-                    placeholder={cageId}
-                    readOnly
-                    width={2}
-                  />
+                   <Form.Field width={2}>
+                    <label>Cage Number</label>
+                    <Input
+                      placeholder={cageId}
+                      readOnly
+                      width={2}
+                    />
+                  </Form.Field>
                   <Form.Input
                     fluid label='Cage Name'
                     placeholder={cageName}
