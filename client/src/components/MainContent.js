@@ -169,6 +169,16 @@ class MainContent extends React.Component {
           title = "SUCCESS!"
           message = type + " successfully remove from zoo database.";
         }
+      	else if (statusMessage === "worker") {
+          title = "ERROR!";
+          message = "Unable to remove WORKER from database, likely due to this WORKER being assigned to a CAGE in the zoo.\n" +
+            			"Before removing WORKER, please make sure any CAGE assigned to this WORKER has been re-assigned first.";
+        }
+      	else if (statusMessage === "cage") {
+          title = "ERROR!";
+          message = "Unable to remove CAGE from database, likely due to one or more ANIMAL assigned to this cage.\n" +
+            			"Before removing CAGE, please make sure any ANIMAL assigned to this CAGE has been re-assigned first.";
+        }
         else {
           title = "ERROR!";
           message = "Unable to remove " + type + " ---> " + statusMessage;

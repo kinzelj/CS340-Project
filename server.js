@@ -366,19 +366,6 @@ app.post('/remove', function (req, res, next) {
   res.send("/remove called");
 });
 
-app.post('/refreshId', function (req, res, next) {
-  var context = {};
-  var query = "ALTER TABLE " + req.body.searchSelect + " AUTO_INCREMENT = 1";
-  mysql.pool.query(query, function (err, rows, fields) {
-      if (err) {
-          next(err);
-          return;
-      }
-      context.results = JSON.stringify(rows);
-      res.send(context.results);
-  })
-});
-
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });

@@ -32,30 +32,18 @@ class RemovePopup extends Component {
   deleteItem = () => {
     ServerCall.removeItem(this.state)
       .then(res => {
+        this.setState({
+        open: false
+        }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), "success"))
         console.log(res);
-        ServerCall.refreshId(this.state)
-          .then(res => {
-            this.setState({
-              open: false
-            }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), "success"))
-          }).catch(err => {
-            console.log(err)
-            this.setState({
-              open: false
-            }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), err))
-          })
       }).catch(
         err => {
           console.log(err)
           this.setState({
             open: false
-          }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), err))
+          }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), this.state.searchSelect))
         });
   }
-
-//   getKey = (object, value) => {
-//     return Object.keys(object).find(key => object[key] === value);
-//   }
 
   getInitialData() {
     ServerCall.searchData(this.state)
@@ -173,6 +161,7 @@ class RemovePopup extends Component {
                   <Form.Field width={2}>
                     <label>Animal ID</label>
                     <Input
+            					id="remove-input"
             					readOnly
                       value={animalId}
                     />
@@ -180,6 +169,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Animal Type</label>
                     <Input
+            					id="remove-input"
                     	readOnly
                       value={animalType}
                     />
@@ -187,6 +177,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Animal Assigned Cage</label>
                     <Input
+            					id="remove-input"
                     	readOnly
                       value={animalCage}
                     />
@@ -207,6 +198,7 @@ class RemovePopup extends Component {
                   <Form.Field width={2}>
                     <label>Worker ID</label>
                     <Input
+            					id="remove-input"
                       value={workerId}
                     	readOnly
                     />
@@ -214,6 +206,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Worker First Name</label>
                     <Input
+            					id="remove-input"
                       value={workerFirst}
                     	readOnly
                     />
@@ -221,6 +214,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Worker Last Name</label>
                     <Input
+            					id="remove-input"
                       value={workerLast}
                     	readOnly
                     />
@@ -228,6 +222,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Worker Position</label>
                     <Input
+            					id="remove-input"
                       value={workerPosition}
                     	readOnly
                     />
@@ -248,6 +243,7 @@ class RemovePopup extends Component {
                   <Form.Field width={2}>
                     <label>Food ID</label>
                     <Input
+            					id="remove-input"
                       value={foodId}
                       readOnly
                     />
@@ -255,6 +251,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Food Type</label>
                     <Input
+            					id="remove-input"
                       value={foodType}
             					readOnly
                     />
@@ -275,6 +272,7 @@ class RemovePopup extends Component {
                 <Form.Field width={2}>
                     <label>Cage ID</label>
                     <Input
+            					id="remove-input"
                       value={cageId}
                       readOnly
                     />
@@ -282,6 +280,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>CAGE NAME</label>
                     <Input
+            					id="remove-input"
                       value={cageName}
             					readOnly
                     />
@@ -289,6 +288,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>CAGE SIZE</label>
                     <Input
+            					id="remove-input"
                       value={cageSize}
             					readOnly
                     />

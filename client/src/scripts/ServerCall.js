@@ -44,17 +44,6 @@ export const removeItem = async (props) => {
     return responseData;
 }
 
-export const refreshId = async (props) => {
-    const options = {
-        method: 'POST',
-        url: '/refreshId',
-        data: props
-    }
-    const response = await axios(options);
-    const responseData = await response.data;
-    return responseData;
-}
-
 export const searchData = async (props) => {
     const options = {
         method: 'POST',
