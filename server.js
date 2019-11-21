@@ -127,15 +127,15 @@ app.post('/search', function (req, res, next) {
     var searchCriteria = req.body.searchAttributeSelect;
     switch (searchCriteria) {
         case ("ASSIGNED WORKER ID"): {
-            searchCriteria = "workder_id";
+            searchCriteria = "worker.worker_id";
             break;
         }
         case ("WORKER FIRST NAME"): {
-            searchCriteria = "first_name";
+            searchCriteria = "worker.first_name";
             break;
         }
         case ("ASSIGNED LAST NAME"): {
-            searchCriteria = "last_name";
+            searchCriteria = "worker.last_name";
             break;
         }
         default: {
