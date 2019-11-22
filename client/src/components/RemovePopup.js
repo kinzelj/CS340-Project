@@ -100,6 +100,7 @@ class RemovePopup extends Component {
                   foodEntryId: data["ENTRY ID"],
                   animalId: data["ANIMAL ID"],
                   animalType: data["ANIMAL TYPE"],
+                  foodType: data["FOOD TYPE"],
                 }, () => { this.showContents() }
                 )
                 break;
@@ -110,7 +111,9 @@ class RemovePopup extends Component {
                   animalWorkerEntryId: data["ENTRY ID"],
                   animalId: data["ANIMAL ID"],
                   animalType: data["ANIMAL TYPE"],
-                  workerId: data["ASSIGNED WORKER ID"]
+                  workerId: data["ASSIGNED WORKER ID"],
+                  workerFirst: data["WORKER FIRST NAME"],
+                  workerLast: data["WORKER LAST NAME"],
                 }, () => { this.showContents() }
                 )
                 break;
@@ -120,7 +123,9 @@ class RemovePopup extends Component {
                 this.setState({
                   cageId: data["CAGE NUMBER"],
                   cageName: data["CAGE NAME"],
-                  workerId: data["ASSIGNED WORKER ID"]
+                  workerId: data["ASSIGNED WORKER ID"],
+                  workerFirst: data["WORKER FIRST NAME"],
+                  workerLast: data["WORKER LAST NAME"],
                 }, () => { this.showContents() }
                 )
                 break;
@@ -155,7 +160,7 @@ class RemovePopup extends Component {
         {
           this.contents = (
             <div className='formContents'>
-              <Header>Are you sure you want to remove animal data from database:</Header>
+              <Header>Are you sure you want to remove animal data from the zoo database:</Header>
               <Form>
                 <Form.Group >
                   <Form.Field width={2}>
@@ -192,7 +197,7 @@ class RemovePopup extends Component {
         {
           this.contents = (
             <div className='formContents'>
-              <Header>Are you sure you want to remove worker data from database:</Header>
+              <Header>Are you sure you want to remove worker data from the zoo database:</Header>
               <Form>
                 <Form.Group >
                   <Form.Field width={2}>
@@ -237,7 +242,7 @@ class RemovePopup extends Component {
         {
           this.contents = (
             <div className='formContents'>
-              <Header>Are you sure you want to remove animal food data from database:</Header>
+              <Header>Are you sure you want to remove animal food data from the zoo database:</Header>
               <Form>
                 <Form.Group >
                   <Form.Field width={2}>
@@ -266,7 +271,7 @@ class RemovePopup extends Component {
         {
           this.contents = (
             <div className='formContents'>
-              <Header>Modify cage data, then submit:</Header>
+              <Header>Are you sure you want to remove cage data from the zoo database:</Header>
               <Form>
                 <Form.Group >
                 <Form.Field width={2}>
@@ -299,105 +304,117 @@ class RemovePopup extends Component {
           );
           break;
         }
-//       case ("approvedFoods"):
-//         {
-//           this.contents = (
-//             <div className='formContents'>
-//               <Header>Modify animal approved food, then submit:</Header>
-//               <Form>
-//                 <Form.Group >
-//                   <Form.Input
-//                     fluid label='Entry ID'
-//                     placeholder={foodEntryId}
-//                     readOnly
-//                     width={2}
-//                   />
-//                   <Form.Input
-//                     fluid label='Animal'
-//                     placeholder={"Animal ID #" + animalId + ":  " + animalType}
-//                     readOnly
-//                     width={5}
-//                   />
-//                   <Form.Select
-//                     width={5}
-//                     label="Approved Food"
-//                     options={options.updateApprovedFood.foodDropdown}
-//                     name='foodId'
-//                     value={foodId}
-//                     onChange={this.handleSelectChange}
-//                   />
-//                 </Form.Group>
-//               </Form>
-//             </div >
-//           );
-//           break;
-//         }
-//       case ("workerAnimal"):
-//         {
-//           this.contents = (
-//             <div className='formContents'>
-//               <Header>Modify assigned animal worker, then submit:</Header>
-//               <Form>
-//                 <Form.Group >
-//                   <Form.Input
-//                     fluid label='Entry ID'
-//                     placeholder={animalWorkerEntryId}
-//                     readOnly
-//                     width={2}
-//                   />
-//                   <Form.Input
-//                     fluid label='Animal'
-//                     placeholder={"Animal ID #" + animalId + ":  " + animalType}
-//                     readOnly
-//                     width={5}
-//                   />
-//                   <Form.Select
-//                     width={5}
-//                     label="Assigned Worker"
-//                     options={options.updateAnimalWorker.workerDropdown}
-//                     name='workerId'
-//                     value={workerId}
-//                     onChange={this.handleSelectChange}
-//                   />
-//                 </Form.Group>
-//               </Form>
-//             </div >
-//           );
-//           break;
-//         }
-//       case ("workerCage"):
-//         {
-//           this.contents = (
-//             <div className='formContents'>
-//               <Header>Modify assigned cage worker, then submit:</Header>
-//               <Form>
-//                 <Form.Group >
-//                   <Form.Input
-//                     fluid label='Cage Number'
-//                     placeholder={cageId}
-//                     readOnly
-//                     width={2}
-//                   />
-//                   <Form.Input
-//                     fluid label='Cage Name'
-//                     placeholder={cageName}
-//                     readOnly
-//                     width={5}
-//                   />
-//                   <Form.Select
-//                     width={5}
-//                     label="Assigned Worker"
-//                     options={options.updateAnimalWorker.workerDropdown}
-//                     name='workerId'
-//                     value={workerId}
-//                     onChange={this.handleSelectChange}
-//                   />
-//                 </Form.Group>
-//               </Form>
-//             </div >
-//           );
-//           break;
-//         }
+      case ("approvedFoods"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Are you sure you want to remove from this animal's list of approved foods:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Field width={2}>
+                    <label>Entry ID</label>
+                    <Input
+            					id="remove-input"
+                      value={foodEntryId}
+                      readOnly
+                    />
+                  </Form.Field>
+                  <Form.Field width={5}>
+                    <label>Animal</label>
+                    <Input
+            					id="remove-input"
+                      value={"Animal ID #" + animalId + ":  " + animalType}
+                      readOnly
+                    />
+                  </Form.Field>
+                  <Form.Field width={5}>
+                    <label>Approved Food</label>
+                    <Input
+            					id="remove-input"
+                      value={foodType}
+                      readOnly
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Form>
+            </div >
+          );
+          break;
+        }
+      case ("workerAnimal"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Are you sure you want to remove from this animal's list of approved workers:</Header>
+              <Form>
+                <Form.Group >
+                  <Form.Field width={2}>
+                    <label>Entry ID</label>
+                    <Input
+            					id="remove-input"
+                      value={animalWorkerEntryId}
+                      readOnly
+                    />
+                  </Form.Field>
+                  <Form.Field width={5}>
+                    <label>Animal</label>
+                    <Input
+            					id="remove-input"
+                      value={"Animal ID #" + animalId + ":  " + animalType}
+                      readOnly
+                    />
+                  </Form.Field>
+                  <Form.Field width={5}>
+                    <label>Assigned Worker</label>
+                    <Input
+            					id="remove-input"
+                      value={"Worker ID #" + workerId + ":  " + workerFirst + " " + workerLast}
+                      readOnly
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Form>
+            </div >
+          );
+          break;
+        }
+      case ("workerCage"):
+        {
+          this.contents = (
+            <div className='formContents'>
+              <Header>Are you sure you want to remove from this cage's list of approved workers:</Header>
+              <Form>
+                <Form.Group >
+            			<Form.Field width={2}>
+                    <label>Cage Number</label>
+                    <Input
+            					id="remove-input"
+                      value={cageId}
+                      readOnly
+                    />
+                  </Form.Field>
+            			<Form.Field width={5}>
+                    <label>Cage Name</label>
+                    <Input
+            					id="remove-input"
+                      value={cageName}
+                      readOnly
+                    />
+                  </Form.Field>
+                  <Form.Field width={5}>
+                    <label>Assigned Worker</label>
+                    <Input
+            					id="remove-input"
+                      value={"Worker ID #" + workerId + ":  " + workerFirst + " " + workerLast}
+                      readOnly
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Form>
+            </div >
+          );
+          break;
+        }
       default: return;
     }
     this.setState({ open: true });
