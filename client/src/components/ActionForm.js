@@ -151,10 +151,6 @@ const options = {
             text: "Worker - Animal Assignments",
             value: "workerAnimal"
         },
-        {
-            text: "Worker - Cage Assignments",
-            value: "workerCage"
-        },
         ],
     },
     removeId: {

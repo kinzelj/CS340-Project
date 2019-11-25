@@ -118,18 +118,6 @@ class RemovePopup extends Component {
                 )
                 break;
               }
-            case ("workerCage"):
-              {
-                this.setState({
-                  cageId: data["CAGE NUMBER"],
-                  cageName: data["CAGE NAME"],
-                  workerId: data["ASSIGNED WORKER ID"],
-                  workerFirst: data["WORKER FIRST NAME"],
-                  workerLast: data["WORKER LAST NAME"],
-                }, () => { this.showContents() }
-                )
-                break;
-              }
             default: return;
           }
         })
@@ -361,43 +349,6 @@ class RemovePopup extends Component {
                     <Input
             					id="remove-input"
                       value={"Animal ID #" + animalId + ":  " + animalType}
-                      readOnly
-                    />
-                  </Form.Field>
-                  <Form.Field width={5}>
-                    <label>Assigned Worker</label>
-                    <Input
-            					id="remove-input"
-                      value={"Worker ID #" + workerId + ":  " + workerFirst + " " + workerLast}
-                      readOnly
-                    />
-                  </Form.Field>
-                </Form.Group>
-              </Form>
-            </div >
-          );
-          break;
-        }
-      case ("workerCage"):
-        {
-          this.contents = (
-            <div className='formContents'>
-              <Header>Are you sure you want to remove from this cage's list of approved workers:</Header>
-              <Form>
-                <Form.Group >
-            			<Form.Field width={2}>
-                    <label>Cage Number</label>
-                    <Input
-            					id="remove-input"
-                      value={cageId}
-                      readOnly
-                    />
-                  </Form.Field>
-            			<Form.Field width={5}>
-                    <label>Cage Name</label>
-                    <Input
-            					id="remove-input"
-                      value={cageName}
                       readOnly
                     />
                   </Form.Field>

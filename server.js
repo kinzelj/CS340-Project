@@ -366,7 +366,6 @@ app.post('/remove', function (req, res, next) {
     var values = [];
     var context = {};
     const removeTable = req.body.searchSelect;
-    console.log(req.body)
     switch(removeTable) {
         case ('animal'): {
             query = "DELETE from animal WHERE animal_id = ?";
@@ -381,18 +380,22 @@ app.post('/remove', function (req, res, next) {
         case ('food'): {
             query = "DELETE from food WHERE food_id = ?";
             values = [req.body.foodId];
+            break;
         }
         case ('cage'): {   
             query = "DELETE from cage WHERE cage_id = ?";
             values = [req.body.cageId];
+            break;
         }
         case ('approvedFoods'): {
             query = "DELETE from food_animal WHERE id = ?";
             values = [req.body.searchValue];
+            break;
         }
         case ('workerAnimal'): {
             query = "DELETE from worker_animal WHERE id = ?";
             values = [req.body.searchValue]
+            break;
         }
     }
     mysql.pool.query(query, values, function (err, rows, fields) {

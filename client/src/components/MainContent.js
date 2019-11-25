@@ -22,10 +22,10 @@ class MainContent extends React.Component {
         updateSelect: "",
         updateId: "",
         updateIdName: "",
-      	showRemovePopup: false,
-      	removeSelect: "",
-      	removeId: "",
-      	removeIdName: "",
+        showRemovePopup: false,
+        removeSelect: "",
+        removeId: "",
+        removeIdName: "",
     };
 
     submitForm = (formData) => {
@@ -135,25 +135,25 @@ class MainContent extends React.Component {
         });
     }
     handleUpdatePopupClose = (type, statusMessage) => {
-      	var title;
+        var title;
         var message;
-      	if (statusMessage === "success") {
-          title = "SUCCESS!"
-          message = type + " successfully updated in zoo database.";
+        if (statusMessage === "success") {
+            title = "SUCCESS!"
+            message = type + " successfully updated in zoo database.";
         }
         else {
-          title = "ERROR!";
-          message = "Unable to update " + type + " ---> " + statusMessage;
-      	}
+            title = "ERROR!";
+            message = "Unable to update " + type + " ---> " + statusMessage;
+        }
         this.setState({
             headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
             tableData: [{}],
             showUpdatePopup: false,
             updateSelect: "",
             updateId: ""
-        }, () => { if(statusMessage !== "close") { this.handlePopup(title, message) }});
+        }, () => { if (statusMessage !== "close") { this.handlePopup(title, message) } });
     }
-    
+
     handleRemovePopup = (select, id, idName) => {
         this.setState({
             showRemovePopup: true,
@@ -163,33 +163,31 @@ class MainContent extends React.Component {
         });
     }
     handleRemovePopupClose = (type, statusMessage) => {
-      	var title;
+        var title;
         var message;
-      	if (statusMessage === "success") {
-          title = "SUCCESS!"
-          message = type + " successfully remove from zoo database.";
+        if (statusMessage === "success") {
+            title = "SUCCESS!"
+            message = type + " successfully remove from zoo database.";
         }
-      	else if (statusMessage === "worker") {
-          title = "ERROR!";
-          message = "Unable to remove WORKER from database, likely due to this WORKER being assigned to a CAGE in the zoo.\n" +
-            			"Before removing WORKER, please make sure any CAGE assigned to this WORKER has been re-assigned first.";
+        else if (statusMessage === "worker") {
+            title = "ERROR!";
+            message = "Unable to remove worker from database, likely due to worker is assigned to a cage in the zoo.\nBefore removing, please make sure any cage assigned to this worker has been re-assigned first.";
         }
-      	else if (statusMessage === "cage") {
-          title = "ERROR!";
-          message = "Unable to remove CAGE from database, likely due to one or more ANIMAL assigned to this cage.\n" +
-            			"Before removing CAGE, please make sure any ANIMAL assigned to this CAGE has been re-assigned first.";
+        else if (statusMessage === "cage") {
+            title = "ERROR!";
+            message = "Unable to remove cage from database, likely due to one or more animals are assigned to this cage.\nBefore removing, please make sure any animal assigned to this cage has been re-assigned first.";
         }
         else {
-          title = "ERROR!";
-          message = "Unable to remove " + type + " ---> " + statusMessage;
-      	}
+            title = "ERROR!";
+            message = "Unable to remove " + type + " ---> " + statusMessage;
+        }
         this.setState({
             headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
             tableData: [{}],
             showRemovePopup: false,
             removeSelect: "",
             removeId: ""
-        }, () => { if(statusMessage !== "close") { this.handlePopup(title, message) }});
+        }, () => { if (statusMessage !== "close") { this.handlePopup(title, message) } });
     }
 
     render() {
@@ -261,15 +259,15 @@ class MainContent extends React.Component {
                         return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage} />
                     }
                     if (this.state.showRemovePopup) {
-                      return (
-                          <RemovePopup
-                              closePopup={this.handleRemovePopupClose}
-                              select={this.state.removeSelect}
-                              id={this.state.removeId}
-                              idName={this.state.removeIdName}
-                          />
-                      );
-                  	}
+                        return (
+                            <RemovePopup
+                                closePopup={this.handleRemovePopupClose}
+                                select={this.state.removeSelect}
+                                id={this.state.removeId}
+                                idName={this.state.removeIdName}
+                            />
+                        );
+                    }
                     return (
                         <div>
                             <ActionForm
@@ -278,7 +276,7 @@ class MainContent extends React.Component {
                                 formType="remove"
                                 submitForm={this.submitForm}
                                 popup={this.handlePopup}
-                      					removePopup={this.handleRemovePopup}
+                                removePopup={this.handleRemovePopup}
                             />
                             <DataTable header={this.state.headerNames} data={this.state.tableData} />
                         </div>
