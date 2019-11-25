@@ -194,11 +194,11 @@ class ActionForm extends Component {
         //options for Update form:
         updateSelect: "",
         updateId: "",
-      	updateIdName: "",
+        updateIdName: "",
 
         removeSelect: "",
         removeId: "",
-      	removeIdName: "",
+        removeIdName: "",
 
         searchValue: "",
         searchSelect: "",
@@ -321,12 +321,12 @@ class ActionForm extends Component {
             [name]: value,
             calltype: calltype
         }, () => {
-          console.log(this.state);
+            console.log(this.state);
             this.props.api(this.state)
             ServerCall.getUpdateIdDropdown({ query: this.state.updateSelect })
                 .then(res => {
                     options.updateId.idDropdown = res.responseDropdown;
-                    this.setState({updateIdName: res.idName});
+                    this.setState({ updateIdName: res.idName });
                 })
                 .catch(err => console.log(err));
         });
@@ -341,7 +341,7 @@ class ActionForm extends Component {
             ServerCall.getUpdateIdDropdown({ query: this.state.removeSelect })
                 .then(res => {
                     options.removeId.idDropdown = res.responseDropdown;
-                    this.setState({removeIdName: res.idName});
+                    this.setState({ removeIdName: res.idName });
                 })
                 .catch(err => console.log(err));
         });
@@ -359,163 +359,169 @@ class ActionForm extends Component {
                 //validate form input, then submit to api callback
                 case ("addAnimal"):
                     {
+                        const refreshProps = { calltype: "addSelect", addSelect: "animal" }
                         if (this.state.addAnimalFood === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: At least one food type must be assigned to the new animal."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         if (this.state.addAnimalWorker === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: At least one worker must be assigned to the new animal."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         if (this.state.addAnimalCage === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: A cage must be assigned to the new animal."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         ServerCall.addItem(this.state)
                             .then(res => {
                                 const title = "SUCCESS!";
                                 const message = "Animal successfully added to zoo database."
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                             .catch((error) => {
                                 const title = "ERROR!";
                                 const message = "Unable to add Animal ---> " + error;
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             });
                         break;
                     }
                 case ("addWorker"):
                     {
+                        const refreshProps = { calltype: "addSelect", addSelect: "worker" }
                         if (this.state.addWorkerFirst === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: Worker must have First Name."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         if (this.state.addWorkerLast === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: Worker must have Last Name."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         ServerCall.addItem(this.state)
                             .then(res => {
                                 const title = "SUCCESS!";
                                 const message = "Worker successfully added to zoo database."
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                             .catch((error) => {
                                 const title = "ERRROR!";
                                 const message = "Unable to add Worker ---> " + error;
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                         break;
                     }
                 case ("addCage"):
                     {
+                        const refreshProps = { calltype: "addSelect", addSelect: "cage" }
                         if (this.state.addCageWorker === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: Cage must have an assigned Worker ID."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         if (this.state.addCageName === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: Cage must have a name."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         ServerCall.addItem(this.state)
-                        .then(res => {
-                            const title = "SUCCESS!";
-                            const message = "Cage successfully added to zoo database."
-                            this.props.popup(title, message);
-                        })
-                        .catch((error) => {
-                            const title = "ERRROR!";
-                            const message = "Unable to add Cage ---> " + error;
-                            this.props.popup(title, message);
-                        })
+                            .then(res => {
+                                const title = "SUCCESS!";
+                                const message = "Cage successfully added to zoo database."
+                                this.props.popup(title, message, refreshProps);
+                            })
+                            .catch((error) => {
+                                const title = "ERRROR!";
+                                const message = "Unable to add Cage ---> " + error;
+                                this.props.popup(title, message, refreshProps);
+                            })
                         break;
                     }
                 case ("addFood"):
                     {
+                        const refreshProps = { calltype: "addSelect", addSelect: "food" }
                         if (this.state.addFoodType === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: Food must have a Food Type."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         ServerCall.addItem(this.state)
                             .then(res => {
                                 const title = "SUCCESS!";
                                 const message = "Food successfully added to zoo database."
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                             .catch((error) => {
                                 const title = "ERRROR!";
                                 const message = "Unable to add Food ---> " + error;
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                         break;
                     }
                 case ("addAnimalWorker"):
                     {
+                        const refreshProps = { calltype: "addSelect", addSelect: "workerAnimal" }
                         if (this.state.assignAnimal === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: An Animal ID must be chosen."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         if (this.state.assignAnimalWorker === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: A Worker must be chosen."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         ServerCall.addItem(this.state)
                             .then(res => {
                                 const title = "SUCCESS!";
                                 const message = "Worker-Animal assignment successfully added to zoo database."
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                             .catch((error) => {
                                 const title = "ERRROR!";
                                 const message = "Unable to add Food ---> " + error;
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                         break;
                     }
                 case ("addAnimalFood"):
                     {
+                        const refreshProps = { calltype: "addSelect", addSelect: "approvedFoods" }
                         if (this.state.assignAnimalFood === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: An Animal ID must be chosen."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         if (this.state.assignFood === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: A Food must be chosen."
-                            this.props.popup(title, message);
+                            this.props.popup(title, message, refreshProps);
                             break;
                         }
                         ServerCall.addItem(this.state)
                             .then(res => {
                                 const title = "SUCCESS!";
                                 const message = "Food-Animal assignment successfully added to zoo database."
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                             .catch((error) => {
                                 const title = "ERRROR!";
                                 const message = "Unable to add Food ---> " + error;
-                                this.props.popup(title, message);
+                                this.props.popup(title, message, refreshProps);
                             })
                         break;
                     }
@@ -525,10 +531,10 @@ class ActionForm extends Component {
         })
     }
     handleUpdateSubmit = (e, { calltype }) => {
-      this.props.updatePopup(this.state.updateSelect, this.state.updateId, this.state.updateIdName);
+        this.props.updatePopup(this.state.updateSelect, this.state.updateId, this.state.updateIdName);
     }
     handleRemoveSubmit = (e, { calltype }) => {
-      this.props.removePopup(this.state.removeSelect, this.state.removeId, this.state.removeIdName);
+        this.props.removePopup(this.state.removeSelect, this.state.removeId, this.state.removeIdName);
     }
     handleSearchSubmit = (e, { calltype }) => {
         this.setState({ calltype: calltype }, () => {

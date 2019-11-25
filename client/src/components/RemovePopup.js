@@ -35,7 +35,6 @@ class RemovePopup extends Component {
         this.setState({
         open: false
         }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), "success"))
-        console.log(res);
       }).catch(
         err => {
           console.log(err)

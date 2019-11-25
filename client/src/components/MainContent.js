@@ -15,6 +15,7 @@ class MainContent extends React.Component {
         headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
         //table tableData is an array of objects with keys that match headerNames
         tableData: [],
+        refreshProps: [],
         showPopup: false,
         popupTitle: "",
         popupMessage: "",
@@ -112,26 +113,30 @@ class MainContent extends React.Component {
         }
     }
 
-    handlePopup = (title, message) => {
-        this.setState({ showPopup: true, popupTitle: title, popupMessage: message });
+    handlePopup = (title, message, callbackProps) => {
+        this.setState({ showPopup: true, popupTitle: title, popupMessage: message, refreshProps: callbackProps });
     }
     handlePopupClose = () => {
         this.setState({
-            headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
+            headerNames: [""],
             tableData: [{}],
             showPopup: false,
             showRemovePopup: false,
             popupTitle: "",
             popupMessage: ""
+        }, () => {
+            this.handleServerCall(this.state.refreshProps);
         });
     }
 
     handleUpdatePopup = (select, id, idName) => {
+        const updateRefreshProps = { calltype: "updateSelect", updateSelect: select }
         this.setState({
             showUpdatePopup: true,
             updateSelect: select,
             updateId: id,
-            updateIdName: idName
+            updateIdName: idName,
+            refreshProps: updateRefreshProps
         });
     }
     handleUpdatePopupClose = (type, statusMessage) => {
@@ -151,15 +156,23 @@ class MainContent extends React.Component {
             showUpdatePopup: false,
             updateSelect: "",
             updateId: ""
-        }, () => { if (statusMessage !== "close") { this.handlePopup(title, message) } });
+        }, () => {
+            if (statusMessage !== "close") {
+                this.handlePopup(title, message, this.state.refreshProps)
+                return;
+            }
+            this.handleServerCall(this.state.refreshProps);
+        });
     }
 
     handleRemovePopup = (select, id, idName) => {
+        const removeRefreshProps = { calltype: "removeSelect", removeSelect: select }
         this.setState({
             showRemovePopup: true,
             removeSelect: select,
             removeId: id,
-            removeIdName: idName
+            removeIdName: idName,
+            refreshProps: removeRefreshProps
         });
     }
     handleRemovePopupClose = (type, statusMessage) => {
@@ -187,7 +200,12 @@ class MainContent extends React.Component {
             showRemovePopup: false,
             removeSelect: "",
             removeId: ""
-        }, () => { if (statusMessage !== "close") { this.handlePopup(title, message) } });
+        }, () => {
+            if (statusMessage !== "close") {
+                this.handlePopup(title, message, this.state.refreshProps)
+            }
+            this.handleServerCall(this.state.refreshProps);
+        });
     }
 
     render() {
