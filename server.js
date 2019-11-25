@@ -362,8 +362,47 @@ app.post('/update', function (req, res, next) {
 });
 
 app.post('/remove', function (req, res, next) {
-  console.log(req.body);
-  res.send("/remove called");
+    var query = null;
+    var values = [];
+    var context = {};
+    const removeTable = req.body.searchSelect;
+    console.log(req.body)
+    switch(removeTable) {
+        case ('animal'): {
+            query = "DELETE from animal WHERE animal_id = ?";
+            values = [req.body.animalId];
+            break;
+        }
+        case ('worker'): {  // can't delete if worker assigned in worker_cage
+            query = "DELETE from worker WHERE worker_id = ?";
+            values = [req.body.workerId];
+            break;
+        }
+        case ('food'): {
+            query = "DELETE from food WHERE food_id = ?";
+            values = [req.body.foodId];
+        }
+        case ('cage'): {   // can't delete if cage assigned in animal_cage
+            query = "DELETE from cage WHERE cage_id = ?";
+            values = [req.body.cageId];
+        }
+        case ('approvedFoods'): {
+            query = "DELETE from food_animal WHERE id = ?";
+            values = [req.body.searchValue];
+        }
+        case ('workerAnimal'): {
+            query = "DELETE from worker_animal WHERE id = ?";
+            values = [req.body.searchValue]
+        }
+    }
+    mysql.pool.query(query, values, function (err, rows, fields) {
+        if (err) {
+            next(err);
+            return;
+        }
+        context.results = JSON.stringify(rows);
+        res.send(context.results);
+    })
 });
 
 app.get('*', (req, res) => {
