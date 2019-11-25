@@ -373,7 +373,7 @@ app.post('/remove', function (req, res, next) {
             values = [req.body.animalId];
             break;
         }
-        case ('worker'): {  // can't delete if worker assigned in worker_cage
+        case ('worker'): { 
             query = "DELETE from worker WHERE worker_id = ?";
             values = [req.body.workerId];
             break;
@@ -382,7 +382,7 @@ app.post('/remove', function (req, res, next) {
             query = "DELETE from food WHERE food_id = ?";
             values = [req.body.foodId];
         }
-        case ('cage'): {   // can't delete if cage assigned in animal_cage
+        case ('cage'): {   
             query = "DELETE from cage WHERE cage_id = ?";
             values = [req.body.cageId];
         }
