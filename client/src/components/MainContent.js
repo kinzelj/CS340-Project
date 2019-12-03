@@ -94,7 +94,11 @@ class MainContent extends React.Component {
                         .then(res => {
                             this.updateTable(res);
                         })
-                        .catch(err => console.log(err));
+                        .catch(err => {
+                            const title = "NO SEARCH RESULTS";
+                            const message = "Unable to find any database items containing search value."
+                            this.handlePopup(title, message);
+                        });
                     break;
                 }
             default:
@@ -125,7 +129,7 @@ class MainContent extends React.Component {
             popupTitle: "",
             popupMessage: ""
         }, () => {
-            this.handleServerCall(this.state.refreshProps);
+            if(this.state.refreshProps){this.handleServerCall(this.state.refreshProps)};
         });
     }
 

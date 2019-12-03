@@ -144,48 +144,48 @@ app.post('/search', function (req, res, next) {
     }
 
     var query = null;
-    const values = [req.body.searchValue];
+    const value = [req.body.searchValue];
     switch (searchTable) {
         case ('animal'):
             {
-                query = queryText.selectAnimals + " WHERE " + searchCriteria + "= ?";
+                query = queryText.selectAnimals + " WHERE " + searchCriteria + " LIKE '%" + value + "%'";
                 break;
             }
         case ('worker'):
             {
-                query = queryText.selectWorkers + " WHERE " + searchCriteria + "= ?";
+                query = queryText.selectWorkers + " WHERE " + searchCriteria + " LIKE '%" + value + "%'";
                 break;
             }
         case ('cage'):
             {
-                query = queryText.selectCages + " WHERE " + searchCriteria + "= ?";
+                query = queryText.selectCages + " WHERE " + searchCriteria + " LIKE '%" + value + "%'";
                 break;
             }
         case ('food'):
             {
-                query = queryText.selectFood + " WHERE " + searchCriteria + "= ?";
+                query = queryText.selectFood + " WHERE " + searchCriteria + " LIKE '%" + value + "%'";
                 break;
             }
         case ('approvedFoods'):
             {
-                query = queryText.selectApprovedFoods + " WHERE " + searchCriteria + "= ? ORDER BY food_animal.id";
+                query = queryText.selectApprovedFoods + " WHERE " + searchCriteria + " LIKE '%" + value + "%' ORDER BY food_animal.id";
                 break;
             }
         case ('workerAnimal'):
             {
-                query = queryText.selectWorkerAnimals + " WHERE " + searchCriteria + "= ? ORDER BY worker_animal.id";
+                query = queryText.selectWorkerAnimals + " WHERE " + searchCriteria + " LIKE '%" + value + "%' ORDER BY worker_animal.id";
                 break;
             }
         case ('workerCage'):
             {
-                query = queryText.selectWorkerCages + " WHERE " + searchCriteria + " = ? ORDER BY cage.cage_id";
+                query = queryText.selectWorkerCages + " WHERE " + searchCriteria + " LIKE '%" + value + "%' ORDER BY cage.cage_id";
                 break;
             }
     }
 
     if (query) {
         var context = {};
-        mysql.pool.query(query, values, function (err, rows, fields) {
+        mysql.pool.query(query, function (err, rows, fields) {
             context.results = JSON.stringify(rows);
             res.send(context.results);
         })

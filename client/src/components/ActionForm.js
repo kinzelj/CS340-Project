@@ -321,7 +321,6 @@ class ActionForm extends Component {
             [name]: value,
             calltype: calltype
         }, () => {
-            console.log(this.state);
             this.props.api(this.state)
             ServerCall.getUpdateIdDropdown({ query: this.state.updateSelect })
                 .then(res => {
@@ -474,13 +473,13 @@ class ActionForm extends Component {
                         const refreshProps = { calltype: "addSelect", addSelect: "workerAnimal" }
                         if (this.state.assignAnimal === "") {
                             const title = "ERROR!";
-                            const message = "Invalid input: An Animal ID must be chosen."
+                            const message = "Invalid input: An Animal ID must be selected."
                             this.props.popup(title, message, refreshProps);
                             break;
                         }
                         if (this.state.assignAnimalWorker === "") {
                             const title = "ERROR!";
-                            const message = "Invalid input: A Worker must be chosen."
+                            const message = "Invalid input: A Worker must be selected."
                             this.props.popup(title, message, refreshProps);
                             break;
                         }
@@ -502,13 +501,13 @@ class ActionForm extends Component {
                         const refreshProps = { calltype: "addSelect", addSelect: "approvedFoods" }
                         if (this.state.assignAnimalFood === "") {
                             const title = "ERROR!";
-                            const message = "Invalid input: An Animal ID must be chosen."
+                            const message = "Invalid input: An Animal ID must be selected."
                             this.props.popup(title, message, refreshProps);
                             break;
                         }
                         if (this.state.assignFood === "") {
                             const title = "ERROR!";
-                            const message = "Invalid input: A Food must be chosen."
+                            const message = "Invalid input: A Food must be selected."
                             this.props.popup(title, message, refreshProps);
                             break;
                         }
@@ -531,12 +530,54 @@ class ActionForm extends Component {
         })
     }
     handleUpdateSubmit = (e, { calltype }) => {
+        if (this.state.updateSelect === "") {
+            const title = "ERROR!";
+            const message = "Invalid input: Item to update must be selected."
+            this.props.popup(title, message);
+            return;
+        }
+        if (this.state.updateId === "") {
+            const title = "ERROR!";
+            const message = "Invalid input: ID of item to update must be selected."
+            this.props.popup(title, message);
+            return;
+        }
         this.props.updatePopup(this.state.updateSelect, this.state.updateId, this.state.updateIdName);
     }
     handleRemoveSubmit = (e, { calltype }) => {
+        if (this.state.removeSelect === "") {
+            const title = "ERROR!";
+            const message = "Invalid input: Remove option must be selected."
+            this.props.popup(title, message);
+            return;
+        }
+        if (this.state.removeId === "") {
+            const title = "ERROR!";
+            const message = "Invalid input: ID of item to remove must be selected."
+            this.props.popup(title, message);
+            return;
+        }
         this.props.removePopup(this.state.removeSelect, this.state.removeId, this.state.removeIdName);
     }
     handleSearchSubmit = (e, { calltype }) => {
+        if (this.state.searchSelect === "") {
+            const title = "ERROR!";
+            const message = "Invalid input: Search option must be selected."
+            this.props.popup(title, message);
+            return;
+        }
+        if (this.state.searchAttributeSelect === "") {
+            const title = "ERROR!";
+            const message = "Invalid input: Search critera must be selected."
+            this.props.popup(title, message);
+            return;
+        }
+        if (this.state.searchValue === "") {
+            const title = "ERROR!";
+            const message = "Invalid input: Search value must be defined."
+            this.props.popup(title, message);
+            return;
+        }
         this.setState({ calltype: calltype }, () => {
             this.props.api(this.state);
         })
