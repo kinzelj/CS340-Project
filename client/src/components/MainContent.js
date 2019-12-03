@@ -188,11 +188,23 @@ class MainContent extends React.Component {
         }
         else if (statusMessage === "worker") {
             title = "ERROR!";
-            message = "Unable to remove worker from database, likely due to worker is assigned to a cage in the zoo.\nBefore removing, please make sure any cage assigned to this worker has been re-assigned first.";
+            message = "Unable to remove worker from database, likely due to worker is assigned to a cage in the zoo.\n"
+            +"Before removing, please make sure any cage assigned to this worker has been re-assigned first.";
         }
         else if (statusMessage === "cage") {
             title = "ERROR!";
-            message = "Unable to remove cage from database, likely due to one or more animals are assigned to this cage.\nBefore removing, please make sure any animal assigned to this cage has been re-assigned first.";
+            message = "Unable to remove cage from database, likely due to one or more animals are assigned to this cage."
+            +"\nBefore removing, please make sure any animal assigned to this cage has been re-assigned first.";
+        }
+        else if (statusMessage === "approvedFoods") {
+            title = "ERROR!";
+            message = "Unable to remove assigned food because this is the only food currently approved for this animal.\n"
+            +"Before removing approved food, please assign a different food to this animal.";
+        }
+        else if (statusMessage === "workerAnimal") {
+            title = "ERROR!";
+            message = "Unable to remove assigned worker because this is the only worker currently approved for this animal.\n"
+            +"Before removing worker assignment, please assign a different worker to this animal.";
         }
         else {
             title = "ERROR!";

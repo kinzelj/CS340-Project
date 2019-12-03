@@ -30,10 +30,85 @@ class RemovePopup extends Component {
   close = () => this.setState({ open: false }, () => this.props.closePopup(null, "close"))
 
   deleteItem = () => {
+    //if user tries to remove animal worker assignment, first check there is more than one worker assigned to animal
+    if (this.state.searchSelect === "workerAnimal") {
+      var searchProps = {
+        searchSelect: "workerAnimal",
+        searchAttributeSelect: "ANIMAL ID",
+        searchValue: this.state.animalId
+      };
+      ServerCall.searchRemove(searchProps)
+        .then(res => {
+          if (res.length > 1) {
+            ServerCall.removeItem(this.state)
+              .then(res => {
+                this.setState({
+                  open: false
+                }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), "success"))
+              }).catch(
+                err => {
+                  console.log(err)
+                  this.setState({
+                    open: false
+                  }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), this.state.searchSelect))
+                });
+          }
+          else {
+            this.setState({
+              open: false
+            }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), this.state.searchSelect))
+          }
+        }).catch(err => {
+          console.log(err);
+          this.setState({
+            open: false
+          }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), this.state.searchSelect))
+        });
+      return;
+    }
+
+    //if user tries to remove animal food assignment, first check there is more than one assigned food to animal
+    if (this.state.searchSelect === "approvedFoods") {
+      var searchProps = {
+        searchSelect: "approvedFoods",
+        searchAttributeSelect: "ANIMAL ID",
+        searchValue: this.state.animalId
+      };
+      ServerCall.searchRemove(searchProps)
+        .then(res => {
+          if (res.length > 1) {
+            ServerCall.removeItem(this.state)
+              .then(res => {
+                this.setState({
+                  open: false
+                }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), "success"))
+              }).catch(
+                err => {
+                  console.log(err)
+                  this.setState({
+                    open: false
+                  }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), this.state.searchSelect))
+                });
+          }
+          else {
+            this.setState({
+              open: false
+            }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), this.state.searchSelect))
+          }
+        }).catch(err => {
+          console.log(err);
+          this.setState({
+            open: false
+          }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), this.state.searchSelect))
+        });
+      return;
+    }
+
+    //remove item from database
     ServerCall.removeItem(this.state)
       .then(res => {
         this.setState({
-        open: false
+          open: false
         }, () => this.props.closePopup(this.state.searchSelect.toUpperCase(), "success"))
       }).catch(
         err => {
@@ -52,35 +127,29 @@ class RemovePopup extends Component {
           switch (this.state.searchSelect) {
             case ("animal"):
               {
-                this.setState(
-                  {
-                    animalType: data["ANIMAL TYPE"],
-                    animalCage: data["CAGE NAME"],
-                    animalId: data["ANIMAL ID"]
-                  }, () => { this.showContents() }
-                )
+                this.setState({
+                  animalType: data["ANIMAL TYPE"],
+                  animalCage: data["CAGE NAME"],
+                  animalId: data["ANIMAL ID"]
+                }, () => { this.showContents() })
                 break;
               }
             case ("worker"):
               {
-                this.setState(
-                  {
-                    workerId: data["WORKER ID"],
-                    workerFirst: data["FIRST NAME"],
-                    workerLast: data["LAST NAME"],
-                    workerPosition: data["POSITION"]
-                  }, () => { this.showContents() }
-                )
+                this.setState({
+                  workerId: data["WORKER ID"],
+                  workerFirst: data["FIRST NAME"],
+                  workerLast: data["LAST NAME"],
+                  workerPosition: data["POSITION"]
+                }, () => { this.showContents() })
                 break;
               }
             case ("food"):
               {
-                this.setState(
-                  {
-                    foodId: data["FOOD ID"],
-                    foodType: data["FOOD TYPE"]
-                  }, () => { this.showContents() }
-                )
+                this.setState({
+                  foodId: data["FOOD ID"],
+                  foodType: data["FOOD TYPE"]
+                }, () => { this.showContents() })
                 break;
               }
             case ("cage"):
@@ -89,8 +158,7 @@ class RemovePopup extends Component {
                   cageId: data["CAGE NUMBER"],
                   cageName: data["CAGE NAME"],
                   cageSize: data["SQ FT"]
-                }, () => { this.showContents() }
-                )
+                }, () => { this.showContents() })
                 break;
               }
             case ("approvedFoods"):
@@ -100,8 +168,7 @@ class RemovePopup extends Component {
                   animalId: data["ANIMAL ID"],
                   animalType: data["ANIMAL TYPE"],
                   foodType: data["FOOD TYPE"],
-                }, () => { this.showContents() }
-                )
+                }, () => { this.showContents() })
                 break;
               }
             case ("workerAnimal"):
@@ -113,11 +180,11 @@ class RemovePopup extends Component {
                   workerId: data["ASSIGNED WORKER ID"],
                   workerFirst: data["WORKER FIRST NAME"],
                   workerLast: data["WORKER LAST NAME"],
-                }, () => { this.showContents() }
-                )
+                }, () => { this.showContents() })
                 break;
               }
-            default: return;
+            default:
+              return;
           }
         })
       })
@@ -365,7 +432,8 @@ class RemovePopup extends Component {
           );
           break;
         }
-      default: return;
+      default:
+        return;
     }
     this.setState({ open: true });
   }

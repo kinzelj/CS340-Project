@@ -55,6 +55,17 @@ export const searchData = async (props) => {
     return responseData;
 }
 
+export const searchRemove = async (props) => {
+    const options = {
+        method: 'POST',
+        url: '/search_remove',
+        data: props
+    }
+    const response = await axios(options);
+    const responseData = await response.data;
+    return responseData;
+}
+
 export const getFoodDropdown = async (props) => {
     const options = {
         method: 'POST',
