@@ -27,7 +27,7 @@ CREATE TABLE `cage` (
     `cage_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
     `cage_name` VARCHAR(255),
     `cage_size` int(11),
-    `worker_id` smallint(5) unsigned NOT NULL,
+    `worker_id` smallint(5) unsigned,
     PRIMARY KEY (`cage_id`),
     CONSTRAINT `fk_cage_worker` FOREIGN KEY (`worker_id`) REFERENCES `worker`(`worker_id`)
 );

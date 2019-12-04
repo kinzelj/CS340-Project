@@ -69,7 +69,7 @@ class RemovePopup extends Component {
 
     //if user tries to remove animal food assignment, first check there is more than one assigned food to animal
     if (this.state.searchSelect === "approvedFoods") {
-      var searchProps = {
+      searchProps = {
         searchSelect: "approvedFoods",
         searchAttributeSelect: "ANIMAL ID",
         searchValue: this.state.animalId
@@ -231,14 +231,6 @@ class RemovePopup extends Component {
             					id="remove-input"
                     	readOnly
                       value={animalType}
-                    />
-                  </Form.Field>
-                  <Form.Field width={5}>
-                    <label>Animal Assigned Cage</label>
-                    <Input
-            					id="remove-input"
-                    	readOnly
-                      value={animalCage}
                     />
                   </Form.Field>
                 </Form.Group>

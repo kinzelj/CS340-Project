@@ -11,6 +11,10 @@ const options = {
     key: 'dk-updateApprovedFood',
     foodDropdown: [{ key: "" }]
   },
+  updateCageWorker: {
+    key: 'dk-updateCageWorker',
+    workerDropdown: [{ key: "" }]
+  },
   updateAnimalWorker: {
     key: 'dk-updateAnimalWorker',
     workerDropdown: [{ key: "" }]
@@ -119,9 +123,15 @@ class UpdateForm extends Component {
                 this.setState({
                   cageId: data["CAGE NUMBER"],
                   cageName: data["CAGE NAME"],
-                  cageSize: data["SQ FT"]
-                }, () => { this.showContents() }
-                )
+                  cageSize: data["SQ FT"],
+                  workerId: data["ASSIGNED WORKER ID"]
+                }, () => { 
+                  ServerCall.getWorkersDropdown({ query: "worker" })
+                    .then(res => {
+                      options.updateCageWorker.workerDropdown = res;
+                      this.showContents();
+                    }).catch(err => console.log(err));
+                });
                 break;
               }
             case ("approvedFoods"):
@@ -349,6 +359,14 @@ class UpdateForm extends Component {
                       onChange={this.handleInputChange}
                     />
                   </Form.Field>
+                  <Form.Select
+                    width={5}
+                    label="Assigned Cage Worker"
+                    options={options.updateCageWorker.workerDropdown}
+                    name='workerId'
+                    value={workerId}
+                    onChange={this.handleSelectChange}
+                  />
                 </Form.Group>
               </Form>
             </div>

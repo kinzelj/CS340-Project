@@ -22,6 +22,9 @@ const attributeTag = {
     "cage.cage_id": "CAGE NUMBER",
     "cage.cage_name": "CAGE NAME",
     "cage.cage_size": "SQ FT",
+  	"cage.worker_id": "ASSIGNED WORKER ID",
+  	"cage.worker_first": "WORKER FIRST",
+  	"cage.worker_last": "WORKER LAST",
 
     "food.food_id": "FOOD ID",
     "food.food_type": "FOOD TYPE",
@@ -47,7 +50,11 @@ const queryText = {
 
     selectCages: "SELECT cage_id AS '" + attributeTag["cage.cage_id"] +
         "', cage_name AS '" + attributeTag["cage.cage_name"] +
-        "', cage_size AS '" + attributeTag["cage.cage_size"] + "' FROM cage",
+        "', cage_size AS '" + attributeTag["cage.cage_size"] + 
+        "', cage.worker_id AS '" + attributeTag["cage.worker_id"] + 
+        "', first_name AS '" + attributeTag["cage.worker_first"] + 
+        "', last_name AS '" + attributeTag["cage.worker_last"] + 
+  			"' FROM cage INNER JOIN worker ON cage.worker_id=worker.worker_id",
 
     selectFood: "SELECT food_id AS '" + attributeTag["food.food_id"] +
         "', food_type AS '" + attributeTag["food.food_type"] + "' FROM food",
@@ -87,7 +94,7 @@ function getSelectQuery(queryType) {
             }
         case ('cage'):
             {
-                return (queryText.selectCages);
+                return (queryText.selectCages + " ORDER by cage.cage_id");
             }
         case ('food'):
             {
@@ -129,10 +136,14 @@ app.post('/search', function(req, res, next) {
                 break;
             }
         case ("WORKER FIRST NAME"):
+        case ("WORKER FIRST"):
+        case ("ASSIGNED FIRST NAME"):
             {
                 searchCriteria = "worker.first_name";
                 break;
             }
+        case ("WORKER LAST NAME"):
+        case ("WORKER LAST"):
         case ("ASSIGNED LAST NAME"):
             {
                 searchCriteria = "worker.last_name";
@@ -370,8 +381,8 @@ app.post('/update', function(req, res, next) {
             }
         case ('cage'):
             {
-                query = "UPDATE cage SET cage_name = ?, cage_size = ? WHERE cage_id = ?";
-                values = [req.body.cageName, req.body.cageSize, req.body.cageId];
+                query = "UPDATE cage SET cage_name = ?, cage_size = ?, worker_id = ? WHERE cage_id = ?";
+                values = [req.body.cageName, req.body.cageSize, req.body.workerId, req.body.cageId];
                 break;
             }
         case ('approvedFoods'):
@@ -461,4 +472,4 @@ app.get('*', (req, res) => {
 });
 
 var server = app.listen(port, () => console.log(`Server started on port ${port}`));
-server.timeout = 10000;
+server.timeout = 150000;
