@@ -4,6 +4,7 @@ import ActionForm from './ActionForm.js'
 import UpdateForm from './UpdateForm.js'
 import * as ServerCall from '../scripts/ServerCall.js'
 import Popup from './Popup.js'
+import LoaderSpin from './Loader.js'
 import RemovePopup from './RemovePopup.js'
 
 /*******************************************************************
@@ -17,6 +18,7 @@ class MainContent extends React.Component {
         tableData: [],
         refreshProps: [],
         showPopup: false,
+      	loadingData: false,
         popupTitle: "",
         popupMessage: "",
         showUpdatePopup: false,
@@ -35,75 +37,87 @@ class MainContent extends React.Component {
 
     updateTable = (newData) => {
         this.setState({
+          	loadingData: false,
             headerNames: Object.keys(newData[0]),
             tableData: newData
         });
     }
 
     handleServerCall = (props) => {
-        switch (props.calltype) {
-            case ('viewSelect'):
-                {
-                    ServerCall.viewData({ query: props.viewSelect })
-                        .then(res => {
-                            this.updateTable(res);
-                            return res;
-                        })
-                        .catch(err => console.log(err));
-                    break;
-                }
-            case ('addSelect'):
-                {
-                    ServerCall.viewData({ query: props.addSelect })
-                        .then(res => {
-                            this.updateTable(res);
-                        })
-                        .catch(err => console.log(err));
-                    break;
-                }
-            case ('updateSelect'):
-                {
-                    ServerCall.viewData({ query: props.updateSelect })
-                        .then(res => {
-                            this.updateTable(res);
-                        })
-                        .catch(err => console.log(err));
-                    break;
-                }
-            case ('removeSelect'):
-                {
-                    ServerCall.viewData({ query: props.removeSelect })
-                        .then(res => {
-                            this.updateTable(res);
-                        })
-                        .catch(err => console.log(err));
-                    break;
-                }
-            case ('searchSelect'):
-                {
-                    ServerCall.viewData({ query: props.searchSelect })
-                        .then(res => {
-                            this.updateTable(res);
-                        })
-                        .catch(err => console.log(err));
-                    break;
-                }
-            case ('searchSubmit'):
-                {
-                    ServerCall.searchData(props)
-                        .then(res => {
-                            this.updateTable(res);
-                        })
-                        .catch(err => {
-                            const title = "NO SEARCH RESULTS";
-                            const message = "Unable to find any database items containing search value."
-                            this.handlePopup(title, message);
-                        });
-                    break;
-                }
-            default:
-                return;
-        }
+      //show loader spinner if api call to get table data
+      	if (props.calltype === 'viewSelect' || 
+            props.calltype === 'addSelect' || 
+            props.calltype === 'updateSelect' || 
+            props.calltype === 'removeSelect' || 
+            props.calltype === 'searchSelect' || 
+            props.calltype === 'searchSubmit' ) {
+        			this.setState({ loadingData: true });
+         }
+      
+      	//call server to retreive table data
+          switch (props.calltype) {
+              case ('viewSelect'):
+                  {
+                      ServerCall.viewData({ query: props.viewSelect })
+                          .then(res => {
+                              this.updateTable(res);
+                              return res;
+                          })
+                          .catch(err => console.log(err));
+                      break;
+                  }
+              case ('addSelect'):
+                  {
+                      ServerCall.viewData({ query: props.addSelect })
+                          .then(res => {
+                              this.updateTable(res);
+                          })
+                          .catch(err => console.log(err));
+                      break;
+                  }
+              case ('updateSelect'):
+                  {
+                      ServerCall.viewData({ query: props.updateSelect })
+                          .then(res => {
+                              this.updateTable(res);
+                          })
+                          .catch(err => console.log(err));
+                      break;
+                  }
+              case ('removeSelect'):
+                  {
+                      ServerCall.viewData({ query: props.removeSelect })
+                          .then(res => {
+                              this.updateTable(res);
+                          })
+                          .catch(err => console.log(err));
+                      break;
+                  }
+              case ('searchSelect'):
+                  {
+                      ServerCall.viewData({ query: props.searchSelect })
+                          .then(res => {
+                              this.updateTable(res);
+                          })
+                          .catch(err => console.log(err));
+                      break;
+                  }
+              case ('searchSubmit'):
+                  {
+                      ServerCall.searchData(props)
+                          .then(res => {
+                              this.updateTable(res);
+                          })
+                          .catch(err => {
+                              const title = "NO SEARCH RESULTS";
+                              const message = "Unable to find any database items containing search value."
+                              this.handlePopup(title, message);
+                          });
+                      break;
+                  }
+              default:
+                  return;
+          }
     }
 
     componentDidUpdate() {
@@ -228,6 +242,18 @@ class MainContent extends React.Component {
         switch (this.props.content) {
             case ("view_items"):
                 {
+                  if (this.state.loadingData){
+                     return (
+                        <div>
+                            <ActionForm
+                                api={this.handleServerCall}
+                                key="viewForm"
+                                formType="view"
+                                submitForm={this.submitForm} />
+                       		<LoaderSpin />
+                        </div>
+                    );
+                  }
                     return (
                         <div>
                             <ActionForm
@@ -243,6 +269,21 @@ class MainContent extends React.Component {
                 {
                     if (this.state.showPopup) {
                         return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage} />
+                    }
+                    if (this.state.loadingData){
+                      return (
+                        <div>
+                            <ActionForm
+                                getFood={this.handleServerCall}
+                                api={this.handleServerCall}
+                                key="addForm"
+                                formType="add"
+                                submitForm={this.submitForm}
+                                popup={this.handlePopup}
+                            />
+                       		<LoaderSpin />
+                        </div>
+                      );
                     }
                     return (
                         <div>
@@ -273,6 +314,21 @@ class MainContent extends React.Component {
                             />
                         );
                     }
+                    if (this.state.loadingData){
+                      return (
+                        <div>
+                            <ActionForm
+                                api={this.handleServerCall}
+                                key="updateForm"
+                                formType="update"
+                                submitForm={this.submitForm}
+                                popup={this.handlePopup}
+                                updatePopup={this.handleUpdatePopup}
+                            />
+                       		<LoaderSpin />
+                        </div>
+                      );
+                    }
                     return (
                         <div>
                             <ActionForm
@@ -302,6 +358,21 @@ class MainContent extends React.Component {
                             />
                         );
                     }
+                    if (this.state.loadingData){
+                       return (
+                          <div>
+                              <ActionForm
+                                  api={this.handleServerCall}
+                                  key="removeForm"
+                                  formType="remove"
+                                  submitForm={this.submitForm}
+                                  popup={this.handlePopup}
+                                  removePopup={this.handleRemovePopup}
+                              />
+                            <LoaderSpin />
+                          </div>
+                      ); 
+                    }
                     return (
                         <div>
                             <ActionForm
@@ -320,6 +391,20 @@ class MainContent extends React.Component {
                 {
                     if (this.state.showPopup) {
                         return <Popup closePopup={this.handlePopupClose} title={this.state.popupTitle} message={this.state.popupMessage} />
+                    }
+                    if (this.state.loadingData){
+                       return (
+                          <div>
+                            <ActionForm
+                                api={this.handleServerCall}
+                                key="searchForm"
+                                formType="search"
+                                submitForm={this.submitForm}
+                                popup={this.handlePopup}
+                            />
+                            <LoaderSpin />
+                        </div>
+                      ); 
                     }
                     return (
                         <div>

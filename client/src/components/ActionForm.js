@@ -337,13 +337,13 @@ class ActionForm extends Component {
                 .catch(err => console.log(err));
         });
     }
-
     handleTextInput = (e, { name, value }) => {
         this.setState({
             [name]: value.toUpperCase()
         })
     }
 
+    //SUBMIT form handlers
     handleAddSubmit = (e, { calltype }) => {
         this.setState({ calltype: calltype }, () => {
             switch (calltype) {

@@ -328,7 +328,7 @@ class RemovePopup extends Component {
                     />
                   </Form.Field>
                   <Form.Field width={5}>
-                    <label>CAGE NAME</label>
+                    <label>Cage Name</label>
                     <Input
             					id="remove-input"
                       value={cageName}
@@ -336,7 +336,7 @@ class RemovePopup extends Component {
                     />
                   </Form.Field>
                   <Form.Field width={5}>
-                    <label>CAGE SIZE</label>
+                    <label>Cage Size</label>
                     <Input
             					id="remove-input"
                       value={cageSize}

@@ -345,7 +345,7 @@ class UpdateForm extends Component {
                     />
                   </Form.Field>
                   <Form.Field width={5}>
-                    <label>CAGE NAME</label>
+                    <label>Cage Name</label>
                     <Input
                       name="cageName"
                       value={cageName}
@@ -353,7 +353,7 @@ class UpdateForm extends Component {
                     />
                   </Form.Field>
                   <Form.Field width={5}>
-                    <label>CAGE SIZE</label>
+                    <label>Cage Size [Sq Ft]</label>
                     <Input
                       name="cageSize"
                       value={cageSize}
