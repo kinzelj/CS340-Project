@@ -54,7 +54,7 @@ const queryText = {
         "', cage.worker_id AS '" + attributeTag["cage.worker_id"] + 
         "', first_name AS '" + attributeTag["cage.worker_first"] + 
         "', last_name AS '" + attributeTag["cage.worker_last"] + 
-  			"' FROM cage INNER JOIN worker ON cage.worker_id=worker.worker_id",
+  			"' FROM cage LEFT JOIN worker ON cage.worker_id=worker.worker_id",
 
     selectFood: "SELECT food_id AS '" + attributeTag["food.food_id"] +
         "', food_type AS '" + attributeTag["food.food_type"] + "' FROM food",
@@ -90,7 +90,7 @@ function getSelectQuery(queryType) {
             }
         case ('worker'):
             {
-                return (queryText.selectWorkers);
+                return (queryText.selectWorkers + " ORDER BY worker.worker_id");
             }
         case ('cage'):
             {
@@ -98,7 +98,7 @@ function getSelectQuery(queryType) {
             }
         case ('food'):
             {
-                return (queryText.selectFood);
+                return (queryText.selectFood + " ORDER by food.food_id");
             }
         case ('approvedFoods'):
             {
@@ -273,10 +273,11 @@ app.post('/add', function(req, res, next) {
             {
                 var context = {};
                 query = "INSERT INTO `worker` (`first_name`, `last_name`, `position`) VALUES (?, ?, ?)";
+                if (req.body.addWorkerPosition === '') {req.body.addWorkerPosition = null}
                 values = [req.body.addWorkerFirst, req.body.addWorkerLast, req.body.addWorkerPosition];
                 mysql.pool.query(query, values, function(err, rows, fields) {
                     if (err) {
-                        console.log('err');
+                        console.log(err);
                         next(err);
                         return;
                     }
@@ -292,9 +293,14 @@ app.post('/add', function(req, res, next) {
                 values = [req.body.addFoodType];
                 mysql.pool.query(query, values, function(err, rows, fields) {
                     if (err) {
-                        console.log('err');
-                        next(err);
-                        return;
+                        if (err.errno === 1062) {
+                            res.status(501).send({error: "Duplicate Entry"});
+                            return;
+                        }
+                        else {
+                            next(err);
+                            return;
+                        }
                     }
                     context.results = JSON.stringify(rows);
                     res.send(context.results);
@@ -305,15 +311,19 @@ app.post('/add', function(req, res, next) {
             {
                 var context = {};
                 query = "INSERT INTO `cage` (`cage_name`, `cage_size`, `worker_id`) VALUES (?, ?, ?)";
-                if (req.body.addCageSize === '') {
-                    req.body.addCageSize = null;
-                }
+                if (req.body.addCageSize === '') {req.body.addCageSize = null}
+                if (req.body.addCageWorker === '') {req.body.addCageWorker = null}
                 values = [req.body.addCageName, req.body.addCageSize, req.body.addCageWorker];
-                // console.log(values);
                 mysql.pool.query(query, values, function(err, rows, fields) {
                     if (err) {
-                        next(err);
-                        return;
+                        if (err.errno === 1062) {
+                            res.status(501).send({error: "Duplicate Entry"});
+                            return;
+                        }
+                        else {
+                            next(err);
+                            return;
+                        }
                     }
                     context.results = JSON.stringify(rows);
                     res.send(context.results);
@@ -325,7 +335,6 @@ app.post('/add', function(req, res, next) {
                 var context = {};
                 query = "INSERT INTO `worker_animal` (`animal_id`, `worker_id`) VALUES (?, ?)";
                 values = [req.body.assignAnimal, req.body.assignAnimalWorker];
-                // console.log(values);
                 mysql.pool.query(query, values, function(err, rows, fields) {
                     if (err) {
                         next(err);
@@ -341,7 +350,6 @@ app.post('/add', function(req, res, next) {
                 var context = {};
                 query = "INSERT INTO `food_animal` (`animal_id`, `food_id`) VALUES (?, ?)";
                 values = [req.body.assignAnimalFood, req.body.assignFood];
-                // console.log(values);
                 mysql.pool.query(query, values, function(err, rows, fields) {
                     if (err) {
                         next(err);
@@ -369,6 +377,7 @@ app.post('/update', function(req, res, next) {
             }
         case ('worker'):
             {
+                if (req.body.workerPosition === '') {req.body.workerPosition = null}
                 query = "UPDATE worker SET first_name = ?, last_name = ?, position = ? WHERE worker_id = ?";
                 values = [req.body.workerFirst, req.body.workerLast, req.body.workerPosition, req.body.workerId];
                 break;
@@ -381,6 +390,8 @@ app.post('/update', function(req, res, next) {
             }
         case ('cage'):
             {
+                if(req.body.workerId === ""){req.body.workerId = null}
+                if(req.body.cageSize === ""){req.body.cageSize = null}
                 query = "UPDATE cage SET cage_name = ?, cage_size = ?, worker_id = ? WHERE cage_id = ?";
                 values = [req.body.cageName, req.body.cageSize, req.body.workerId, req.body.cageId];
                 break;

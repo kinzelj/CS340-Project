@@ -194,7 +194,6 @@ class RemovePopup extends Component {
   showContents() {
     const {
       animalType,
-      animalCage,
       animalId,
       workerId,
       workerFirst,

@@ -413,12 +413,6 @@ class ActionForm extends Component {
                 case ("addCage"):
                     {
                         const refreshProps = { calltype: "addSelect", addSelect: "cage" }
-                        if (this.state.addCageWorker === "") {
-                            const title = "ERROR!";
-                            const message = "Invalid input: Cage must have an assigned Worker ID."
-                            this.props.popup(title, message, refreshProps);
-                            break;
-                        }
                         if (this.state.addCageName === "") {
                             const title = "ERROR!";
                             const message = "Invalid input: Cage must have a name."
@@ -432,6 +426,9 @@ class ActionForm extends Component {
                                 this.props.popup(title, message, refreshProps);
                             })
                             .catch((error) => {
+                                if(error.response.status === 501){
+                                    error = "Duplicate entry, please try again.";
+                                }
                                 const title = "ERRROR!";
                                 const message = "Unable to add Cage ---> " + error;
                                 this.props.popup(title, message, refreshProps);
@@ -454,6 +451,9 @@ class ActionForm extends Component {
                                 this.props.popup(title, message, refreshProps);
                             })
                             .catch((error) => {
+                                if(error.response.status === 501){
+                                    error = "Duplicate entry, please try again.";
+                                }
                                 const title = "ERRROR!";
                                 const message = "Unable to add Food ---> " + error;
                                 this.props.popup(title, message, refreshProps);

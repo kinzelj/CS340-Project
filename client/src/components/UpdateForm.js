@@ -129,6 +129,7 @@ class UpdateForm extends Component {
                   ServerCall.getWorkersDropdown({ query: "worker" })
                     .then(res => {
                       options.updateCageWorker.workerDropdown = res;
+                      options.updateCageWorker.workerDropdown.unshift({key: "remove-worker", text: "REMOVE WORKER ASSIGNMENT", value: ""});
                       this.showContents();
                     }).catch(err => console.log(err));
                 });

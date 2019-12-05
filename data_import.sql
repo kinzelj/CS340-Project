@@ -25,7 +25,7 @@ INSERT INTO `worker`(`first_name`, `last_name`, `position`) VALUES
 
 CREATE TABLE `cage` (
     `cage_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-    `cage_name` VARCHAR(255),
+    `cage_name` VARCHAR(255) NOT NULL UNIQUE,
     `cage_size` int(11),
     `worker_id` smallint(5) unsigned,
     PRIMARY KEY (`cage_id`),
@@ -67,7 +67,7 @@ INSERT INTO `animal`(`animal_type`, `cage_id`) VALUES
 
 CREATE TABLE `food` (
     `food_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-    `food_type` VARCHAR(255) NOT NULL,
+    `food_type` VARCHAR(255) NOT NULL UNIQUE,
     PRIMARY KEY (`food_id`)
 );
 
