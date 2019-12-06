@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'semantic-ui-react'
 
+/*********************************************************************
+ * Popup component that will provide feedback if action was successful
+ * or an error was thrown based on props passed to component
+**********************************************************************/
 class Popup extends Component {
   state = { open: false, title: "", message:"" }
 

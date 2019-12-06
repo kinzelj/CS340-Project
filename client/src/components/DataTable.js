@@ -1,7 +1,11 @@
 import React from 'react'
-import '../css/DataTable.css'
 import { Table } from 'semantic-ui-react'
 
+/*******************************************************************
+ * Data table dynamically populated based on props:
+ * props.data = table row data
+ * props.header = table headers
+********************************************************************/
 const buildRow = (value, index, header) => (
   <Table.Row key={`tr-${index}`}>
     {

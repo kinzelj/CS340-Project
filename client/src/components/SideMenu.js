@@ -3,6 +3,9 @@ import MainContent from './MainContent.js'
 import { Grid, Menu, Segment } from 'semantic-ui-react'
 import '../css/SideMenu.css'
 
+/*********************************************************************
+ * SideMenu component renders sidebar and main content components
+**********************************************************************/
 export default class SideMenu extends Component {
   state = { 
     activeContent: "view_items",
@@ -10,6 +13,7 @@ export default class SideMenu extends Component {
     clicked: false
   }
 
+  //set state when user clicks side menu option to set which props to pass to MainContent component
   handleItemClick = (setContent, name) => {
     this.setState({ 
       activeContent: setContent,
@@ -22,6 +26,7 @@ export default class SideMenu extends Component {
     this.setState({clicked: false});
   }
 
+  //render side menu and main content component
   render() {
     const { activeItem } = this.state
 

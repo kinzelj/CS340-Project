@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaw } from '@fortawesome/free-solid-svg-icons'
 import '../css/App.css';
 
+/*******************************************************************
+ * Main App component
+********************************************************************/
 class App extends Component {
   render() {
     return (

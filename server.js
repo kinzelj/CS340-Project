@@ -10,6 +10,7 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 
 const port = process.env.PORT || 5000;
 
+//attributeTage object that defines table headers
 const attributeTag = {
     "animal.animal_id": "ANIMAL ID",
     "animal.animal_type": "ANIMAL TYPE",
@@ -32,10 +33,12 @@ const attributeTag = {
     "id": "ENTRY ID"
 }
 
+//get tag key based on value passed to function
 function getTagKey(value) {
     return Object.keys(attributeTag).find(key => attributeTag[key] === value);
 }
 
+//queryText object defines all select SQL queries
 const queryText = {
     selectAnimals: "SELECT animal.animal_id AS '" + attributeTag["animal.animal_id"] +
         "', animal.animal_type AS '" + attributeTag["animal.animal_type"] +
@@ -81,7 +84,7 @@ const queryText = {
         "INNER JOIN worker ON cage.worker_id=worker.worker_id",
 }
 
-
+//getSelectQuery function defines which select query will be called based on queryType passed to function
 function getSelectQuery(queryType) {
     switch (queryType) {
         case ('animal'):
@@ -115,6 +118,7 @@ function getSelectQuery(queryType) {
     }
 }
 
+//view route queries database with select query defined
 app.post('/view', function(req, res, next) {
     var query = getSelectQuery(req.body.query);
     if (query) {
@@ -126,6 +130,7 @@ app.post('/view', function(req, res, next) {
     };
 });
 
+//search route queries database with select query and search value passed to req.body
 app.post('/search', function(req, res, next) {
     const searchTable = req.body.searchSelect;
     var searchCriteria = req.body.searchAttributeSelect;
@@ -204,6 +209,8 @@ app.post('/search', function(req, res, next) {
     };
 });
 
+//search remove route is called to determine number of rows in many-many tables based on value passed to req.body
+//used to determine if item can be removed from database on client side
 app.post('/search_remove', function(req, res, next) {
     const searchTable = req.body.searchSelect;
     var searchCriteria = req.body.searchAttributeSelect;
@@ -232,6 +239,7 @@ app.post('/search_remove', function(req, res, next) {
     };
 });
 
+//add route called to add item to database
 app.post('/add', function(req, res, next) {
     var query = null;
     var values = [];
@@ -363,6 +371,7 @@ app.post('/add', function(req, res, next) {
     }
 });
 
+//update route called to update item in database
 app.post('/update', function(req, res, next) {
     var query = null;
     var values = [];
@@ -425,6 +434,7 @@ app.post('/update', function(req, res, next) {
     })
 });
 
+//remove route called to remove item from database
 app.post('/remove', function(req, res, next) {
     var query = null;
     var values = [];

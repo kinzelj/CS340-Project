@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+/*********************************************************************
+ * Async functions for all calls to server
+**********************************************************************/
 export const viewData = async (props) => {
     const options = {
         method: 'POST',

@@ -3,6 +3,10 @@ import { Button, Header, Modal, Form, Input } from 'semantic-ui-react'
 import * as ServerCall from '../scripts/ServerCall.js'
 import '../css/RemovePopup.css';
 
+/*********************************************************************
+ * RemovePopup component will render when user selects to remove zoo
+ * item. Props passed to component will determine popup contents
+**********************************************************************/
 class RemovePopup extends Component {
   state = {
     open: false,
@@ -27,8 +31,19 @@ class RemovePopup extends Component {
 
   contents = null;
 
+  //handle popup close
   close = () => this.setState({ open: false }, () => this.props.closePopup(null, "close"))
 
+  //set state of component values from props passed into component
+  componentDidMount() {
+    this.setState({
+      searchSelect: this.props.select,
+      searchValue: this.props.id,
+      searchAttributeSelect: this.props.idName
+    }, () => this.getInitialData());
+  }
+
+  //function that handles deletion of item
   deleteItem = () => {
     //if user tries to remove animal worker assignment, first check there is more than one worker assigned to animal
     if (this.state.searchSelect === "workerAnimal") {
@@ -104,7 +119,7 @@ class RemovePopup extends Component {
       return;
     }
 
-    //remove item from database
+    //else call server to remove item from database
     ServerCall.removeItem(this.state)
       .then(res => {
         this.setState({
@@ -119,6 +134,7 @@ class RemovePopup extends Component {
         });
   }
 
+  //get initial data from server based on searchSelect state variable 
   getInitialData() {
     ServerCall.searchData(this.state)
       .then(res => {
@@ -191,6 +207,7 @@ class RemovePopup extends Component {
       .catch(err => console.log(err));
   }
 
+  //determine popup contents based on searchSelect passed to component
   showContents() {
     const {
       animalType,
@@ -219,16 +236,16 @@ class RemovePopup extends Component {
                   <Form.Field width={2}>
                     <label>Animal ID</label>
                     <Input
-            					id="remove-input"
-            					readOnly
+                      id="remove-input"
+                      readOnly
                       value={animalId}
                     />
                   </Form.Field>
                   <Form.Field width={5}>
                     <label>Animal Type</label>
                     <Input
-            					id="remove-input"
-                    	readOnly
+                      id="remove-input"
+                      readOnly
                       value={animalType}
                     />
                   </Form.Field>
@@ -242,39 +259,40 @@ class RemovePopup extends Component {
         {
           this.contents = (
             <div className='formContents'>
-              <Header>Are you sure you want to remove worker data from the zoo database:</Header>
+              <Header>Are you sure you want to remove worker data from the zoo database?</Header>
+              <p>Any worker-animal assignemnt for this worker will also be deleted:</p>
               <Form>
                 <Form.Group >
                   <Form.Field width={2}>
                     <label>Worker ID</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={workerId}
-                    	readOnly
+                      readOnly
                     />
                   </Form.Field>
                   <Form.Field width={5}>
                     <label>Worker First Name</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={workerFirst}
-                    	readOnly
+                      readOnly
                     />
                   </Form.Field>
                   <Form.Field width={5}>
                     <label>Worker Last Name</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={workerLast}
-                    	readOnly
+                      readOnly
                     />
                   </Form.Field>
                   <Form.Field width={5}>
                     <label>Worker Position</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={workerPosition}
-                    	readOnly
+                      readOnly
                     />
                   </Form.Field>
                 </Form.Group>
@@ -287,13 +305,14 @@ class RemovePopup extends Component {
         {
           this.contents = (
             <div className='formContents'>
-              <Header>Are you sure you want to remove animal food data from the zoo database:</Header>
+              <Header>Are you sure you want to remove animal food data from the zoo database?</Header>
+              <p>Any animal that has is currently approved to eat this food will no longer have it available:</p>
               <Form>
                 <Form.Group >
                   <Form.Field width={2}>
                     <label>Food ID</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={foodId}
                       readOnly
                     />
@@ -301,9 +320,9 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Food Type</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={foodType}
-            					readOnly
+                      readOnly
                     />
                   </Form.Field>
                 </Form.Group>
@@ -319,10 +338,10 @@ class RemovePopup extends Component {
               <Header>Are you sure you want to remove cage data from the zoo database:</Header>
               <Form>
                 <Form.Group >
-                <Form.Field width={2}>
+                  <Form.Field width={2}>
                     <label>Cage ID</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={cageId}
                       readOnly
                     />
@@ -330,17 +349,17 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Cage Name</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={cageName}
-            					readOnly
+                      readOnly
                     />
                   </Form.Field>
                   <Form.Field width={5}>
                     <label>Cage Size</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={cageSize}
-            					readOnly
+                      readOnly
                     />
                   </Form.Field>
                 </Form.Group>
@@ -359,7 +378,7 @@ class RemovePopup extends Component {
                   <Form.Field width={2}>
                     <label>Entry ID</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={foodEntryId}
                       readOnly
                     />
@@ -367,7 +386,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Animal</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={"Animal ID #" + animalId + ":  " + animalType}
                       readOnly
                     />
@@ -375,7 +394,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Approved Food</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={foodType}
                       readOnly
                     />
@@ -396,7 +415,7 @@ class RemovePopup extends Component {
                   <Form.Field width={2}>
                     <label>Entry ID</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={animalWorkerEntryId}
                       readOnly
                     />
@@ -404,7 +423,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Animal</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={"Animal ID #" + animalId + ":  " + animalType}
                       readOnly
                     />
@@ -412,7 +431,7 @@ class RemovePopup extends Component {
                   <Form.Field width={5}>
                     <label>Assigned Worker</label>
                     <Input
-            					id="remove-input"
+                      id="remove-input"
                       value={"Worker ID #" + workerId + ":  " + workerFirst + " " + workerLast}
                       readOnly
                     />
@@ -429,14 +448,7 @@ class RemovePopup extends Component {
     this.setState({ open: true });
   }
 
-  componentDidMount() {
-    this.setState({
-      searchSelect: this.props.select,
-      searchValue: this.props.id,
-      searchAttributeSelect: this.props.idName
-    }, () => this.getInitialData());
-  }
-
+  //render jsx for remove popup
   render() {
     return (
       <div>

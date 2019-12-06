@@ -8,7 +8,7 @@ import LoaderSpin from './Loader.js'
 import RemovePopup from './RemovePopup.js'
 
 /*******************************************************************
- Main body component that will contain all data rendered to browser 
+ * Main body component that will contain all data rendered to browser 
 ********************************************************************/
 class MainContent extends React.Component {
     state = {
@@ -35,6 +35,7 @@ class MainContent extends React.Component {
         console.log(formData);
     }
 
+    //function that sets the state of table headers and data
     updateTable = (newData) => {
         this.setState({
           	loadingData: false,
@@ -43,6 +44,7 @@ class MainContent extends React.Component {
         });
     }
 
+    //function to call server that will retrieve data to populate table
     handleServerCall = (props) => {
       //show loader spinner if api call to get table data
       	if (props.calltype === 'viewSelect' || 
@@ -54,7 +56,7 @@ class MainContent extends React.Component {
         			this.setState({ loadingData: true });
          }
       
-      	//call server to retreive table data
+      	//call server to retrieve table data
           switch (props.calltype) {
               case ('viewSelect'):
                   {
@@ -120,8 +122,8 @@ class MainContent extends React.Component {
           }
     }
 
+    //clear table if side menu option clicked
     componentDidUpdate() {
-        //clear table if side menu option clicked
         if (this.props.clicked) {
             this.props.reset();
             this.setState({
@@ -131,15 +133,17 @@ class MainContent extends React.Component {
         }
     }
 
+    //handle open and close popup component
     handlePopup = (title, message, callbackProps) => {
         this.setState({ showPopup: true, popupTitle: title, popupMessage: message, refreshProps: callbackProps });
     }
     handlePopupClose = () => {
         this.setState({
-            headerNames: [""],
+            headerNames: ["SELECT OPTION TO SHOW ZOO DATA"],
             tableData: [{}],
             showPopup: false,
             showRemovePopup: false,
+            loadingData: false,
             popupTitle: "",
             popupMessage: ""
         }, () => {
@@ -147,6 +151,7 @@ class MainContent extends React.Component {
         });
     }
 
+    //handle open of update popup component
     handleUpdatePopup = (select, id, idName) => {
         const updateRefreshProps = { calltype: "updateSelect", updateSelect: select }
         this.setState({
@@ -157,6 +162,7 @@ class MainContent extends React.Component {
             refreshProps: updateRefreshProps
         });
     }
+    //handle UpdateForm close and render appropriate Popup component
     handleUpdatePopupClose = (type, statusMessage) => {
         var title;
         var message;
@@ -183,6 +189,7 @@ class MainContent extends React.Component {
         });
     }
 
+    //handle open of remove popup component 
     handleRemovePopup = (select, id, idName) => {
         const removeRefreshProps = { calltype: "removeSelect", removeSelect: select }
         this.setState({
@@ -193,6 +200,7 @@ class MainContent extends React.Component {
             refreshProps: removeRefreshProps
         });
     }
+    //handle RemovePopup close and render appropriate Popup component
     handleRemovePopupClose = (type, statusMessage) => {
         var title;
         var message;
@@ -210,7 +218,7 @@ class MainContent extends React.Component {
             message = "Unable to remove cage from database, likely due to one or more animals are assigned to this cage."
             +"\nBefore removing, please make sure any animal assigned to this cage has been re-assigned first.";
         }
-        else if (statusMessage === "approvedFoods") {
+        else if (statusMessage === "approvedFoods" || statusMessage === 'food') {
             title = "ERROR!";
             message = "Unable to remove assigned food because this is the only food currently approved for this animal.\n"
             +"Before removing approved food, please assign a different food to this animal.";
@@ -238,6 +246,7 @@ class MainContent extends React.Component {
         });
     }
 
+    //render jsx for main content container depending on content prop passed to component
     render() {
         switch (this.props.content) {
             case ("view_items"):

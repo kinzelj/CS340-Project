@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { Button, Header, Modal, Form, Input } from 'semantic-ui-react'
 import * as ServerCall from '../scripts/ServerCall.js'
 
+/*********************************************************************
+ * UpdateForm component will render when user selects to update zoo
+ * item. Props passed to component will determine popup contents
+**********************************************************************/
 const options = {
   updateAnimal: {
     key: "dk-updateAnimal",
@@ -47,6 +51,7 @@ class UpdateForm extends Component {
 
   close = () => this.setState({ open: false }, () => this.props.closePopup(null, "close"))
 
+  //handle server call when submit button clicked
   submit = () => {
     ServerCall.updateItem(this.state)
       .then(res => {
@@ -59,20 +64,33 @@ class UpdateForm extends Component {
 
   }
 
+  //get key of any object based on value passed to function
   getKey = (object, value) => {
     return Object.keys(object).find(key => object[key] === value);
   }
 
+  //update state when update select option changed
   handleSelectChange = (e, { name, value }) => {
     this.setState({ [name]: value }, () => this.showContents());
   }
 
+  //update state when text input changed
   handleInputChange = (e, { name, value }) => {
     this.setState({
       [name]: value.toUpperCase()
     }, () => this.showContents())
   }
 
+  //set state based on props passed to component
+  componentDidMount() {
+    this.setState({
+      searchSelect: this.props.select,
+      searchValue: this.props.id,
+      searchAttributeSelect: this.props.idName
+    }, () => this.getInitialData());
+  }
+
+  //call server to get initial data needed to populate popup
   getInitialData() {
     ServerCall.searchData(this.state)
       .then(res => {
@@ -125,11 +143,11 @@ class UpdateForm extends Component {
                   cageName: data["CAGE NAME"],
                   cageSize: data["SQ FT"],
                   workerId: data["ASSIGNED WORKER ID"]
-                }, () => { 
+                }, () => {
                   ServerCall.getWorkersDropdown({ query: "worker" })
                     .then(res => {
                       options.updateCageWorker.workerDropdown = res;
-                      options.updateCageWorker.workerDropdown.unshift({key: "remove-worker", text: "REMOVE WORKER ASSIGNMENT", value: ""});
+                      options.updateCageWorker.workerDropdown.unshift({ key: "remove-worker", text: "REMOVE WORKER ASSIGNMENT", value: "" });
                       this.showContents();
                     }).catch(err => console.log(err));
                 });
@@ -199,6 +217,7 @@ class UpdateForm extends Component {
       .catch(err => console.log(err));
   }
 
+  //function to determine jsx that will define contents object and rendered in popup
   showContents() {
     const {
       animalType,
@@ -262,7 +281,7 @@ class UpdateForm extends Component {
               <Header>Modify worker data, then submit:</Header>
               <Form>
                 <Form.Group >
-                   <Form.Field width={2}>
+                  <Form.Field width={2}>
                     <label>Worker ID</label>
                     <Input
                       placeholder={workerId}
@@ -451,7 +470,7 @@ class UpdateForm extends Component {
               <Header>Modify assigned cage worker, then submit:</Header>
               <Form>
                 <Form.Group >
-                   <Form.Field width={2}>
+                  <Form.Field width={2}>
                     <label>Cage Number</label>
                     <Input
                       placeholder={cageId}
@@ -484,14 +503,7 @@ class UpdateForm extends Component {
     this.setState({ open: true });
   }
 
-  componentDidMount() {
-    this.setState({
-      searchSelect: this.props.select,
-      searchValue: this.props.id,
-      searchAttributeSelect: this.props.idName
-    }, () => this.getInitialData());
-  }
-
+  //render popup jsx depending on contents object
   render() {
     return (
       <div>

@@ -3,7 +3,8 @@ import { Form } from 'semantic-ui-react'
 import * as ServerCall from '../scripts/ServerCall.js'
 
 /*******************************************************************
- Dropdown Constants
+ * ActionForm component renders the main content form depending on 
+ * which sidebar menu option was selected
 ********************************************************************/
 const options = {
     view: {
@@ -201,6 +202,7 @@ class ActionForm extends Component {
         this.setState({ formType: this.props.formType })
     }
 
+    //call server to fetch data to populate table
     handleSelectChange = (e, { name, value, calltype }) => {
         this.setState({
             [name]: value,
@@ -211,6 +213,7 @@ class ActionForm extends Component {
 
     }
 
+    //handle select change for add item
     handleAddSelectChange = (e, { name, value, calltype }) => {
         this.setState({
             [name]: value,
@@ -293,6 +296,7 @@ class ActionForm extends Component {
         });
     }
 
+    //handle select change for item search
     handleSearchSelectChange = (e, { name, value, calltype }) => {
         this.setState({
             [name]: value,
@@ -308,6 +312,7 @@ class ActionForm extends Component {
         });
     }
 
+    //handle select change for update item
     handleUpdateSelectChange = (e, { name, value, calltype }) => {
         this.setState({
             [name]: value,
@@ -323,6 +328,7 @@ class ActionForm extends Component {
         });
     }
 
+    //handle select change for remove item
     handleRemoveSelectChange = (e, { name, value, calltype }) => {
         this.setState({
             [name]: value,
@@ -337,13 +343,15 @@ class ActionForm extends Component {
                 .catch(err => console.log(err));
         });
     }
+
+    //update state for input changes
     handleTextInput = (e, { name, value }) => {
         this.setState({
             [name]: value.toUpperCase()
         })
     }
 
-    //SUBMIT form handlers
+    //ADD submit form handlers
     handleAddSubmit = (e, { calltype }) => {
         this.setState({ calltype: calltype }, () => {
             switch (calltype) {
@@ -521,6 +529,8 @@ class ActionForm extends Component {
             this.props.api(this.state);
         })
     }
+
+    //UPDATE submit form handler
     handleUpdateSubmit = (e, { calltype }) => {
         if (this.state.updateSelect === "") {
             const title = "ERROR!";
@@ -536,6 +546,8 @@ class ActionForm extends Component {
         }
         this.props.updatePopup(this.state.updateSelect, this.state.updateId, this.state.updateIdName);
     }
+
+    //REMOVE submit form handler
     handleRemoveSubmit = (e, { calltype }) => {
         if (this.state.removeSelect === "") {
             const title = "ERROR!";
@@ -551,6 +563,8 @@ class ActionForm extends Component {
         }
         this.props.removePopup(this.state.removeSelect, this.state.removeId, this.state.removeIdName);
     }
+
+    //SEARCH submit form handler
     handleSearchSubmit = (e, { calltype }) => {
         if (this.state.searchSelect === "") {
             const title = "ERROR!";
@@ -575,6 +589,7 @@ class ActionForm extends Component {
         })
     }
 
+    //render jsx depending on state.formType
     render() {
         //controlled inputs
         const {
