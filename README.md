@@ -1,6 +1,6 @@
 To deploy development environment:
 
-In project directory create dbcon.js file with the following code:
+In project directory create dbcon.js file with the following code and update with users MYSQL database info:
 ```
 var mysql = require('mysql');                         
 var pool = mysql.createPool({                         
