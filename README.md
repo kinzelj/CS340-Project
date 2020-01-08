@@ -1,3 +1,5 @@
+Web application that simulates inventory management of Zoo database items.
+
 To deploy development environment:
 
 In command terminal:
